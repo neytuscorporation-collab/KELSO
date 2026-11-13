@@ -344,13 +344,15 @@ $("wzBody").addEventListener("click", async (e) => {
     renderWizard();
   } else if (a === "send") {
     W.busy = true; W.msg = "Enviando… no cierres la página."; renderWizard();
+    let step = "inicio";
     try {
-      for (const k of [["selfie", W.selfie], ["front", W.front], ["back", W.back]]) await setDoc(doc(db, "kyc", me.uid, "imgs", k[0]), { data: k[1], at: Date.now() });
+      for (const k of [["selfie", W.selfie], ["front", W.front], ["back", W.back]]) { step = "foto " + k[0]; await setDoc(doc(db, "kyc", me.uid, "imgs", k[0]), { data: k[1], at: Date.now() }); }
+      step = "perfil";
       const base = { name: W.name, dni: W.dni, phone: W.phone, city: W.city, email: me.email, provider: me.provider, status: "pendiente", submittedAt: serverTimestamp(), consentAt: serverTimestamp(), consentVersion: CONSENT_VERSION };
       if (!profile) await setDoc(doc(db, "users", me.uid), Object.assign({ createdAt: serverTimestamp() }, base));
       else await updateDoc(doc(db, "users", me.uid), base);
       W.busy = false; W.selfie = W.front = W.back = ""; view = "home"; renderHome(); show("vHome");
-    } catch (er) { W.busy = false; W.msg = "No se pudo enviar. " + errText(er); renderWizard(); }
+    } catch (er) { W.busy = false; W.msg = "No se pudo enviar (paso: " + step + "). " + errText(er); renderWizard(); }
   }
 });
 
