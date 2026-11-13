@@ -449,7 +449,7 @@ function inicioHtml() {
   else if (postsErr) h += '<p class="msg err">' + esc(postsErr) + "</p>";
   else if (!posts.length) h += '<div class="card"><b>Aún no hay publicaciones</b><p class="mu">Sé el primero en publicar un ejemplar o un producto.</p></div>';
   else h += posts.slice(0, 4).map(cardHtml).join("");
-  h += '<p class="fine" style="margin-top:20px">Los tratos se hacen entre las partes: verifica siempre el ejemplar y a la persona antes de pagar. No se admiten anuncios que promocionen peleas de animales.</p>';
+  h += '<p class="fine" style="margin-top:20px">Los tratos se hacen entre las partes: verifica siempre el ejemplar y a la persona antes de pagar.</p>';
   return h;
 }
 function listFiltered(type) {
