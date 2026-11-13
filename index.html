@@ -78,6 +78,27 @@ ul.tips{text-align:left;color:var(--mu);font-size:13px;padding-left:18px;margin:
 #vCam .bar .btn{margin:0;width:auto;padding:14px 22px}
 #vCam .cap{position:absolute;top:0;left:0;right:0;padding:16px;text-align:center;font:600 14px var(--h);letter-spacing:.08em;background:linear-gradient(180deg,rgba(0,0,0,.7),transparent)}
 #vCam .err{position:absolute;inset:0 0 120px 0;display:grid;place-items:center;padding:24px;text-align:center;color:#ffb4a8}
+
+nav#nav{position:fixed;left:0;right:0;bottom:0;z-index:30;background:rgba(10,10,10,.96);border-top:1px solid var(--line);display:flex;padding:6px 8px calc(6px + env(safe-area-inset-bottom,0px));justify-content:center;gap:4px}
+nav#nav button{flex:1;max-width:110px;background:none;border:0;color:var(--mu);font:600 10.5px var(--h);letter-spacing:.06em;text-transform:uppercase;display:grid;gap:3px;justify-items:center;padding:6px 2px;border-radius:10px}
+nav#nav button svg{width:22px;height:22px}nav#nav button[aria-current=true]{color:var(--gold)}
+body.hasnav .w{padding-bottom:90px}
+.chips{display:flex;gap:6px;overflow-x:auto;margin:10px -16px 0;padding:0 16px 4px;scrollbar-width:none}.chips::-webkit-scrollbar{display:none}
+.chip{flex:none;background:var(--s);border:1.5px solid var(--line);color:var(--mu);border-radius:999px;padding:7px 12px;font:600 12px var(--b)}.chip[aria-pressed=true]{border-color:var(--gold);color:var(--gold)}
+input[type=search],select{width:100%;background:var(--s2);border:1.5px solid var(--line);border-radius:10px;padding:13px;font-size:16px;color:var(--fg)}
+.post{background:var(--s);border:1.5px solid var(--line);border-radius:14px;margin-top:14px;overflow:hidden;text-align:left}
+.post .ph{display:flex;gap:4px;overflow-x:auto;scroll-snap-type:x mandatory;background:#000}.post .ph img{flex:none;width:100%;max-height:300px;object-fit:cover;scroll-snap-align:start}
+.post .in{padding:14px}.post .row{display:flex;align-items:baseline;justify-content:space-between;gap:10px}
+.post .ti{font:700 15px var(--h)}.post .pr{color:var(--gold);font:700 16px var(--h);white-space:nowrap}
+.tags{display:flex;gap:6px;flex-wrap:wrap;margin-top:8px}.tag{background:var(--s2);border:1px solid var(--line);color:#cfc9b8;border-radius:999px;padding:3px 9px;font-size:11.5px}
+.post p{margin:8px 0 0;color:#cfc9b8;font-size:13.5px;white-space:pre-wrap;word-break:break-word}
+.seller{margin-top:10px;font-size:12.5px;color:var(--mu);display:flex;gap:8px;align-items:center;flex-wrap:wrap}.seller b{color:var(--fg)}
+.sold{background:rgba(226,80,60,.14);color:#ff9a8a;border:1px solid #6b2a20;border-radius:999px;padding:3px 9px;font:700 10.5px var(--b);text-transform:uppercase}
+a.btn{text-decoration:none;text-align:center}
+.thumbs{display:flex;gap:8px;margin-top:8px}.thumbs img{width:78px;height:78px;object-fit:cover;border-radius:10px;border:1px solid var(--line)}
+.two{display:grid;grid-template-columns:1fr 1fr;gap:10px}
+.stat{display:grid;grid-template-columns:1fr 1fr;gap:10px;margin-top:14px}.stat div{background:var(--s);border:1.5px solid var(--line);border-radius:12px;padding:12px;text-align:left;color:var(--mu);font-size:12px}.stat b{display:block;color:var(--gold);font:700 24px var(--h)}
+select{appearance:none}
 </style></head><body><div class="w">
 
 <section id="vWelcome" class="hero" hidden>
@@ -115,7 +136,23 @@ ul.tips{text-align:left;color:var(--mu);font-size:13px;padding-left:18px;margin:
  <div class="seg"><button id="sgP" type="button" aria-pressed="true">Pendientes</button><button id="sgA" type="button" aria-pressed="false">Todos</button></div>
  <div id="adBody"></div>
 </section>
+
+<section id="vTabs" class="page" hidden>
+ <div id="tBody"></div>
+ <div class="msg err" id="tMsg"></div>
+</section>
+
+<section id="vForm" class="page" hidden>
+ <button class="back" id="fmBack" type="button">&lsaquo; Atr&aacute;s</button>
+ <div id="fmBody"></div>
+</section>
 </div>
+<nav id="nav" hidden>
+ <button type="button" data-t="in"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M3 11l9-8 9 8"/><path d="M5 10v10h14V10"/></svg>Inicio</button>
+ <button type="button" data-t="ej"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M20 4c-6 0-11 3-12 9l-4 5h6l2 2c6-1 8-8 8-16z"/><path d="M9 15l5-5"/></svg>Ejemplares</button>
+ <button type="button" data-t="mk"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M3 4h2l2.5 11h10L20 7H6"/><circle cx="9" cy="19" r="1.5"/><circle cx="17" cy="19" r="1.5"/></svg>Mercado</button>
+ <button type="button" data-t="pf"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="8" r="4"/><path d="M4 21c1-5 5-7 8-7s7 2 8 7"/></svg>Perfil</button>
+</nav>
 
 <div id="vCam" hidden>
  <div class="cap" id="camCap"></div>
@@ -129,7 +166,7 @@ ul.tips{text-align:left;color:var(--mu);font-size:13px;padding-left:18px;margin:
 <script type="module">
 import { initializeApp } from "https://www.gstatic.com/firebasejs/10.12.2/firebase-app.js";
 import { getAuth, GoogleAuthProvider, signInWithPopup, signInWithRedirect, getRedirectResult, onAuthStateChanged, signOut } from "https://www.gstatic.com/firebasejs/10.12.2/firebase-auth.js";
-import { getFirestore, doc, getDoc, setDoc, updateDoc, deleteDoc, collection, getDocs, query, where, onSnapshot, addDoc, serverTimestamp } from "https://www.gstatic.com/firebasejs/10.12.2/firebase-firestore.js";
+import { getFirestore, doc, getDoc, setDoc, updateDoc, deleteDoc, collection, getDocs, query, where, orderBy, limit, onSnapshot, addDoc, serverTimestamp } from "https://www.gstatic.com/firebasejs/10.12.2/firebase-firestore.js";
 
 /* Configuración de Firebase (proyecto kelso-62f12). Estos datos no son secretos. */
 const firebaseConfig = {
@@ -144,8 +181,8 @@ const CONSENT_VERSION = "2026-11-12";
 
 const $ = (id) => document.getElementById(id);
 const esc = (s) => String(s == null ? "" : s).replace(/[&<>"']/g, (c) => ({ "&": "&amp;", "<": "&lt;", ">": "&gt;", '"': "&quot;", "'": "&#39;" }[c]));
-const views = ["vWelcome", "vLoad", "vHome", "vWizard", "vAdmin"];
-const show = (id) => { views.forEach((v) => { $(v).hidden = v !== id; }); window.scrollTo(0, 0); };
+const views = ["vWelcome", "vLoad", "vHome", "vWizard", "vAdmin", "vTabs", "vForm"];
+const show = (id) => { views.forEach((v) => { $(v).hidden = v !== id; }); const n = (id === "vHome" || id === "vTabs") && statusOf() === "verificado"; $("nav").hidden = !n; document.body.classList.toggle("hasnav", n); window.scrollTo(0, 0); };
 const fmtDate = (t) => { try { const d = t && t.toDate ? t.toDate() : new Date(t); return d.toLocaleDateString("es-PE") + " " + d.toLocaleTimeString("es-PE", { hour: "2-digit", minute: "2-digit" }); } catch (e) { return ""; } };
 
 const ERR = {
@@ -185,7 +222,7 @@ let me = null, profile = null, isAdmin = false, unsub = null, dbErr = "", view =
 onAuthStateChanged(auth, async (u) => {
   if (unsub) { unsub(); unsub = null; }
   profile = null; isAdmin = false; dbErr = "";
-  if (!u) { me = null; view = "welcome"; show("vWelcome"); return; }
+  if (!u) { me = null; stopPosts(); tab = "in"; view = "welcome"; show("vWelcome"); return; }
   me = { uid: u.uid, name: u.displayName || "", email: u.email || "", provider: (u.providerData[0] && u.providerData[0].providerId) || "google.com" };
   view = "load"; show("vLoad");
   try { isAdmin = (await getDoc(doc(db, "admins", u.uid))).exists(); } catch (e) { isAdmin = false; }
@@ -194,8 +231,8 @@ onAuthStateChanged(auth, async (u) => {
     if ((!profile || !profile.status) && isAdmin) {
       try { await setDoc(doc(db, "users", u.uid), { name: me.name, email: me.email, provider: me.provider, status: "verificado", dni: "", phone: "", city: "", createdAt: serverTimestamp() }); } catch (e) { dbErr = errText(e); }
     }
-    if (view === "load" || view === "home") { view = "home"; renderHome(); show("vHome"); }
-  }, (e) => { dbErr = errText(e); if (view === "load" || view === "home") { view = "home"; renderHome(); show("vHome"); } });
+    if (view === "load" || view === "home") enterHome();
+  }, (e) => { dbErr = errText(e); if (view === "load" || view === "home") enterHome(); });
 });
 
 function statusOf() { return profile && profile.status ? profile.status : "none"; }
@@ -215,7 +252,7 @@ function renderHome() {
   if (st === "correccion") h += '<p><b>El administrador pidió una corrección:</b></p><p>' + esc(profile.note || "Vuelve a enviar tus fotos.") + '</p>';
   if (st === "rechazado") h += '<p>Tu solicitud fue rechazada.' + (profile.note ? ' Motivo: ' + esc(profile.note) : '') + '</p>';
   if (st === "suspendido") h += '<p>Tu cuenta está suspendida temporalmente.' + (profile.note ? ' ' + esc(profile.note) : '') + '</p>';
-  if (st === "verificado") h += '<p>Tu cuenta está verificada. Pronto podrás publicar ejemplares y productos.</p>';
+  if (st === "verificado") h += '<p>Tu cuenta está verificada. Ya puedes publicar y ver ejemplares y productos en las pestañas de abajo.</p>';
   h += '<div class="st"><i class="dot ' + (dbErr ? "bad" : "ok") + '"></i><span>' + (dbErr ? esc(dbErr) : "Base de datos conectada") + '</span></div></div>';
   if (st === "none" || st === "correccion") h += '<button class="btn" id="hStart" type="button">' + (st === "none" ? "Verificar mi identidad" : "Enviar de nuevo mis datos") + '</button>';
   if (isAdmin) h += '<button class="btn sec" id="hAdmin" type="button">Panel de administración</button>';
@@ -325,7 +362,7 @@ function renderWizard() {
   if ($("c1")) { $("c1").onchange = (e) => { W.c1 = e.target.checked; sync(); }; $("c2").onchange = (e) => { W.c2 = e.target.checked; sync(); }; $("c3").onchange = (e) => { W.adult = e.target.checked; sync(); }; }
 }
 function sync() { const b = document.querySelector('#wzBody [data-act="next"]'); if (b) b.disabled = !(W.c1 && W.c2 && W.adult); }
-$("wzBack").onclick = () => { if (W.busy) return; W.msg = ""; if (W.step === 0) { view = "home"; renderHome(); show("vHome"); } else { W.step--; renderWizard(); } };
+$("wzBack").onclick = () => { if (W.busy) return; W.msg = ""; if (W.step === 0) { enterHome(); } else { W.step--; renderWizard(); } };
 $("wzBody").addEventListener("click", async (e) => {
   const b = e.target.closest("[data-act]"); if (!b || W.busy) return;
   const a = b.getAttribute("data-act"); W.msg = "";
@@ -351,15 +388,166 @@ $("wzBody").addEventListener("click", async (e) => {
       const base = { name: W.name, dni: W.dni, phone: W.phone, city: W.city, email: me.email, provider: me.provider, status: "pendiente", submittedAt: serverTimestamp(), consentAt: serverTimestamp(), consentVersion: CONSENT_VERSION };
       if (!profile) await setDoc(doc(db, "users", me.uid), Object.assign({ createdAt: serverTimestamp() }, base));
       else await updateDoc(doc(db, "users", me.uid), base);
-      W.busy = false; W.selfie = W.front = W.back = ""; view = "home"; renderHome(); show("vHome");
+      W.busy = false; W.selfie = W.front = W.back = ""; enterHome();
     } catch (er) { W.busy = false; W.msg = "No se pudo enviar (paso: " + step + "). " + errText(er); renderWizard(); }
   }
 });
 
+/* ---------- red: ejemplares y mercado ---------- */
+const CATS = ["Alimento", "Salud y vitaminas", "Jaulas y corrales", "Accesorios", "Equipos", "Otros"];
+const MAXPOST = 6;
+let posts = [], postsLoaded = false, unsubPosts = null, postsErr = "", tab = "in", q = "", mcat = "Todos", pend = null, fkind = "ejemplar", fPh = [], fBusy = false;
+const isVer = () => statusOf() === "verificado";
+const okImg = (s) => typeof s === "string" && /^data:image\/jpeg;base64,[A-Za-z0-9+\/=]+$/.test(s);
+function startPosts() {
+  if (unsubPosts || !isVer()) return;
+  const redraw = () => { if (view === "home" && tab !== "pf") renderTab(); };
+  unsubPosts = onSnapshot(query(collection(db, "posts"), orderBy("createdAt", "desc"), limit(120)),
+    (s) => { posts = s.docs.map((d) => Object.assign({ id: d.id }, d.data())); postsLoaded = true; postsErr = ""; redraw(); },
+    (e) => { postsErr = errText(e); postsLoaded = true; redraw(); });
+}
+function stopPosts() { if (unsubPosts) { unsubPosts(); unsubPosts = null; } posts = []; postsLoaded = false; }
+function enterHome() {
+  view = "home";
+  if (isVer()) startPosts(); else { stopPosts(); tab = "pf"; }
+  if (tab === "pf") { renderHome(); show("vHome"); } else { renderTab(); show("vTabs"); }
+}
+document.querySelectorAll("#nav button").forEach((b) => { b.onclick = () => { tab = b.getAttribute("data-t"); q = ""; pend = null; $("tMsg").textContent = ""; enterHome(); }; });
+function paintNav() { document.querySelectorAll("#nav button").forEach((b) => b.setAttribute("aria-current", String(b.getAttribute("data-t") === tab))); }
+
+function cardHtml(p) {
+  const mine = p.owner === me.uid, ph = (p.photos || []).filter(okImg);
+  const tags = [];
+  if (p.type === "producto" && p.cat) tags.push(p.cat);
+  if (p.age) tags.push(p.age + " meses");
+  if (p.weight) tags.push(p.weight + " kg");
+  if (p.city) tags.push(p.city);
+  let acts = "";
+  if (!p.sold && !mine && /^9\d{8}$/.test(p.ownerPhone || "")) {
+    const msg = "Hola " + (p.ownerName || "") + ', vi tu ' + (p.type === "ejemplar" ? "ejemplar" : "producto") + ' "' + (p.title || "") + '" en KELSO.';
+    acts += '<a class="btn sm green" target="_blank" rel="noopener" href="https://wa.me/51' + esc(p.ownerPhone) + "?text=" + encodeURIComponent(msg) + '">WhatsApp</a>';
+  }
+  const ask = (act, label, cls) => (pend === act + p.id ? '<button class="btn sm red" data-a="' + act + '" data-id="' + esc(p.id) + '" type="button">Confirmar</button>' : '<button class="btn sm ' + cls + '" data-a="' + act + '" data-id="' + esc(p.id) + '" type="button">' + label + "</button>");
+  if (mine) acts += ask("sold", p.sold ? "Reactivar" : (p.type === "ejemplar" ? "Marcar vendido" : "Marcar agotado"), "sec") + ask("del", "Eliminar", "sec");
+  else if (isAdmin) acts += ask("del", "Retirar (admin)", "sec");
+  return '<article class="post">' + (ph.length ? '<div class="ph">' + ph.map((x) => '<img src="' + x + '" alt="Foto">').join("") + "</div>" : "") +
+    '<div class="in"><div class="row"><div class="ti">' + esc(p.title) + "</div>" + (p.sold ? '<span class="sold">' + (p.type === "ejemplar" ? "Vendido" : "Agotado") + "</span>" : '<div class="pr">S/ ' + esc(p.price) + "</div>") + "</div>" +
+    (p.line ? '<div class="mu" style="color:var(--mu);font-size:12.5px;margin-top:2px">' + esc(p.line) + "</div>" : "") +
+    '<div class="tags">' + tags.map((t) => '<span class="tag">' + esc(t) + "</span>").join("") + "</div>" +
+    (p.desc ? "<p>" + esc(p.desc) + "</p>" : "") +
+    '<div class="seller"><b>' + esc(p.ownerName || "Criador") + "</b>" + badge("verificado") + "</div>" +
+    (acts ? "<div>" + acts + "</div>" : "") + "</div></article>";
+}
+function inicioHtml() {
+  const nE = posts.filter((p) => p.type === "ejemplar" && !p.sold).length, nM = posts.filter((p) => p.type === "producto" && !p.sold).length;
+  const first = ((profile && profile.name) || me.name || "").split(" ")[0] || "criador";
+  let h = "<h2>Inicio</h2>" + '<div class="card" style="margin-top:0"><b>Hola, ' + esc(first) + "</b>" + badge("verificado") + '<p class="mu">Esta es la red de criadores verificados de KELSO. Solo ves y publicas aquí porque el administrador verificó tu identidad.</p></div>' +
+    '<div class="stat"><div><b>' + nE + "</b>ejemplares disponibles</div><div><b>" + nM + "</b>productos disponibles</div></div>" +
+    '<button class="btn" data-go="ej" type="button">Publicar un ejemplar</button><button class="btn sec" data-go="mk" type="button">Publicar un producto</button>' +
+    "<h3>Lo último publicado</h3>";
+  if (!postsLoaded) h += '<p class="fine">Cargando…</p>';
+  else if (postsErr) h += '<p class="msg err">' + esc(postsErr) + "</p>";
+  else if (!posts.length) h += '<div class="card"><b>Aún no hay publicaciones</b><p class="mu">Sé el primero en publicar un ejemplar o un producto.</p></div>';
+  else h += posts.slice(0, 4).map(cardHtml).join("");
+  h += '<p class="fine" style="margin-top:20px">Los tratos se hacen entre las partes: verifica siempre el ejemplar y a la persona antes de pagar. No se admiten anuncios que promocionen peleas de animales.</p>';
+  return h;
+}
+function listFiltered(type) {
+  const t = q.trim().toLowerCase();
+  return posts.filter((p) => p.type === type && (type !== "producto" || mcat === "Todos" || p.cat === mcat) &&
+    (!t || [p.title, p.line, p.city, p.desc, p.cat, p.ownerName].join(" ").toLowerCase().indexOf(t) >= 0));
+}
+function renderList() {
+  const type = tab === "ej" ? "ejemplar" : "producto", el = $("lst");
+  if (!el) return;
+  let h;
+  if (!postsLoaded) h = '<p class="fine">Cargando…</p>';
+  else if (postsErr) h = '<p class="msg err">' + esc(postsErr) + "</p>";
+  else {
+    const l = listFiltered(type);
+    h = l.length ? l.map(cardHtml).join("") : '<div class="card"><b>' + (type === "ejemplar" ? "Aún no hay ejemplares" : "Aún no hay productos") + '</b><p class="mu">' + (q || mcat !== "Todos" ? "Prueba con otra búsqueda." : "Los miembros verificados pueden publicar aquí.") + "</p></div>";
+  }
+  el.innerHTML = h;
+}
+function renderTab() {
+  paintNav();
+  if (tab === "in") { $("tBody").innerHTML = inicioHtml(); return; }
+  const ej = tab === "ej";
+  let h = "<h2>" + (ej ? "Ejemplares" : "Mercado") + "</h2>" +
+    '<button class="btn" data-new="' + (ej ? "ejemplar" : "producto") + '" type="button" style="margin-top:0">' + (ej ? "Publicar ejemplar" : "Publicar producto") + "</button>" +
+    '<input id="qIn" type="search" placeholder="' + (ej ? "Buscar por casta, línea o ciudad" : "Buscar producto o ciudad") + '" value="' + esc(q) + '" autocomplete="off" style="margin-top:12px">';
+  if (!ej) h += '<div class="chips">' + ["Todos"].concat(CATS).map((c) => '<button class="chip" data-cat="' + esc(c) + '" aria-pressed="' + (mcat === c) + '" type="button">' + esc(c) + "</button>").join("") + "</div>";
+  h += '<div id="lst"></div>';
+  $("tBody").innerHTML = h;
+  $("qIn").oninput = (e) => { q = e.target.value; renderList(); };
+  renderList();
+}
+$("tBody").addEventListener("click", async (ev) => {
+  const b = ev.target.closest("button"); if (!b) return;
+  if (b.hasAttribute("data-go")) { tab = b.getAttribute("data-go"); enterHome(); openForm(tab === "ej" ? "ejemplar" : "producto"); return; }
+  if (b.hasAttribute("data-new")) { openForm(b.getAttribute("data-new")); return; }
+  if (b.hasAttribute("data-cat")) { mcat = b.getAttribute("data-cat"); renderTab(); return; }
+  const a = b.getAttribute("data-a"), id = b.getAttribute("data-id");
+  if (!a) return;
+  if (pend !== a + id) { pend = a + id; renderTab(); return; }
+  pend = null; $("tMsg").textContent = "";
+  const p = posts.find((x) => x.id === id);
+  try {
+    if (a === "del") await deleteDoc(doc(db, "posts", id));
+    else if (a === "sold" && p) await updateDoc(doc(db, "posts", id), { sold: !p.sold });
+  } catch (e) { $("tMsg").textContent = errText(e); }
+  renderTab();
+});
+
+/* formulario de publicación */
+function openForm(kind) {
+  const mineN = posts.filter((p) => p.owner === me.uid && p.type === kind && !p.sold).length;
+  fkind = kind; fPh = []; fBusy = false; view = "form";
+  const ej = kind === "ejemplar";
+  let h = "<h2>" + (ej ? "Publicar ejemplar" : "Publicar producto") + "</h2>";
+  if (mineN >= MAXPOST) {
+    h += '<div class="card"><b>Llegaste al máximo</b><p class="mu">Puedes tener hasta ' + MAXPOST + " publicaciones activas de este tipo. Marca alguna como vendida o elimínala para publicar otra.</p></div>";
+    $("fmBody").innerHTML = h; show("vForm"); return;
+  }
+  h += '<label for="fT">' + (ej ? "Título (casta o nombre)" : "Nombre del producto") + '</label><input id="fT" type="text" maxlength="60" placeholder="' + (ej ? "Ej. Gallo giro fino, 2 años" : "Ej. Maíz amarillo 25 kg") + '">';
+  if (ej) h += '<label for="fL">Línea o criadero (opcional)</label><input id="fL" type="text" maxlength="60"><div class="two"><div><label for="fA">Edad (meses)</label><input id="fA" type="tel" inputmode="numeric" maxlength="3"></div><div><label for="fW">Peso (kg)</label><input id="fW" type="text" inputmode="decimal" maxlength="5"></div></div>';
+  else h += '<label for="fC">Categoría</label><select id="fC">' + CATS.map((c) => "<option>" + esc(c) + "</option>").join("") + "</select>";
+  h += '<div class="two"><div><label for="fP">Precio (S/)</label><input id="fP" type="tel" inputmode="numeric" maxlength="7"></div><div><label for="fCi">Ciudad</label><input id="fCi" type="text" maxlength="40" value="' + esc((profile && profile.city) || "") + '"></div></div>' +
+    '<label for="fD">Descripción (opcional)</label><textarea id="fD" maxlength="400" placeholder="' + (ej ? "Pedigrí, vacunas, cómo lo entregas…" : "Marca, estado, cómo lo entregas…") + '"></textarea>' +
+    '<label for="fF">Fotos (1 a 3)</label><input id="fF" type="file" accept="image/*" multiple><div class="thumbs" id="fPrev"></div>' +
+    '<p class="fine" style="text-align:left">Tu celular (' + esc((profile && profile.phone) || "sin celular") + ') será visible para los criadores verificados, para que te escriban por WhatsApp. El video de hasta 10 segundos estará disponible pronto.</p>' +
+    '<div class="msg err" id="fMsg"></div><button class="btn" id="fSend" type="button">Publicar</button>';
+  $("fmBody").innerHTML = h; show("vForm");
+  $("fF").onchange = async (e) => {
+    const fs = Array.from(e.target.files).slice(0, 3); $("fMsg").textContent = "Preparando fotos…";
+    try {
+      fPh = await Promise.all(fs.map((f) => new Promise((res, rej) => { const r = new FileReader(); r.onload = () => compress(r.result, 800, 100000).then(res, rej); r.onerror = rej; r.readAsDataURL(f); })));
+      $("fPrev").innerHTML = fPh.map((p) => '<img src="' + p + '" alt="">').join(""); $("fMsg").textContent = "";
+    } catch (x) { fPh = []; $("fPrev").innerHTML = ""; $("fMsg").textContent = "No se pudo leer alguna foto. Prueba con otra."; }
+  };
+  $("fSend").onclick = sendPost;
+}
+$("fmBack").onclick = () => { if (fBusy) return; tab = fkind === "ejemplar" ? "ej" : "mk"; enterHome(); };
+async function sendPost() {
+  if (fBusy) return;
+  const g = (id) => ($(id) ? $(id).value.trim() : ""), ej = fkind === "ejemplar", msg = $("fMsg");
+  const d = { type: fkind, owner: me.uid, ownerName: (profile && profile.name) || "", ownerPhone: (profile && profile.phone) || "", title: g("fT"), line: ej ? g("fL") : "", age: ej ? g("fA").replace(/\D/g, "") : "", weight: ej ? g("fW").replace(",", ".") : "", price: g("fP").replace(/\D/g, ""), city: g("fCi"), cat: ej ? "" : g("fC"), desc: g("fD"), photos: fPh, sold: false, createdAt: serverTimestamp() };
+  if (!d.title) msg.textContent = "Escribe un título.";
+  else if (!/^\d{1,7}$/.test(d.price)) msg.textContent = "Escribe el precio en soles, solo números.";
+  else if (!d.city) msg.textContent = "Escribe la ciudad.";
+  else if (d.weight && !/^\d{1,2}(\.\d{1,2})?$/.test(d.weight)) msg.textContent = "El peso se escribe como 3.5";
+  else if (!fPh.length) msg.textContent = "Agrega al menos una foto.";
+  else {
+    fBusy = true; $("fSend").disabled = true; msg.textContent = "Publicando…";
+    try { await addDoc(collection(db, "posts"), d); tab = ej ? "ej" : "mk"; fBusy = false; enterHome(); return; }
+    catch (e) { fBusy = false; $("fSend").disabled = false; msg.textContent = "No se pudo publicar. " + errText(e); return; }
+  }
+}
+
 /* ---------- panel del administrador ---------- */
 let adTab = "p", adDetail = null;
 async function openAdmin() { view = "admin"; adDetail = null; show("vAdmin"); await loadAdmin(); }
-$("adBack").onclick = () => { if (adDetail) { adDetail = null; loadAdmin(); } else { view = "home"; renderHome(); show("vHome"); } };
+$("adBack").onclick = () => { if (adDetail) { adDetail = null; loadAdmin(); } else { enterHome(); } };
 $("sgP").onclick = () => { adTab = "p"; adDetail = null; loadAdmin(); };
 $("sgA").onclick = () => { adTab = "a"; adDetail = null; loadAdmin(); };
 async function loadAdmin() {
