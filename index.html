@@ -9,8 +9,8 @@
 :root{--bg:#0a0a0a;--s:#141414;--s2:#1d1d1d;--line:#302b20;--fg:#f7f5ef;--mu:#9d978a;--gold:#d4af37;--gd:#a8841f;--red:#e2503c;--green:#4fbf7a;--h:"Montserrat","Segoe UI",system-ui,sans-serif;--b:"Inter",system-ui,sans-serif;color-scheme:dark}
 *{box-sizing:border-box}html{-webkit-text-size-adjust:100%}
 body{background:var(--bg);color:var(--fg);font:15px/1.45 var(--b);margin:0;padding-inline:16px}
-[hidden]{display:none!important}button,input{font:inherit;color:inherit}button{cursor:pointer}
-.w{max-width:420px;margin:0 auto;padding-bottom:40px;text-align:center}
+[hidden]{display:none!important}button,input,textarea{font:inherit;color:inherit}button{cursor:pointer}
+.w{max-width:440px;margin:0 auto;padding-bottom:48px;text-align:center}
 .hero{position:relative;margin:0 -16px;padding:34px 16px 0;min-height:860px;overflow:hidden}
 .hero>*{position:relative;z-index:1}
 .sky{position:absolute!important;z-index:0!important;inset:0 0 auto 0;-webkit-mask-image:linear-gradient(180deg,#000 0,#000 74%,transparent 100%);mask-image:linear-gradient(180deg,#000 0,#000 74%,transparent 100%)}
@@ -23,27 +23,61 @@ h1.gold{background:linear-gradient(180deg,#f6e08a,#d4af37 55%,#a8841f);-webkit-b
 .sl2 i,.by2 i,.copy i{flex:1;height:1px;background:linear-gradient(90deg,transparent,var(--gold));display:block}
 .sl2 i:last-child,.by2 i:last-child,.copy i:last-child{background:linear-gradient(270deg,transparent,var(--gold))}
 h2{font:600 14px var(--h);letter-spacing:.2em;text-transform:uppercase;margin:0 0 14px}
+h3{font:600 12px var(--h);letter-spacing:.16em;text-transform:uppercase;color:var(--gold);margin:20px 0 8px;text-align:left}
 .wl{margin-top:330px;text-shadow:0 2px 10px #000}
 .opts{display:grid;gap:10px}
 .opt{display:flex;align-items:center;gap:12px;background:rgba(8,8,8,.82);border:1.5px solid var(--gold);border-radius:12px;padding:14px;font-weight:600;text-align:left;width:100%}
 .opt svg{width:22px;height:22px;flex:none}.opt .chev{margin-left:auto;color:var(--gold);font-size:24px;line-height:1;font-style:normal}
-.opt[disabled]{opacity:.5}
-.fine{color:#ddd8c8;font-size:11.5px;margin-top:12px;text-shadow:0 1px 6px #000}.fine a{color:var(--gold)}
+.fine{color:#ddd8c8;font-size:11.5px;margin-top:12px}.fine a{color:var(--gold)}
 .copy{display:flex;align-items:center;gap:12px;margin-top:26px;color:var(--mu);font-size:10px;letter-spacing:.2em;text-transform:uppercase}
-.page{padding-top:28px}.page .logo{margin:0 auto 8px;display:block}
+.hero .fine,.hero .copy{text-shadow:0 1px 6px #000;position:relative}
+.page{padding-top:26px}.page .logo{margin:0 auto 8px;display:block;width:60px;height:60px}
 .btn{display:block;width:100%;background:linear-gradient(180deg,#e2c25a,var(--gd));color:#1a1405;border:0;border-radius:12px;padding:15px;font:700 14px var(--h);letter-spacing:.12em;text-transform:uppercase;margin-top:14px}
-.btn.sec{background:var(--s);color:var(--fg);border:1.5px solid var(--line)}.btn[disabled]{opacity:.45}
-.back{background:none;border:0;color:var(--mu);font-size:13px;display:block;margin-bottom:14px}
-label{display:block;text-align:left;color:var(--mu);font:700 11px var(--b);letter-spacing:.1em;text-transform:uppercase;margin:12px 0 6px}
-input{width:100%;background:var(--s2);border:1.5px solid var(--line);border-radius:10px;padding:13px;font-size:16px}
-input:focus{outline:2px solid var(--gold);outline-offset:1px}
-.pre{display:flex;gap:8px}.pre span{background:var(--s2);border:1.5px solid var(--line);border-radius:10px;padding:13px;font-size:16px;color:var(--mu)}
+.btn.sec{background:var(--s);color:var(--fg);border:1.5px solid var(--line)}
+.btn.red{background:var(--red);color:#fff}.btn.green{background:var(--green);color:#06210f}
+.btn.sm{display:inline-block;width:auto;padding:10px 14px;font-size:12px;margin:6px 6px 0 0}
+.btn[disabled]{opacity:.45}
+.back{background:none;border:0;color:var(--mu);font-size:13px;display:block;margin:0 0 12px;padding:0}
+label{display:block;text-align:left;color:var(--mu);font:700 11px var(--b);letter-spacing:.1em;text-transform:uppercase;margin:14px 0 6px}
+input[type=text],input[type=tel],textarea{width:100%;background:var(--s2);border:1.5px solid var(--line);border-radius:10px;padding:13px;font-size:16px}
+textarea{min-height:84px;resize:vertical}
+input:focus,textarea:focus{outline:2px solid var(--gold);outline-offset:1px}
 .msg{margin-top:12px;font-size:13px;min-height:18px}.msg.err{color:#ffb4a8}.msg.ok{color:var(--green)}
 .card{background:var(--s);border:1.5px solid var(--line);border-radius:14px;padding:16px;text-align:left;margin-top:14px}
-.card b{display:block}.card .mu{color:var(--mu);font-size:13px}
-.st{display:flex;align-items:center;gap:8px;font-size:13px;margin-top:8px}.dot{width:9px;height:9px;border-radius:50%;background:var(--mu)}
+.card b{display:block}.card .mu{color:var(--mu);font-size:13px}.card p{margin:8px 0 0}
+.badge{display:inline-flex;align-items:center;gap:6px;border-radius:999px;padding:5px 11px;font:700 11px var(--b);letter-spacing:.06em;text-transform:uppercase;margin-top:8px}
+.badge svg{width:15px;height:15px}
+.b-ok{background:rgba(212,175,55,.16);color:var(--gold);border:1px solid var(--gd)}
+.b-wait{background:rgba(240,200,60,.12);color:#f0c83c;border:1px solid #6b5a1c}
+.b-bad{background:rgba(226,80,60,.14);color:#ff9a8a;border:1px solid #6b2a20}
+.b-none{background:var(--s2);color:var(--mu);border:1px solid var(--line)}
+.st{display:flex;align-items:center;gap:8px;font-size:12.5px;margin-top:10px;color:var(--mu)}.dot{width:9px;height:9px;border-radius:50%;background:var(--mu)}
 .dot.ok{background:var(--green)}.dot.bad{background:var(--red)}
-.ribbon{background:var(--s2);border:1px solid var(--line);border-left:4px solid var(--gold);border-radius:10px;padding:9px 12px;color:var(--mu);font-size:12px;text-align:left;margin-top:14px}
+.steps{display:flex;gap:6px;margin:0 0 18px}.steps i{flex:1;height:4px;border-radius:2px;background:var(--line)}.steps i.on{background:var(--gold)}
+.chk{display:flex;gap:10px;text-align:left;color:#cfc9b8;font-size:12.5px;margin-top:12px;align-items:flex-start}.chk input{margin-top:3px;accent-color:#d4af37;flex:none;width:18px;height:18px}
+.legal{background:var(--s2);border:1px solid var(--line);border-radius:10px;padding:12px;text-align:left;font-size:12.5px;color:#cfc9b8;max-height:210px;overflow:auto}
+.shot{width:100%;border-radius:12px;border:1.5px solid var(--line);display:block;margin-top:8px;background:#000}
+.shotbox{aspect-ratio:3/4;border:2px dashed var(--gold);border-radius:14px;display:grid;place-items:center;color:var(--mu);font-size:13px;margin-top:8px;overflow:hidden}
+.shotbox.doc{aspect-ratio:1.58}.shotbox img{width:100%;height:100%;object-fit:cover}
+ul.tips{text-align:left;color:var(--mu);font-size:13px;padding-left:18px;margin:10px 0 0}
+.row{display:flex;gap:8px;flex-wrap:wrap}
+.row>*{flex:1}
+.item{background:var(--s);border:1.5px solid var(--line);border-radius:12px;padding:13px;margin-top:10px;text-align:left}
+.item b{display:block}.item .mu{color:var(--mu);font-size:12.5px}
+.seg{display:flex;background:var(--s);border:1.5px solid var(--line);border-radius:10px;padding:3px;margin:6px 0 4px}
+.seg button{flex:1;background:none;border:0;border-radius:8px;padding:9px;font-weight:700;color:var(--mu);font-size:13px}
+.seg button[aria-pressed=true]{background:var(--gold);color:#1a1405}
+.imgs{display:grid;gap:8px;margin-top:8px}.imgs img{width:100%;border-radius:10px;border:1px solid var(--line)}
+#vCam{position:fixed;inset:0;background:#000;z-index:60;display:flex;flex-direction:column}
+#vCam video{flex:1;min-height:0;width:100%;object-fit:cover}
+#vCam .guide{position:absolute;inset:0 0 120px 0;display:grid;place-items:center;pointer-events:none}
+#vCam .frame{border:3px solid var(--gold);box-shadow:0 0 0 999px rgba(0,0,0,.45)}
+#vCam .frame.face{width:62%;aspect-ratio:3/4;border-radius:50%}
+#vCam .frame.id{width:88%;aspect-ratio:1.58;border-radius:14px}
+#vCam .bar{height:120px;background:#000;display:flex;align-items:center;justify-content:center;gap:18px;padding:0 16px}
+#vCam .bar .btn{margin:0;width:auto;padding:14px 22px}
+#vCam .cap{position:absolute;top:0;left:0;right:0;padding:16px;text-align:center;font:600 14px var(--h);letter-spacing:.08em;background:linear-gradient(180deg,rgba(0,0,0,.7),transparent)}
+#vCam .err{position:absolute;inset:0 0 120px 0;display:grid;place-items:center;padding:24px;text-align:center;color:#ffb4a8}
 </style></head><body><div class="w">
 
 <section id="vWelcome" class="hero" hidden>
@@ -53,53 +87,49 @@ input:focus{outline:2px solid var(--gold);outline-offset:1px}
  <h2 class="wl">Bienvenido a KELSO</h2>
  <div class="opts">
   <button class="opt" id="bGoogle" type="button"><svg viewBox="0 0 48 48"><path fill="#EA4335" d="M24 9.5c3.5 0 6.6 1.2 9.1 3.6l6.8-6.8C35.8 2.4 30.3 0 24 0 14.6 0 6.5 5.4 2.6 13.2l7.9 6.1C12.4 13.6 17.7 9.5 24 9.5z"/><path fill="#4285F4" d="M46.5 24.5c0-1.6-.1-3.1-.4-4.5H24v9h12.7c-.6 3-2.3 5.5-4.8 7.2l7.5 5.8c4.4-4.1 7.1-10.1 7.1-17.5z"/><path fill="#FBBC05" d="M10.5 28.7a14.5 14.5 0 010-9.4l-7.9-6.1a24 24 0 000 21.6z"/><path fill="#34A853" d="M24 48c6.5 0 11.9-2.1 15.9-5.8l-7.5-5.8c-2.1 1.4-4.9 2.3-8.4 2.3-6.3 0-11.6-4.1-13.5-9.8l-7.9 6.1C6.5 42.6 14.6 48 24 48z"/></svg>Continuar con Google<i class="chev">&rsaquo;</i></button>
-  <button class="opt" id="bFacebook" type="button" hidden><svg viewBox="0 0 24 24"><circle cx="12" cy="12" r="11" fill="#1877F2"/><path fill="#fff" d="M13.3 19v-6.2h2.1l.4-2.5h-2.5V8.7c0-.7.3-1.2 1.3-1.2h1.3V5.3c-.2 0-1-.1-1.9-.1-1.9 0-3.2 1.2-3.2 3.3v1.8H8.7v2.5h2.1V19z"/></svg>Continuar con Facebook<i class="chev">&rsaquo;</i></button>
-  <button class="opt" id="bPhone" type="button"><svg viewBox="0 0 24 24" fill="none" stroke="#d4af37" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="6" y="2" width="12" height="20" rx="2.5"/><path d="M11 18.5h2"/></svg>Registrarse con n&uacute;mero de celular<i class="chev">&rsaquo;</i></button>
  </div>
  <div class="msg err" id="wMsg" role="alert"></div>
- <p class="fine">Cada persona tiene una sola cuenta. Al continuar aceptas los T&eacute;rminos y la Pol&iacute;tica de privacidad.</p>
- <div class="copy"><i></i>&copy; 2026 NEYTUS CORPORATION<i></i></div>
-</section>
-
-<section id="vPhone" class="page" hidden>
- <button class="back" id="pBack" type="button">&lsaquo; Volver</button>
- <svg class="logo" viewBox="0 0 48 48" aria-hidden="true"><path d="M24 3 L42 13.5 V34.5 L24 45 L6 34.5 V13.5 Z" fill="#0a0a0a" stroke="#d4af37" stroke-width="2.4" stroke-linejoin="round"/><path d="M17 14 V34 M17 24 L30 14 M20.6 22.2 L31 34" fill="none" stroke="#d4af37" stroke-width="3.6" stroke-linecap="round" stroke-linejoin="round"/><g fill="#f7f5ef"><circle cx="30" cy="14" r="1.9"/><circle cx="31" cy="34" r="1.9"/><circle cx="17" cy="14" r="1.9"/><circle cx="17" cy="34" r="1.9"/></g></svg>
- <h2>Tu n&uacute;mero de celular</h2>
- <label for="pNum">Celular (Per&uacute;)</label>
- <div class="pre"><span>+51</span><input id="pNum" type="tel" inputmode="numeric" maxlength="9" placeholder="9XX XXX XXX" autocomplete="tel-national"></div>
- <p class="fine" style="text-align:left">Te enviaremos un c&oacute;digo de 6 d&iacute;gitos por SMS.</p>
- <button class="btn" id="pSend" type="button">Enviar c&oacute;digo</button>
- <div class="msg" id="pMsg" role="alert"></div>
-</section>
-
-<section id="vCode" class="page" hidden>
- <button class="back" id="cBack" type="button">&lsaquo; Cambiar n&uacute;mero</button>
- <svg class="logo" viewBox="0 0 48 48" aria-hidden="true"><path d="M24 3 L42 13.5 V34.5 L24 45 L6 34.5 V13.5 Z" fill="#0a0a0a" stroke="#d4af37" stroke-width="2.4" stroke-linejoin="round"/><path d="M17 14 V34 M17 24 L30 14 M20.6 22.2 L31 34" fill="none" stroke="#d4af37" stroke-width="3.6" stroke-linecap="round" stroke-linejoin="round"/><g fill="#f7f5ef"><circle cx="30" cy="14" r="1.9"/><circle cx="31" cy="34" r="1.9"/><circle cx="17" cy="14" r="1.9"/><circle cx="17" cy="34" r="1.9"/></g></svg>
- <h2>C&oacute;digo de verificaci&oacute;n</h2>
- <p class="fine" id="cInfo" style="margin:0 0 12px"></p>
- <input id="cNum" type="tel" inputmode="numeric" maxlength="6" placeholder="000000" autocomplete="one-time-code" style="text-align:center;font-size:24px;letter-spacing:.4em">
- <button class="btn" id="cOk" type="button">Confirmar</button>
- <div class="msg" id="cMsg" role="alert"></div>
-</section>
-
-<section id="vHome" class="page" hidden>
- <svg class="logo" viewBox="0 0 48 48" aria-hidden="true"><path d="M24 3 L42 13.5 V34.5 L24 45 L6 34.5 V13.5 Z" fill="#0a0a0a" stroke="#d4af37" stroke-width="2.4" stroke-linejoin="round"/><path d="M17 14 V34 M17 24 L30 14 M20.6 22.2 L31 34" fill="none" stroke="#d4af37" stroke-width="3.6" stroke-linecap="round" stroke-linejoin="round"/><g fill="#f7f5ef"><circle cx="30" cy="14" r="1.9"/><circle cx="31" cy="34" r="1.9"/><circle cx="17" cy="14" r="1.9"/><circle cx="17" cy="34" r="1.9"/></g></svg>
- <h2>Sesi&oacute;n iniciada</h2>
- <div class="card"><b id="hName">&mdash;</b><div class="mu" id="hVia"></div>
-  <div class="st"><i class="dot" id="dDb"></i><span id="tDb">Comprobando base de datos&hellip;</span></div></div>
- <div class="ribbon">Primera parte lista: el ingreso funciona. Sigue la verificaci&oacute;n de identidad con selfie y DNI.</div>
- <button class="btn sec" id="hOut" type="button">Cerrar sesi&oacute;n</button>
+ <p class="fine">Cada persona tiene una sola cuenta. Para publicar y contactar, debes verificar tu identidad.</p>
  <div class="copy"><i></i>&copy; 2026 NEYTUS CORPORATION<i></i></div>
 </section>
 
 <section id="vLoad" class="page"><p class="fine">Cargando&hellip;</p></section>
+
+<section id="vHome" class="page" hidden>
+ <svg class="logo" viewBox="0 0 48 48" aria-hidden="true"><path d="M24 3 L42 13.5 V34.5 L24 45 L6 34.5 V13.5 Z" fill="#0a0a0a" stroke="#d4af37" stroke-width="2.4" stroke-linejoin="round"/><path d="M17 14 V34 M17 24 L30 14 M20.6 22.2 L31 34" fill="none" stroke="#d4af37" stroke-width="3.6" stroke-linecap="round" stroke-linejoin="round"/><g fill="#f7f5ef"><circle cx="30" cy="14" r="1.9"/><circle cx="31" cy="34" r="1.9"/><circle cx="17" cy="14" r="1.9"/><circle cx="17" cy="34" r="1.9"/></g></svg>
+ <h2>KELSO</h2>
+ <div id="hBody"></div>
+ <button class="btn sec" id="hOut" type="button">Cerrar sesi&oacute;n</button>
+ <div class="copy"><i></i>&copy; 2026 NEYTUS CORPORATION<i></i></div>
+</section>
+
+<section id="vWizard" class="page" hidden>
+ <button class="back" id="wzBack" type="button">&lsaquo; Atr&aacute;s</button>
+ <div class="steps" id="wzSteps"></div>
+ <div id="wzBody"></div>
+</section>
+
+<section id="vAdmin" class="page" hidden>
+ <button class="back" id="adBack" type="button">&lsaquo; Volver</button>
+ <h2>Panel de administraci&oacute;n</h2>
+ <div class="seg"><button id="sgP" type="button" aria-pressed="true">Pendientes</button><button id="sgA" type="button" aria-pressed="false">Todos</button></div>
+ <div id="adBody"></div>
+</section>
 </div>
+
+<div id="vCam" hidden>
+ <div class="cap" id="camCap"></div>
+ <video id="camVid" autoplay playsinline muted></video>
+ <div class="guide"><div class="frame" id="camFrame"></div></div>
+ <div class="err" id="camErr" hidden></div>
+ <div class="bar"><button class="btn sec" id="camCancel" type="button">Cancelar</button><button class="btn" id="camSnap" type="button">Tomar foto</button></div>
+</div>
+<input id="camFile" type="file" accept="image/*" capture hidden>
 
 <script type="module">
 import { initializeApp } from "https://www.gstatic.com/firebasejs/10.12.2/firebase-app.js";
-import { getAuth, GoogleAuthProvider, FacebookAuthProvider, signInWithPopup, signInWithRedirect, getRedirectResult,
-  RecaptchaVerifier, signInWithPhoneNumber, onAuthStateChanged, signOut } from "https://www.gstatic.com/firebasejs/10.12.2/firebase-auth.js";
-import { getFirestore, doc, setDoc, serverTimestamp } from "https://www.gstatic.com/firebasejs/10.12.2/firebase-firestore.js";
+import { getAuth, GoogleAuthProvider, signInWithPopup, signInWithRedirect, getRedirectResult, onAuthStateChanged, signOut } from "https://www.gstatic.com/firebasejs/10.12.2/firebase-auth.js";
+import { getFirestore, doc, getDoc, setDoc, updateDoc, deleteDoc, collection, getDocs, query, where, onSnapshot, addDoc, serverTimestamp } from "https://www.gstatic.com/firebasejs/10.12.2/firebase-firestore.js";
 
 /* Configuración de Firebase (proyecto kelso-62f12). Estos datos no son secretos. */
 const firebaseConfig = {
@@ -110,98 +140,276 @@ const firebaseConfig = {
   messagingSenderId: "717349579473",
   appId: "1:717349579473:web:104325370d3a9f5dd573f0"
 };
-/* Cambia a true cuando Facebook esté activado en Firebase. */
-const FACEBOOK_ENABLED = false;
+const CONSENT_VERSION = "2026-11-12";
 
 const $ = (id) => document.getElementById(id);
-const views = ["vWelcome", "vPhone", "vCode", "vHome", "vLoad"];
+const esc = (s) => String(s == null ? "" : s).replace(/[&<>"']/g, (c) => ({ "&": "&amp;", "<": "&lt;", ">": "&gt;", '"': "&quot;", "'": "&#39;" }[c]));
+const views = ["vWelcome", "vLoad", "vHome", "vWizard", "vAdmin"];
 const show = (id) => { views.forEach((v) => { $(v).hidden = v !== id; }); window.scrollTo(0, 0); };
-const setMsg = (id, t, ok) => { const e = $(id); e.textContent = t || ""; e.className = "msg " + (t ? (ok ? "ok" : "err") : ""); };
+const fmtDate = (t) => { try { const d = t && t.toDate ? t.toDate() : new Date(t); return d.toLocaleDateString("es-PE") + " " + d.toLocaleTimeString("es-PE", { hour: "2-digit", minute: "2-digit" }); } catch (e) { return ""; } };
 
 const ERR = {
   "auth/popup-closed-by-user": "Cerraste la ventana antes de terminar.",
   "auth/cancelled-popup-request": "Se canceló el ingreso. Intenta de nuevo.",
   "auth/network-request-failed": "No hay conexión a internet.",
-  "auth/too-many-requests": "Demasiados intentos. Espera unos minutos y prueba de nuevo.",
-  "auth/invalid-phone-number": "El número de celular no es válido.",
-  "auth/invalid-verification-code": "El código es incorrecto.",
-  "auth/code-expired": "El código venció. Pide uno nuevo.",
-  "auth/missing-phone-number": "Escribe tu número de celular.",
-  "auth/unauthorized-domain": "Este sitio aún no está autorizado en Firebase (Authentication > Configuración > Dominios autorizados).",
-  "auth/operation-not-allowed": "Firebase rechazó el envío del SMS (auth/operation-not-allowed). Revisa Authentication > Método de acceso > Teléfono y Prevención de fraudes.",
-  "auth/billing-not-enabled": "Los SMS requieren activar el plan Blaze de Firebase.",
-  "auth/quota-exceeded": "Se agotó el cupo de SMS. Intenta más tarde.",
-  "auth/captcha-check-failed": "No se pudo comprobar que eres una persona. Recarga la página."
+  "auth/unauthorized-domain": "Este sitio aún no está autorizado en Firebase.",
+  "auth/operation-not-allowed": "Este método de ingreso no está activado en Firebase.",
+  "permission-denied": "Sin permiso: revisa que las reglas de Firestore estén publicadas."
 };
-const errText = (e) => (ERR[e && e.code] || "No se pudo completar.") + " [" + ((e && e.code) || "error") + (e && e.message ? " | " + String(e.message).slice(0, 140) : "") + "]";
+const errText = (e) => (ERR[e && e.code] || "No se pudo completar.") + " [" + ((e && e.code) || "error") + "]";
 
 let app, auth, db;
-try {
-  app = initializeApp(firebaseConfig);
-  auth = getAuth(app); auth.languageCode = "es";
-  db = getFirestore(app);
-} catch (e) { document.body.innerHTML = "<p style='padding:24px'>No se pudo iniciar KELSO.</p>"; throw e; }
+try { app = initializeApp(firebaseConfig); auth = getAuth(app); auth.languageCode = "es"; db = getFirestore(app); }
+catch (e) { document.body.innerHTML = "<p style='padding:24px'>No se pudo iniciar KELSO.</p>"; throw e; }
 
-if (FACEBOOK_ENABLED) $("bFacebook").hidden = false;
+const SHIELD = '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 2l8 3v7c0 5-4 8-8 10-4-2-8-5-8-10V5z"/><path d="M8.5 12l2.5 2.5 4.5-5"/></svg>';
 
-async function social(provider) {
-  setMsg("wMsg", "");
-  try { await signInWithPopup(auth, provider); }
+/* ---------- ingreso ---------- */
+async function loginGoogle() {
+  $("wMsg").textContent = "";
+  const p = new GoogleAuthProvider();
+  try { await signInWithPopup(auth, p); }
   catch (e) {
     if (e.code === "auth/popup-blocked" || e.code === "auth/operation-not-supported-in-this-environment") {
-      try { await signInWithRedirect(auth, provider); return; } catch (e2) { e = e2; }
+      try { await signInWithRedirect(auth, p); return; } catch (e2) { e = e2; }
     }
-    setMsg("wMsg", errText(e));
+    $("wMsg").textContent = errText(e);
   }
 }
-$("bGoogle").onclick = () => social(new GoogleAuthProvider());
-$("bFacebook").onclick = () => social(new FacebookAuthProvider());
-getRedirectResult(auth).catch((e) => setMsg("wMsg", errText(e)));
-
-/* ---- celular por SMS ---- */
-let verifier = null, confirmation = null, phoneFull = "";
-function newVerifier() {
-  if (verifier) { try { verifier.clear(); } catch (e) {} verifier = null; }
-  verifier = new RecaptchaVerifier(auth, "pSend", { size: "invisible" });
-}
-$("bPhone").onclick = () => { setMsg("pMsg", ""); show("vPhone"); };
-$("pBack").onclick = () => show("vWelcome");
-$("cBack").onclick = () => { setMsg("cMsg", ""); show("vPhone"); };
-$("pSend").onclick = async () => {
-  const n = $("pNum").value.replace(/\D/g, "");
-  if (!/^9\d{8}$/.test(n)) { setMsg("pMsg", "Escribe los 9 dígitos de tu celular, empezando en 9."); return; }
-  phoneFull = "+51" + n;
-  $("pSend").disabled = true; setMsg("pMsg", "Enviando código…", true);
-  try {
-    newVerifier();
-    confirmation = await signInWithPhoneNumber(auth, phoneFull, verifier);
-    $("cInfo").textContent = "Enviamos un código de 6 dígitos por SMS a " + phoneFull.slice(0, 6) + "•••" + phoneFull.slice(-3) + ".";
-    $("cNum").value = ""; setMsg("pMsg", ""); show("vCode");
-  } catch (e) { setMsg("pMsg", errText(e)); if (verifier) { try { verifier.clear(); } catch (x) {} verifier = null; } }
-  $("pSend").disabled = false;
-};
-$("cOk").onclick = async () => {
-  const c = $("cNum").value.replace(/\D/g, "");
-  if (c.length !== 6) { setMsg("cMsg", "Escribe los 6 dígitos del código."); return; }
-  $("cOk").disabled = true; setMsg("cMsg", "Verificando…", true);
-  try { await confirmation.confirm(c); }
-  catch (e) { setMsg("cMsg", errText(e)); }
-  $("cOk").disabled = false;
-};
+$("bGoogle").onclick = loginGoogle;
+getRedirectResult(auth).catch((e) => { $("wMsg").textContent = errText(e); });
 $("hOut").onclick = () => signOut(auth);
 
-/* ---- sesión ---- */
+/* ---------- sesión y perfil ---------- */
+let me = null, profile = null, isAdmin = false, unsub = null, dbErr = "", view = "load";
 onAuthStateChanged(auth, async (u) => {
-  if (!u) { show("vWelcome"); return; }
-  const via = u.providerData[0] ? u.providerData[0].providerId : "phone";
-  $("hName").textContent = u.displayName || u.phoneNumber || u.email || "Usuario";
-  $("hVia").textContent = via === "google.com" ? "Ingresaste con Google" : via === "facebook.com" ? "Ingresaste con Facebook" : "Ingresaste con tu celular";
-  show("vHome");
-  try {
-    await setDoc(doc(db, "users", u.uid), { provider: via, lastLogin: serverTimestamp() }, { merge: true });
-    $("dDb").className = "dot ok"; $("tDb").textContent = "Base de datos conectada";
-  } catch (e) {
-    $("dDb").className = "dot bad"; $("tDb").textContent = "Base de datos sin permiso (" + (e.code || "error") + "). Falta pegar las reglas.";
+  if (unsub) { unsub(); unsub = null; }
+  profile = null; isAdmin = false; dbErr = "";
+  if (!u) { me = null; view = "welcome"; show("vWelcome"); return; }
+  me = { uid: u.uid, name: u.displayName || "", email: u.email || "", provider: (u.providerData[0] && u.providerData[0].providerId) || "google.com" };
+  view = "load"; show("vLoad");
+  try { isAdmin = (await getDoc(doc(db, "admins", u.uid))).exists(); } catch (e) { isAdmin = false; }
+  unsub = onSnapshot(doc(db, "users", u.uid), async (snap) => {
+    profile = snap.exists() ? snap.data() : null; dbErr = "";
+    if ((!profile || !profile.status) && isAdmin) {
+      try { await setDoc(doc(db, "users", u.uid), { name: me.name, email: me.email, provider: me.provider, status: "verificado", dni: "", phone: "", city: "", createdAt: serverTimestamp() }); } catch (e) { dbErr = errText(e); }
+    }
+    if (view === "load" || view === "home") { view = "home"; renderHome(); show("vHome"); }
+  }, (e) => { dbErr = errText(e); if (view === "load" || view === "home") { view = "home"; renderHome(); show("vHome"); } });
+});
+
+function statusOf() { return profile && profile.status ? profile.status : "none"; }
+function badge(st) {
+  if (st === "verificado") return '<span class="badge b-ok">' + SHIELD + 'Verificado</span>';
+  if (st === "pendiente") return '<span class="badge b-wait">Pendiente de revisión</span>';
+  if (st === "correccion") return '<span class="badge b-wait">Corrección pedida</span>';
+  if (st === "rechazado") return '<span class="badge b-bad">Rechazado</span>';
+  if (st === "suspendido") return '<span class="badge b-bad">Suspendido</span>';
+  return '<span class="badge b-none">Sin verificar</span>';
+}
+function renderHome() {
+  const st = statusOf(), who = (profile && profile.name) || me.name || me.email;
+  let h = '<div class="card"><b>' + esc(who) + '</b><div class="mu">' + esc(me.email) + '</div>' + badge(st);
+  if (st === "none") h += '<p>Para publicar y contactar a otros criadores, verifica tu identidad con tu selfie y tu DNI.</p>';
+  if (st === "pendiente") h += '<p>Recibimos tu solicitud. El administrador la revisará y te avisaremos aquí el resultado.</p>';
+  if (st === "correccion") h += '<p><b>El administrador pidió una corrección:</b></p><p>' + esc(profile.note || "Vuelve a enviar tus fotos.") + '</p>';
+  if (st === "rechazado") h += '<p>Tu solicitud fue rechazada.' + (profile.note ? ' Motivo: ' + esc(profile.note) : '') + '</p>';
+  if (st === "suspendido") h += '<p>Tu cuenta está suspendida temporalmente.' + (profile.note ? ' ' + esc(profile.note) : '') + '</p>';
+  if (st === "verificado") h += '<p>Tu cuenta está verificada. Pronto podrás publicar ejemplares y productos.</p>';
+  h += '<div class="st"><i class="dot ' + (dbErr ? "bad" : "ok") + '"></i><span>' + (dbErr ? esc(dbErr) : "Base de datos conectada") + '</span></div></div>';
+  if (st === "none" || st === "correccion") h += '<button class="btn" id="hStart" type="button">' + (st === "none" ? "Verificar mi identidad" : "Enviar de nuevo mis datos") + '</button>';
+  if (isAdmin) h += '<button class="btn sec" id="hAdmin" type="button">Panel de administración</button>';
+  h += '<p class="fine" style="margin-top:18px">Mi ID de usuario: <span id="myId" style="user-select:all">' + esc(me.uid) + '</span></p>';
+  $("hBody").innerHTML = h;
+  if ($("hStart")) $("hStart").onclick = startWizard;
+  if ($("hAdmin")) $("hAdmin").onclick = openAdmin;
+}
+
+/* ---------- cámara ---------- */
+let stream = null, camResolve = null;
+function stopCam() { if (stream) { stream.getTracks().forEach((t) => t.stop()); stream = null; } $("camVid").srcObject = null; }
+function compress(src, maxSide, maxChars) {
+  return new Promise((res, rej) => {
+    const im = new Image();
+    im.onload = () => {
+      let side = maxSide, q = 0.72, out = "";
+      for (let i = 0; i < 8; i++) {
+        const r = Math.min(1, side / Math.max(im.width, im.height)), c = document.createElement("canvas");
+        c.width = Math.round(im.width * r); c.height = Math.round(im.height * r);
+        c.getContext("2d").drawImage(im, 0, 0, c.width, c.height);
+        out = c.toDataURL("image/jpeg", q);
+        if (out.length <= maxChars) return res(out);
+        side = Math.round(side * 0.85); q = Math.max(0.5, q - 0.05);
+      }
+      rej(new Error("size"));
+    };
+    im.onerror = rej; im.src = src;
+  });
+}
+function takePhoto(kind) { // kind: selfie | front | back
+  return new Promise(async (resolve) => {
+    camResolve = resolve;
+    const face = kind === "selfie";
+    $("camCap").textContent = kind === "selfie" ? "Selfie: rostro dentro del óvalo" : kind === "front" ? "DNI: cara delantera" : "DNI: cara posterior";
+    $("camFrame").className = "frame " + (face ? "face" : "id");
+    $("camErr").hidden = true; $("camSnap").disabled = false; $("vCam").hidden = false;
+    try {
+      stream = await navigator.mediaDevices.getUserMedia({ video: { facingMode: face ? "user" : { ideal: "environment" }, width: { ideal: 1600 } }, audio: false });
+      $("camVid").srcObject = stream; $("camVid").style.transform = face ? "scaleX(-1)" : "none";
+      await $("camVid").play().catch(() => {});
+    } catch (e) {
+      $("camErr").hidden = false; $("camSnap").disabled = true;
+      $("camErr").innerHTML = "No se pudo abrir la cámara.<br>Permite el acceso a la cámara en tu navegador y vuelve a intentar, o usa el botón de abajo.<br><br><button class='btn sec sm' id='camAlt' type='button'>Abrir la cámara del teléfono</button>";
+      $("camAlt").onclick = () => { $("camFile").setAttribute("capture", face ? "user" : "environment"); $("camFile").click(); };
+    }
+  });
+}
+function endCam(val) { stopCam(); $("vCam").hidden = true; const r = camResolve; camResolve = null; if (r) r(val || null); }
+$("camCancel").onclick = () => endCam(null);
+$("camSnap").onclick = async () => {
+  const v = $("camVid"); if (!v.videoWidth) return;
+  const c = document.createElement("canvas"); c.width = v.videoWidth; c.height = v.videoHeight;
+  c.getContext("2d").drawImage(v, 0, 0);
+  const kind = $("camFrame").classList.contains("face") ? "selfie" : "doc";
+  try { endCam(await compress(c.toDataURL("image/jpeg", 0.9), kind === "selfie" ? 640 : 1100, kind === "selfie" ? 140000 : 300000)); } catch (e) { endCam(null); }
+};
+$("camFile").onchange = (e) => {
+  const f = e.target.files[0]; e.target.value = ""; if (!f) return;
+  const fr = new FileReader(), kind = $("camFrame").classList.contains("face") ? "selfie" : "doc";
+  fr.onload = async () => { try { endCam(await compress(fr.result, kind === "selfie" ? 640 : 1100, kind === "selfie" ? 140000 : 300000)); } catch (x) { endCam(null); } };
+  fr.readAsDataURL(f);
+};
+
+/* ---------- asistente de verificación ---------- */
+const W = { step: 0, c1: false, c2: false, adult: false, name: "", dni: "", phone: "", city: "", selfie: "", front: "", back: "", busy: false, msg: "" };
+const STEPS = ["consent", "datos", "selfie", "front", "back", "enviar"];
+function startWizard() {
+  Object.assign(W, { step: 0, c1: false, c2: false, adult: false, selfie: "", front: "", back: "", busy: false, msg: "" });
+  W.name = (profile && profile.name) || me.name || ""; W.dni = (profile && profile.dni) || ""; W.phone = (profile && profile.phone) || ""; W.city = (profile && profile.city) || "";
+  view = "wizard"; renderWizard(); show("vWizard");
+}
+function stepsBar() { $("wzSteps").innerHTML = STEPS.map((s, i) => '<i class="' + (i <= W.step ? "on" : "") + '"></i>').join(""); }
+function photoBlock(kind, title, tips) {
+  const img = W[kind];
+  return '<h2>' + title + '</h2><div class="shotbox' + (kind === "selfie" ? "" : " doc") + '">' + (img ? '<img src="' + img + '" alt="">' : "Aún no hay foto") + '</div>' +
+    '<ul class="tips">' + tips.map((t) => "<li>" + t + "</li>").join("") + '</ul>' +
+    '<button class="btn" data-act="shot" data-k="' + kind + '" type="button">' + (img ? "Tomar otra vez" : "Abrir cámara") + '</button>' +
+    (img ? '<button class="btn sec" data-act="next" type="button">Continuar</button>' : "") + '<div class="msg err">' + esc(W.msg) + '</div>';
+}
+function renderWizard() {
+  stepsBar(); const s = STEPS[W.step]; let h = "";
+  if (s === "consent") {
+    h = '<h2>Consentimiento</h2><div class="legal"><p><b>NEYTUS Corporation</b>, titular de KELSO, tratará tus datos personales (nombre, DNI, celular, ciudad) y tus fotografías (rostro y DNI) <b>solo para verificar tu identidad</b> y permitir que publiques en la red.</p>' +
+      '<p>Tu rostro y tu DNI son datos sensibles. Tus fotografías las ve únicamente el administrador y se <b>borran al decidir tu solicitud</b>; se conservan tu número de DNI y el resultado. Nada de esto se vende ni se publica.</p>' +
+      '<p>Puedes pedir acceso, rectificación, cancelación u oposición sobre tus datos escribiendo al administrador. La política de privacidad completa se publicará antes del lanzamiento al público.</p></div>' +
+      '<label class="chk"><input type="checkbox" id="c1"' + (W.c1 ? " checked" : "") + '><span>Autorizo el tratamiento de mis datos personales para verificar mi identidad.</span></label>' +
+      '<label class="chk"><input type="checkbox" id="c2"' + (W.c2 ? " checked" : "") + '><span>Autorizo el tratamiento de mi rostro y de mi DNI (datos sensibles) para esa misma finalidad.</span></label>' +
+      '<label class="chk"><input type="checkbox" id="c3"' + (W.adult ? " checked" : "") + '><span>Declaro que soy mayor de 18 años.</span></label>' +
+      '<button class="btn" data-act="next" type="button"' + (W.c1 && W.c2 && W.adult ? "" : " disabled") + '>Acepto y continúo</button>';
+  } else if (s === "datos") {
+    h = '<h2>Tus datos</h2><label for="fName">Nombre completo (como en tu DNI)</label><input id="fName" type="text" maxlength="80" autocomplete="name" value="' + esc(W.name) + '">' +
+      '<label for="fDni">Número de DNI</label><input id="fDni" type="tel" inputmode="numeric" maxlength="8" value="' + esc(W.dni) + '">' +
+      '<label for="fPhone">Celular (WhatsApp)</label><input id="fPhone" type="tel" inputmode="numeric" maxlength="9" placeholder="9XX XXX XXX" value="' + esc(W.phone) + '">' +
+      '<label for="fCity">Ciudad</label><input id="fCity" type="text" maxlength="40" value="' + esc(W.city) + '">' +
+      '<div class="msg err">' + esc(W.msg) + '</div><button class="btn" data-act="datos" type="button">Continuar</button>';
+  } else if (s === "selfie") h = photoBlock("selfie", "Paso 1 · Selfie", ["Rostro completo y visible", "Buena iluminación", "Sin filtros ni lentes oscuros"]);
+  else if (s === "front") h = photoBlock("front", "Paso 2 · DNI delantero", ["Documento completo dentro del marco", "Que se lea todo el texto", "Sin reflejos ni dedos encima"]);
+  else if (s === "back") h = photoBlock("back", "Paso 2 · DNI posterior", ["Documento completo dentro del marco", "Que se lea todo el texto", "Sin reflejos ni dedos encima"]);
+  else {
+    h = '<h2>Paso 3 · Enviar solicitud</h2><div class="card"><b>' + esc(W.name) + '</b><div class="mu">DNI ' + esc(W.dni) + ' · ' + esc(W.phone) + ' · ' + esc(W.city) + '</div></div>' +
+      '<div class="row" style="margin-top:10px"><img class="shot" src="' + W.selfie + '" alt="Selfie"><img class="shot" src="' + W.front + '" alt="DNI delante"><img class="shot" src="' + W.back + '" alt="DNI atrás"></div>' +
+      '<p class="fine" style="text-align:left">Revisa que las tres fotos se vean bien. Después de enviar no podrás verlas ni cambiarlas, salvo que el administrador te pida una corrección.</p>' +
+      '<div class="msg ' + (W.busy ? "ok" : "err") + '" id="sendMsg">' + esc(W.msg) + '</div><button class="btn" data-act="send" type="button"' + (W.busy ? " disabled" : "") + '>Enviar para verificación</button>';
   }
+  $("wzBody").innerHTML = h;
+  if ($("c1")) { $("c1").onchange = (e) => { W.c1 = e.target.checked; sync(); }; $("c2").onchange = (e) => { W.c2 = e.target.checked; sync(); }; $("c3").onchange = (e) => { W.adult = e.target.checked; sync(); }; }
+}
+function sync() { const b = document.querySelector('#wzBody [data-act="next"]'); if (b) b.disabled = !(W.c1 && W.c2 && W.adult); }
+$("wzBack").onclick = () => { if (W.busy) return; W.msg = ""; if (W.step === 0) { view = "home"; renderHome(); show("vHome"); } else { W.step--; renderWizard(); } };
+$("wzBody").addEventListener("click", async (e) => {
+  const b = e.target.closest("[data-act]"); if (!b || W.busy) return;
+  const a = b.getAttribute("data-act"); W.msg = "";
+  if (a === "next") { W.step++; renderWizard(); window.scrollTo(0, 0); }
+  else if (a === "datos") {
+    W.name = $("fName").value.trim(); W.dni = $("fDni").value.replace(/\D/g, ""); W.phone = $("fPhone").value.replace(/\D/g, ""); W.city = $("fCity").value.trim();
+    if (W.name.length < 5 || W.name.indexOf(" ") < 0) W.msg = "Escribe tu nombre completo.";
+    else if (!/^\d{8}$/.test(W.dni)) W.msg = "El DNI tiene 8 dígitos.";
+    else if (!/^9\d{8}$/.test(W.phone)) W.msg = "El celular tiene 9 dígitos y empieza en 9.";
+    else if (W.city.length < 2) W.msg = "Escribe tu ciudad.";
+    if (W.msg) { renderWizard(); return; }
+    W.step++; renderWizard(); window.scrollTo(0, 0);
+  } else if (a === "shot") {
+    const k = b.getAttribute("data-k"), img = await takePhoto(k);
+    if (img) W[k] = img; else W.msg = "No se tomó la foto.";
+    renderWizard();
+  } else if (a === "send") {
+    W.busy = true; W.msg = "Enviando… no cierres la página."; renderWizard();
+    try {
+      for (const k of [["selfie", W.selfie], ["front", W.front], ["back", W.back]]) await setDoc(doc(db, "kyc", me.uid, "imgs", k[0]), { data: k[1], at: Date.now() });
+      const base = { name: W.name, dni: W.dni, phone: W.phone, city: W.city, email: me.email, provider: me.provider, status: "pendiente", submittedAt: serverTimestamp(), consentAt: serverTimestamp(), consentVersion: CONSENT_VERSION };
+      if (!profile) await setDoc(doc(db, "users", me.uid), Object.assign({ createdAt: serverTimestamp() }, base));
+      else await updateDoc(doc(db, "users", me.uid), base);
+      W.busy = false; W.selfie = W.front = W.back = ""; view = "home"; renderHome(); show("vHome");
+    } catch (er) { W.busy = false; W.msg = "No se pudo enviar. " + errText(er); renderWizard(); }
+  }
+});
+
+/* ---------- panel del administrador ---------- */
+let adTab = "p", adDetail = null;
+async function openAdmin() { view = "admin"; adDetail = null; show("vAdmin"); await loadAdmin(); }
+$("adBack").onclick = () => { if (adDetail) { adDetail = null; loadAdmin(); } else { view = "home"; renderHome(); show("vHome"); } };
+$("sgP").onclick = () => { adTab = "p"; adDetail = null; loadAdmin(); };
+$("sgA").onclick = () => { adTab = "a"; adDetail = null; loadAdmin(); };
+async function loadAdmin() {
+  $("sgP").setAttribute("aria-pressed", adTab === "p"); $("sgA").setAttribute("aria-pressed", adTab === "a");
+  $("adBody").innerHTML = '<p class="fine">Cargando…</p>';
+  try {
+    const q = adTab === "p" ? query(collection(db, "users"), where("status", "==", "pendiente")) : collection(db, "users");
+    const snap = await getDocs(q), list = [];
+    snap.forEach((d) => list.push(Object.assign({ id: d.id }, d.data())));
+    list.sort((a, b) => String(a.name || "").localeCompare(String(b.name || "")));
+    if (!list.length) { $("adBody").innerHTML = '<div class="card"><p>' + (adTab === "p" ? "No hay solicitudes pendientes." : "Todavía no hay usuarios.") + '</p></div>'; return; }
+    $("adBody").innerHTML = list.map((u) => '<div class="item"><b>' + esc(u.name || "Sin nombre") + '</b><div class="mu">' + esc(u.city || "") + (u.phone ? " · " + esc(u.phone) : "") + (u.submittedAt ? " · " + esc(fmtDate(u.submittedAt)) : "") + '</div>' + badge(u.status) + '<div><button class="btn sm" data-open="' + esc(u.id) + '" type="button">Abrir</button></div></div>').join("");
+  } catch (e) { $("adBody").innerHTML = '<div class="msg err">No se pudo leer. ' + esc(errText(e)) + '</div>'; }
+}
+async function openUser(uid) {
+  $("adBody").innerHTML = '<p class="fine">Cargando…</p>';
+  try {
+    const us = await getDoc(doc(db, "users", uid)); if (!us.exists()) { loadAdmin(); return; }
+    const u = us.data(); adDetail = uid; let imgs = {};
+    if (u.status === "pendiente") {
+      const s = await getDocs(collection(db, "kyc", uid, "imgs")); s.forEach((d) => { imgs[d.id] = d.data().data; });
+      try { await addDoc(collection(db, "adminLog"), { admin: me.uid, action: "ver_documentos", target: uid, at: serverTimestamp() }); } catch (e) {}
+    }
+    let h = '<div class="card"><b>' + esc(u.name) + '</b><div class="mu">DNI ' + esc(u.dni || "—") + '</div><div class="mu">Celular ' + esc(u.phone || "—") + ' · ' + esc(u.city || "") + '</div><div class="mu">' + esc(u.email || "") + '</div>' +
+      (u.submittedAt ? '<div class="mu">Solicitud: ' + esc(fmtDate(u.submittedAt)) + '</div>' : "") + badge(u.status) + (u.note ? '<p class="mu">Nota: ' + esc(u.note) + '</p>' : "") + '</div>';
+    if (u.status === "pendiente") {
+      h += '<h3>Documentos</h3><div class="imgs">' + ["selfie", "front", "back"].map((k) => imgs[k] ? '<div><div class="mu" style="text-align:left">' + (k === "selfie" ? "Selfie" : k === "front" ? "DNI delante" : "DNI atrás") + '</div><img src="' + imgs[k] + '" alt=""></div>' : "").join("") + '</div>';
+      if (!imgs.selfie) h += '<div class="msg err">No hay fotos guardadas para esta solicitud.</div>';
+    }
+    h += '<h3>Decisión</h3><label for="dNote">Nota para el usuario (opcional)</label><textarea id="dNote" maxlength="300"></textarea><div class="msg err" id="dMsg"></div><div>';
+    if (u.status === "pendiente" || u.status === "correccion" || u.status === "rechazado") h += '<button class="btn sm green" data-dec="verificado" type="button">Aprobar</button>';
+    if (u.status === "pendiente") h += '<button class="btn sm red" data-dec="rechazado" type="button">Rechazar</button><button class="btn sm sec" data-dec="correccion" type="button">Pedir corrección</button>';
+    if (u.status === "verificado") h += '<button class="btn sm sec" data-dec="suspendido" type="button">Suspender</button><button class="btn sm sec" data-dec="pendiente_quitar" type="button">Quitar verificación</button>';
+    if (u.status === "suspendido") h += '<button class="btn sm green" data-dec="verificado" type="button">Reactivar</button>';
+    h += '</div>';
+    $("adBody").innerHTML = h;
+  } catch (e) { $("adBody").innerHTML = '<div class="msg err">No se pudo abrir. ' + esc(errText(e)) + '</div>'; }
+}
+$("adBody").addEventListener("click", async (e) => {
+  const o = e.target.closest("[data-open]"); if (o) { openUser(o.getAttribute("data-open")); return; }
+  const d = e.target.closest("[data-dec]"); if (!d || !adDetail) return;
+  let st = d.getAttribute("data-dec"); const note = $("dNote") ? $("dNote").value.trim() : "";
+  if (st === "pendiente_quitar") st = "correccion";
+  if ((st === "rechazado" || st === "correccion" || st === "suspendido") && !note) { $("dMsg").textContent = "Escribe una nota para el usuario."; return; }
+  document.querySelectorAll("#adBody [data-dec]").forEach((b) => { b.disabled = true; });
+  try {
+    await updateDoc(doc(db, "users", adDetail), { status: st, note: st === "verificado" ? "" : note, reviewedAt: serverTimestamp(), reviewedBy: me.uid });
+    try { await addDoc(collection(db, "adminLog"), { admin: me.uid, action: st, target: adDetail, at: serverTimestamp() }); } catch (x) {}
+    if (st === "verificado" || st === "rechazado" || st === "correccion") {
+      for (const k of ["selfie", "front", "back"]) { try { await deleteDoc(doc(db, "kyc", adDetail, "imgs", k)); } catch (x) {} }
+    }
+    adDetail = null; await loadAdmin();
+  } catch (er) { $("dMsg").textContent = "No se pudo guardar. " + errText(er); document.querySelectorAll("#adBody [data-dec]").forEach((b) => { b.disabled = false; }); }
 });
 </script></body></html>
