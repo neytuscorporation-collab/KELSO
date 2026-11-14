@@ -217,6 +217,20 @@ input:focus,textarea:focus{outline:2px solid #6f8eae}
 .pact.on{color:#6aa8ff;border-color:#2c5da8}.pact.on svg{fill:#6aa8ff}
 .pact.green{background:#17382a;border-color:#2a6a4a}
 .prep{width:100%;margin-top:9px}.prep svg{stroke:var(--mu);fill:none}
+
+.icon-btn{position:relative}nav#nav button{position:relative}
+.nbadge{position:absolute;top:-3px;right:-3px;min-width:17px;height:17px;border-radius:9px;background:var(--red);color:#fff;font:700 10px/17px var(--h);text-align:center;padding:0 4px}
+nav#nav .nbadge{top:0;right:calc(50% - 24px)}
+.chat-row{display:block;position:relative;width:100%;text-align:left;background:var(--s);border:1px solid var(--line);border-radius:12px;color:var(--fg);padding:12px 30px 12px 14px;margin:0 0 8px}
+.chat-nm{display:block;font:700 14px var(--h)}.chat-tx{display:block;color:var(--mu);font-size:13px;margin-top:3px;overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
+.chat-dot{position:absolute;right:14px;top:50%;width:10px;height:10px;margin-top:-5px;border-radius:50%;background:var(--gold)}
+.thread{max-height:calc(100vh - 330px);min-height:140px;overflow-y:auto;padding:6px 2px;margin:8px 0}
+.bub{max-width:80%;padding:8px 12px;border-radius:14px;margin:5px 0;font-size:14px;line-height:1.35;overflow-wrap:anywhere;white-space:pre-wrap}
+.bub small{display:block;font-size:10px;opacity:.65;margin-top:3px}
+.bub.me{margin-left:auto;background:var(--gold);color:#0b0f14}.bub.th{background:var(--s2);color:var(--fg)}
+.chat-in{display:flex;gap:8px;align-items:flex-end}.chat-in textarea{flex:1;margin:0;min-height:44px}.chat-in .btn{width:auto;margin:0;padding:12px 16px}
+.nt-row{display:block;width:100%;text-align:left;background:var(--s);border:1px solid var(--line);border-radius:12px;color:var(--fg);padding:12px 14px;margin:0 0 8px;font-size:14px}
+.nt-row small{display:block;color:var(--mu);font-size:11px;margin-top:4px}.nt-row.unread{border-color:var(--gold)}
 </style></head><body><div class="w">
 
 <section id="vWelcome" class="hero" hidden>
@@ -253,7 +267,7 @@ input:focus,textarea:focus{outline:2px solid #6f8eae}
 <section id="vAdmin" class="page" hidden>
  <button class="back" id="adBack" type="button">&lsaquo; Volver</button>
  <h2>Panel de administraci&oacute;n</h2>
- <div class="seg"><button id="sgP" type="button" aria-pressed="true">Pendientes</button><button id="sgA" type="button" aria-pressed="false">Todos</button><button id="sgR" type="button" aria-pressed="false">Reportes</button></div>
+ <div class="seg"><button id="sgP" type="button" aria-pressed="true">Pendientes</button><button id="sgA" type="button" aria-pressed="false">Todos</button><button id="sgR" type="button" aria-pressed="false">Reportes</button><button id="sgM" type="button" aria-pressed="false">ARCO</button></div>
  <div id="adBody"></div>
 </section>
 
@@ -262,6 +276,7 @@ input:focus,textarea:focus{outline:2px solid #6f8eae}
   <div class="topbrand"><img src="data:image/webp;base64,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" alt="Gallo KELSO"><span>KELSO</span></div>
   <div class="top-actions">
    <button class="icon-btn" id="topSearchBtn" type="button" aria-label="Buscar"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><circle cx="10.8" cy="10.8" r="7.2"/><path d="m16.2 16.2 5 5"/></svg></button>
+   <button class="icon-btn" id="topBellBtn" type="button" aria-label="Notificaciones"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M6 17V11a6 6 0 0 1 12 0v6l2 2H4z"/><path d="M10 21h4"/></svg><span class="nbadge" id="bellBadge" hidden></span></button>
    <button class="icon-btn" id="topProfileBtn" type="button" aria-label="Perfil"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><circle cx="12" cy="8" r="4"/><path d="M4 21c1-5 5-7 8-7s7 2 8 7"/></svg></button>
   </div>
  </header>
@@ -279,6 +294,7 @@ input:focus,textarea:focus{outline:2px solid #6f8eae}
  <button type="button" data-t="in"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M3 11l9-8 9 8"/><path d="M5 10v10h14V10"/></svg>Inicio</button>
  <button type="button" data-t="ej"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M20 4c-6 0-11 3-12 9l-4 5h6l2 2c6-1 8-8 8-16z"/><path d="M9 15l5-5"/></svg>Ejemplares</button>
  <button type="button" data-t="mk"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M3 4h2l2.5 11h10L20 7H6"/><circle cx="9" cy="19" r="1.5"/><circle cx="17" cy="19" r="1.5"/></svg>Mercado</button>
+ <button type="button" data-t="ms"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M4 5h16v11H9l-5 4z"/></svg>Mensajes<span class="nbadge" id="navMsgBadge" hidden></span></button>
  <button type="button" data-t="pf"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="8" r="4"/><path d="M4 21c1-5 5-7 8-7s7 2 8 7"/></svg>Perfil</button>
 </nav>
 
@@ -293,7 +309,7 @@ input:focus,textarea:focus{outline:2px solid #6f8eae}
 
 <script type="module">
 import { initializeApp } from "https://www.gstatic.com/firebasejs/10.12.2/firebase-app.js";
-import { getAuth, GoogleAuthProvider, signInWithPopup, signInWithRedirect, getRedirectResult, onAuthStateChanged, signOut } from "https://www.gstatic.com/firebasejs/10.12.2/firebase-auth.js";
+import { getAuth, GoogleAuthProvider, signInWithPopup, signInWithRedirect, getRedirectResult, onAuthStateChanged, signOut, deleteUser, reauthenticateWithPopup } from "https://www.gstatic.com/firebasejs/10.12.2/firebase-auth.js";
 import { getFirestore, doc, getDoc, setDoc, updateDoc, deleteDoc, collection, getDocs, query, where, orderBy, limit, onSnapshot, addDoc, serverTimestamp, deleteField, writeBatch, increment } from "https://www.gstatic.com/firebasejs/10.12.2/firebase-firestore.js";
 
 /* Configuración de Firebase (proyecto kelso-62f12). Estos datos no son secretos. */
@@ -346,16 +362,18 @@ getRedirectResult(auth).catch((e) => { $("wMsg").textContent = errText(e); });
 $("hOut").onclick = () => signOut(auth);
 
 /* ---------- sesión y perfil ---------- */
-let me = null, profile = null, isAdmin = false, unsub = null, dbErr = "", view = "load";
+let me = null, profile = null, isAdmin = false, unsub = null, dbErr = "", view = "load", closing = false;
+let chats = [], unsubChats = null, notifs = [], unsubNotifs = null, chatOpen = null, unsubMsgs = null, chatMsgs = [], markingSeen = "", arcoPend = 0, arcoToast = false, adArco = {};
 onAuthStateChanged(auth, async (u) => {
   if (unsub) { unsub(); unsub = null; }
-  profile = null; isAdmin = false; dbErr = ""; ownPublicProfileReady = false;
+  profile = null; isAdmin = false; dbErr = ""; ownPublicProfileReady = false; stopSocial(); arcoPend = 0; arcoToast = false;
   cmOpen.clear(); [cmData, cmDraft, phoneCache].forEach((o) => Object.keys(o).forEach((k) => delete o[k])); phoneMig.clear(); pend = null; ownPub = null; myLikes.clear(); likesLoaded = false; Object.keys(pubCache).forEach((k) => delete pubCache[k]); pubPending.clear(); menuFor = null;
   if (!u) { me = null; stopPosts(); tab = "in"; view = "welcome"; show("vWelcome"); return; }
   me = { uid: u.uid, name: u.displayName || "", email: u.email || "", photoURL: u.photoURL || "", provider: (u.providerData[0] && u.providerData[0].providerId) || "google.com" };
   view = "load"; show("vLoad");
   try { isAdmin = (await getDoc(doc(db, "admins", u.uid))).exists(); } catch (e) { isAdmin = false; }
   unsub = onSnapshot(doc(db, "users", u.uid), async (snap) => {
+    if (closing) return;
     profile = snap.exists() ? snap.data() : null; dbErr = "";
     if ((!profile || !profile.status) && isAdmin) {
       try { await setDoc(doc(db, "users", u.uid), { name: me.name, email: me.email, provider: me.provider, status: "verificado", dni: "", phone: "", city: "", createdAt: serverTimestamp() }); } catch (e) { dbErr = errText(e); }
@@ -473,7 +491,7 @@ function renderProfilePage(uid, data, userPosts, own, reviews) {
     (bio ? '<div class="profile-bio">' + esc(bio) + '</div>' : (own ? '<div class="profile-bio">Añade una presentación para que la comunidad conozca más sobre ti.</div>' : '')) +
     '<div class="profile-actions">' +
     (own ? '<button class="btn sec" id="editProfileBtn" type="button">Editar perfil</button>' :
-      (isVer() ? '<button class="btn" data-wa="' + esc(uid) + '" data-wn="' + esc(name) + '" type="button">Enviar mensaje</button>' :
+      (isVer() ? '<button class="btn" data-chat="' + esc(uid) + '" data-cn="' + esc(name) + '" type="button">Mensaje en KELSO</button><button class="btn sec" data-wa="' + esc(uid) + '" data-wn="' + esc(name) + '" type="button">WhatsApp</button>' :
       '<button class="btn sec" data-verify="1" type="button">Verifica tu identidad para contactar</button>')) +
     '</div></div>' +
     '<div class="profile-stats"><div class="profile-stat"><b>' + list.length + '</b><span>PUBLICACIONES</span></div><div class="profile-stat"><b>' + ejCount + '</b><span>EJEMPLARES</span></div><div class="profile-stat"><b>' + productCount + '</b><span>PRODUCTOS</span></div></div>' +
@@ -494,7 +512,8 @@ function renderProfilePage(uid, data, userPosts, own, reviews) {
   if (!list.length) h += '<div class="profile-empty">Este usuario todavía no tiene publicaciones.</div>';
   else h += list.map(cardHtml).join('');
   h += '</section><p id="profileDataError" class="msg err"></p>';
-  if (own && isAdmin) h += '<button class="btn" id="hAdmin" type="button">Panel de administración</button>';
+  if (own) h += legalBlock();
+  if (own && isAdmin) h += '<button class="btn" id="hAdmin" type="button">' + adminLabel() + '</button>';
   $("hBody").innerHTML = h;
   if (own && isAdmin && $("hAdmin")) $("hAdmin").onclick = openAdmin;
   if (!own && $("profileBack")) $("profileBack").onclick = () => { profileViewUid = null; tab = "in"; enterHome(); };
@@ -511,6 +530,7 @@ function renderProfilePage(uid, data, userPosts, own, reviews) {
         stars, comment, updatedAt: serverTimestamp(),
         createdAt: (revs.find(r => r.reviewerUid === me.uid) || {}).createdAt || serverTimestamp()
       });
+      notify(uid, "review", ((profile && profile.name) || me.name || "Alguien") + " dejó una valoración en tu perfil.");
       await openPublicProfile(uid);
     } catch (e) { btn.disabled = false; msg.textContent = errText(e) + " Revisa las reglas de Firestore para la colección reviews."; }
   };
@@ -597,7 +617,8 @@ function renderHome() {
   if (st === "verificado") h += '<p>Tu cuenta está verificada. Ya puedes publicar y ver ejemplares y productos en las pestañas de abajo.</p>';
   h += '<div class="st"><i class="dot ' + (dbErr ? "bad" : "ok") + '"></i><span>' + (dbErr ? esc(dbErr) : "Base de datos conectada") + '</span></div></div>';
   if (st === "none" || st === "correccion") h += '<button class="btn" id="hStart" type="button">' + (st === "none" ? "Verificar mi identidad" : "Enviar de nuevo mis datos") + '</button>';
-  if (isAdmin) h += '<button class="btn sec" id="hAdmin" type="button">Panel de administración</button>';
+  if (isAdmin) h += '<button class="btn sec" id="hAdmin" type="button">' + adminLabel() + '</button>';
+  h += legalBlock();
   h += '<p class="fine" style="margin-top:18px">Mi ID de usuario: <span id="myId" style="user-select:all">' + esc(me.uid) + '</span></p>';
   $("hBody").innerHTML = h;
   if ($("hStart")) $("hStart").onclick = startWizard;
@@ -752,7 +773,7 @@ function startPosts() {
     const a = document.activeElement;
     if (a && a.hasAttribute && a.hasAttribute("data-cmin")) return;
     if (view === "home" && tab === "pf" && !profileViewUid) { if (isVer()) renderProfilePage(me.uid, profile, posts.filter(p => p.owner === me.uid), true); else renderHome(); }
-    else if (view === "home" && tab !== "pf") renderTab();
+    else if (view === "home" && tab !== "pf" && tab !== "ms" && tab !== "nt") renderTab();
   };
   unsubPosts = onSnapshot(query(collection(db, "posts"), orderBy("createdAt", "desc"), limit(120)),
     (s) => {
@@ -764,10 +785,10 @@ function startPosts() {
 function stopPosts() { if (unsubPosts) { unsubPosts(); unsubPosts = null; } posts = []; postsLoaded = false; }
 function enterHome() {
   view = "home"; if (isVer()) ensureOwnPublicProfile();
-  if (canBrowse()) startPosts(); else { stopPosts(); tab = "pf"; }
+  if (canBrowse()) { startPosts(); startSocial(); } else { stopPosts(); stopSocial(); tab = "pf"; }
   if (tab === "pf") { profileViewUid = null; if (isVer()) renderProfilePage(me.uid, profile, posts.filter(p => p.owner === me.uid), true); else renderHome(); show("vHome"); } else { profileViewUid = null; renderTab(); show("vTabs"); }
 }
-document.querySelectorAll("#nav button").forEach((b) => { b.onclick = () => { profileViewUid = null; tab = b.getAttribute("data-t"); q = ""; pend = null; $("tMsg").textContent = ""; enterHome(); }; });
+document.querySelectorAll("#nav button").forEach((b) => { b.onclick = () => { profileViewUid = null; tab = b.getAttribute("data-t"); q = ""; pend = null; leaveChat(); $("tMsg").textContent = ""; enterHome(); }; });
 if ($("topProfileBtn")) $("topProfileBtn").onclick = () => { profileViewUid = null; tab = "pf"; enterHome(); };
 if ($("topSearchBtn")) $("topSearchBtn").onclick = () => { $("topSearch").classList.toggle("open"); if ($("topSearch").classList.contains("open")) $("globalSearch").focus(); };
 if ($("globalSearch")) {
@@ -923,6 +944,8 @@ function renderList() {
 function renderTab() {
   paintNav();
   if ($("globalSearch") && document.activeElement !== $("globalSearch")) $("globalSearch").value = q;
+  if (tab === "ms") { renderMsgs(); return; }
+  if (tab === "nt") { renderNotifs(); return; }
   if (tab === "in") { $("tBody").innerHTML = inicioHtml(); return; }
   const ej = tab === "ej";
   let h = "<h2>" + (ej ? "Ejemplares" : "Mercado") + "</h2>" +
@@ -944,6 +967,8 @@ async function onFeedClick(ev, inProfile) {
   const profileBtn = ev.target.closest("[data-user]");
   if (profileBtn) { const uid = profileBtn.getAttribute("data-user"); if (uid) openPublicProfile(uid); return; }
   const b = ev.target.closest("button"); if (!b) return;
+  if (b.hasAttribute("data-chat")) { openChat(b.getAttribute("data-chat"), b.getAttribute("data-cn")); return; }
+  if (b.hasAttribute("data-go")) { const g = b.getAttribute("data-go"); if (g === "arco") openArco(); else if (g === "close") openClose(); return; }
   if (b.hasAttribute("data-menu")) { const id = b.getAttribute("data-menu"); menuFor = menuFor === id ? null : id; redrawFeed(); return; }
   if (menuFor && !b.closest(".pmenu")) menuFor = null;
   if (b.hasAttribute("data-like")) {
@@ -955,6 +980,7 @@ async function onFeedClick(ev, inProfile) {
       const batch = writeBatch(db), lref = doc(db, "userLikes", me.uid, "posts", id), pref = doc(db, "posts", id);
       if (was) { batch.delete(lref); batch.update(pref, { likeCount: increment(-1) }); } else { batch.set(lref, { at: serverTimestamp() }); batch.update(pref, { likeCount: increment(1) }); }
       await batch.commit();
+      if (!was) notify(p.owner, "like", ((profile && profile.name) || me.name || "Alguien") + " marcó Me gusta en tu publicación.", id);
     } catch (e) { if (was) myLikes.add(id); else myLikes.delete(id); p.likeCount = prev; redrawFeed(); toast(errText(e)); }
     return;
   }
@@ -973,6 +999,7 @@ async function onFeedClick(ev, inProfile) {
       batch.set(cref, { author: me.uid, authorName: (profile && profile.name) || me.name || "", text: text.slice(0, 300), createdAt: serverTimestamp() });
       batch.update(doc(db, "posts", id), { commentCount: increment(1), lastCommentId: cref.id });
       await batch.commit();
+      { const po = posts.find((x) => x.id === id) || viewedProfilePosts.find((x) => x.id === id); if (po) notify(po.owner, "comment", ((profile && profile.name) || me.name || "Alguien") + " comentó tu publicación.", id); }
       const pp = viewedProfilePosts.find((x) => x.id === id); if (pp) pp.commentCount = (Number(pp.commentCount) || 0) + 1;
       cmDraft[id] = ""; await loadComments(id);
     } catch (e) { cmData[id] = Object.assign(cmData[id] || { list: [] }, { msg: "No se pudo comentar. " + errText(e) }); redrawFeed(); }
@@ -1077,7 +1104,7 @@ function openForm(kind) {
   };
   $("fSend").onclick = sendPost;
 }
-$("fmBack").onclick = () => { if (fBusy) return; if (fkind === "chooser") { tab = "in"; enterHome(); return; } tab = "in"; enterHome(); };
+$("fmBack").onclick = () => { if (fBusy) return; if (fkind === "arco" || fkind === "close") { if (closing) return; tab = "pf"; profileViewUid = null; enterHome(); return; } if (fkind === "chooser") { tab = "in"; enterHome(); return; } tab = "in"; enterHome(); };
 // Las opciones del selector viven dentro de fmBody, no dentro de tBody.
 // Delegamos aquí sus clics para que cada opción abra el formulario correspondiente.
 $("fmBody").addEventListener("click", (ev) => {
@@ -1104,12 +1131,309 @@ async function sendPost() {
 }
 
 /* ---------- panel del administrador ---------- */
+/* ===== Fase 9: cerrar cuenta, ARCO, mensajes y notificaciones ===== */
+const ARCO_TYPES = { acceso: "Acceso", rectificacion: "Rectificación", cancelacion: "Cancelación", oposicion: "Oposición" };
+const ARCO_DAYS = { acceso: 20, rectificacion: 10, cancelacion: 10, oposicion: 10 };
+const tms = (t) => (t && t.toMillis ? t.toMillis() : 0);
+const lastMs = (c) => tms(c.lastAt) || Date.now();
+const fmtDay = (d) => d.toLocaleDateString("es-PE");
+function addBizDays(d, n) { const x = new Date(d.getTime()); while (n > 0) { x.setDate(x.getDate() + 1); const w = x.getDay(); if (w !== 0 && w !== 6) n--; } return x; }
+function dueDateOf(r) { const c = r.createdAt && r.createdAt.toDate ? r.createdAt.toDate() : new Date(); return addBizDays(c, ARCO_DAYS[r.type] || 10); }
+const onTabs = (t) => view === "home" && tab === t && !$("vTabs").hidden;
+function adminLabel() { return "Panel de administración" + (arcoPend ? " (" + arcoPend + " ARCO)" : ""); }
+function legalBlock() {
+  return '<section class="profile-section"><h3>Mis datos y mi cuenta</h3><div class="card"><p class="fine">Tienes derecho a acceder, rectificar, cancelar y oponerte al uso de tus datos personales.</p>' +
+    '<button class="btn sec" data-go="arco" type="button">Mis derechos sobre mis datos (ARCO)</button>' +
+    (isAdmin ? "" : '<button class="btn sec" data-go="close" type="button" style="color:var(--red)">Cerrar cuenta y eliminar mis datos</button>') + "</div></section>";
+}
+
+/* ---------- Notificaciones ---------- */
+function notify(to, type, text, postId) {
+  if (!to || !me || to === me.uid) return;
+  const data = { type, text: String(text).slice(0, 160), from: me.uid, fromName: ((profile && profile.name) || me.name || "").slice(0, 80), createdAt: serverTimestamp(), read: false };
+  if (postId) data.postId = postId;
+  const col = collection(db, "notifications", to, "items");
+  (type === "like" ? setDoc(doc(col, "like_" + postId + "_" + me.uid), data) : addDoc(col, data)).catch(() => {});
+}
+function setBadge(id, n) { const e = $(id); if (!e) return; e.hidden = !n; e.textContent = n > 9 ? "9+" : String(n); }
+function unreadChats() { return me ? chats.filter((c) => c.lastFrom && c.lastFrom !== me.uid && lastMs(c) > tms(c.seen && c.seen[me.uid])).length : 0; }
+function paintBadges() { setBadge("navMsgBadge", unreadChats()); setBadge("bellBadge", notifs.filter((n) => !n.read).length); }
+function stopSocial() {
+  [unsubChats, unsubNotifs, unsubMsgs].forEach((f) => { if (f) f(); });
+  unsubChats = unsubNotifs = unsubMsgs = null; chats = []; notifs = []; chatMsgs = []; chatOpen = null; markingSeen = "";
+  paintBadges();
+}
+function startSocial() {
+  if (unsubChats || !me || !canBrowse()) return;
+  const uid = me.uid;
+  unsubChats = onSnapshot(query(collection(db, "chats"), where("members", "array-contains", uid)), (s) => {
+    chats = s.docs.map((d) => Object.assign({ id: d.id }, d.data())).sort((a, b) => lastMs(b) - lastMs(a));
+    paintBadges();
+    if (chatOpen) { ensureMsgsSub(); markSeen(); }
+    if (onTabs("ms") && !chatOpen) renderMsgs();
+  }, () => {});
+  unsubNotifs = onSnapshot(query(collection(db, "notifications", uid, "items"), orderBy("createdAt", "desc"), limit(40)), (s) => {
+    notifs = s.docs.map((d) => Object.assign({ id: d.id }, d.data())); paintBadges();
+    if (onTabs("nt")) renderNotifs();
+  }, () => {});
+  if (isAdmin) refreshArcoCount();
+}
+async function refreshArcoCount() {
+  try {
+    const sn = await getDocs(query(collection(db, "arco"), where("status", "==", "recibida")));
+    arcoPend = sn.size;
+    if (arcoPend && !arcoToast) { arcoToast = true; toast("Tienes " + arcoPend + " solicitud(es) ARCO por responder."); }
+    if (!$("vHome").hidden) redrawFeed();
+  } catch (e) {}
+}
+function renderNotifs() {
+  paintNav();
+  const un = notifs.filter((n) => !n.read).length;
+  let h = "<h2>Notificaciones</h2>" + (un ? '<button class="btn sec sm" data-nall="1" type="button" style="margin-top:0">Marcar todas como leídas</button>' : "");
+  if (!notifs.length) h += '<div class="card"><p>Todavía no tienes notificaciones.</p></div>';
+  else h += notifs.map((n) => '<button class="nt-row' + (n.read ? "" : " unread") + '" data-nid="' + esc(n.id) + '" type="button"><span>' + esc(n.text) + "</span><small>" + esc(n.createdAt ? fmtDate(n.createdAt) : "") + "</small></button>").join("");
+  $("tBody").innerHTML = h;
+}
+$("topBellBtn").onclick = () => { profileViewUid = null; leaveChat(); tab = "nt"; q = ""; enterHome(); };
+
+/* ---------- Mensajes ---------- */
+function leaveChat() { if (unsubMsgs) { unsubMsgs(); unsubMsgs = null; } chatOpen = null; chatMsgs = []; }
+function openChat(uid, name) {
+  if (!isVer()) { toast("Verifica tu identidad para enviar mensajes."); return; }
+  if (!uid || uid === me.uid) return;
+  leaveChat();
+  chatOpen = { id: [me.uid, uid].sort().join("_"), uid, name: name || "Criador" };
+  profileViewUid = null; tab = "ms"; q = ""; pend = null; enterHome();
+}
+function ensureMsgsSub() {
+  if (unsubMsgs || !chatOpen || !chats.some((c) => c.id === chatOpen.id)) return;
+  unsubMsgs = onSnapshot(query(collection(db, "chats", chatOpen.id, "messages"), orderBy("createdAt"), limit(150)), (s) => {
+    chatMsgs = s.docs.map((d) => Object.assign({ id: d.id }, d.data())); paintThread(); markSeen();
+  }, (e) => toast(errText(e)));
+}
+function markSeen() {
+  if (!chatOpen || !onTabs("ms")) return;
+  const c = chats.find((x) => x.id === chatOpen.id); if (!c || !c.lastFrom || c.lastFrom === me.uid) return;
+  const key = c.id + ":" + tms(c.lastAt);
+  if (tms(c.seen && c.seen[me.uid]) >= tms(c.lastAt) || markingSeen === key) return;
+  markingSeen = key;
+  updateDoc(doc(db, "chats", c.id), { ["seen." + me.uid]: serverTimestamp() }).catch(() => { markingSeen = ""; });
+}
+function renderMsgs() {
+  paintNav();
+  if (!isVer()) { $("tBody").innerHTML = "<h2>Mensajes</h2>" + guestBanner(); return; }
+  if (chatOpen) { renderChat(); return; }
+  let h = "<h2>Mensajes</h2>";
+  if (!chats.length) h += '<div class="card"><p>Aún no tienes conversaciones. Entra al perfil de un criador y toca “Mensaje en KELSO”.</p></div>';
+  else h += chats.map((c) => {
+    const ou = (c.members || []).find((m) => m !== me.uid) || "", nm = (c.names && c.names[ou]) || "Criador";
+    const un = c.lastFrom && c.lastFrom !== me.uid && lastMs(c) > tms(c.seen && c.seen[me.uid]);
+    return '<button class="chat-row" data-chat="' + esc(ou) + '" data-cn="' + esc(nm) + '" type="button"><span class="chat-nm">' + esc(nm) + '</span><span class="chat-tx">' + (c.lastFrom === me.uid ? "Tú: " : "") + esc(String(c.lastText || "").slice(0, 70)) + "</span>" + (un ? '<i class="chat-dot"></i>' : "") + "</button>";
+  }).join("");
+  $("tBody").innerHTML = h;
+}
+function renderChat() {
+  $("tBody").innerHTML = '<button class="back" data-chback="1" type="button">‹ Mensajes</button><h2>' + esc(chatOpen.name) + '</h2><div id="chThread" class="thread"></div>' +
+    '<div class="chat-in"><textarea id="chIn" maxlength="500" rows="1" placeholder="Escribe un mensaje…"></textarea><button class="btn" id="chSend" data-chsend="1" type="button">Enviar</button></div><div class="msg err" id="chMsg"></div>';
+  ensureMsgsSub(); paintThread(); markSeen();
+}
+function paintThread() {
+  const t = $("chThread"); if (!t) return;
+  t.innerHTML = chatMsgs.length ? chatMsgs.map((m) => '<div class="bub ' + (m.from === me.uid ? "me" : "th") + '">' + esc(m.text) + "<small>" + esc(m.createdAt ? fmtDate(m.createdAt) : "") + "</small></div>").join("") : '<p class="fine">Escribe el primer mensaje.</p>';
+  t.scrollTop = t.scrollHeight;
+}
+async function sendChat() {
+  const inp = $("chIn"), btn = $("chSend"), err = $("chMsg"); if (!inp || !chatOpen) return;
+  const text = inp.value.trim().slice(0, 500); if (!text) return;
+  btn.disabled = true; err.textContent = "";
+  const id = chatOpen.id, exists = chats.some((c) => c.id === id), myName = (profile && profile.name) || me.name || "";
+  try {
+    const batch = writeBatch(db);
+    batch.set(doc(collection(db, "chats", id, "messages")), { from: me.uid, text, createdAt: serverTimestamp() });
+    if (exists) batch.update(doc(db, "chats", id), { lastText: text, lastFrom: me.uid, lastAt: serverTimestamp(), ["seen." + me.uid]: serverTimestamp() });
+    else {
+      const members = [me.uid, chatOpen.uid].sort(), names = {}, seen = {};
+      names[me.uid] = myName; names[chatOpen.uid] = chatOpen.name; seen[me.uid] = serverTimestamp();
+      batch.set(doc(db, "chats", id), { members, names, lastText: text, lastFrom: me.uid, lastAt: serverTimestamp(), seen });
+    }
+    await batch.commit(); inp.value = "";
+  } catch (e) { err.textContent = "No se pudo enviar. " + errText(e); }
+  btn.disabled = false;
+}
+$("tBody").addEventListener("click", (ev) => {
+  const b = ev.target.closest("button"); if (!b) return;
+  if (b.hasAttribute("data-chback")) { leaveChat(); renderMsgs(); }
+  else if (b.hasAttribute("data-chsend")) sendChat();
+  else if (b.hasAttribute("data-nall")) {
+    const batch = writeBatch(db); notifs.filter((n) => !n.read).forEach((n) => batch.update(doc(db, "notifications", me.uid, "items", n.id), { read: true }));
+    batch.commit().catch((e) => toast(errText(e)));
+  } else if (b.hasAttribute("data-nid")) {
+    const n = notifs.find((x) => x.id === b.getAttribute("data-nid")); if (!n) return;
+    if (!n.read) updateDoc(doc(db, "notifications", me.uid, "items", n.id), { read: true }).catch(() => {});
+    if (n.type === "arco") openArco(); else { profileViewUid = null; tab = "pf"; enterHome(); }
+  }
+});
+
+/* ---------- Mis datos: recolectar, exportar y borrar ---------- */
+async function collectMine(uid) {
+  const rows = (s) => s.docs.map((d) => ({ id: d.id, data: d.data() }));
+  const out = { posts: [], comments: [], likes: [], reviewsWritten: [], reviewsReceived: [], reports: [], chats: [], notifications: [], arco: [] };
+  out.posts = rows(await getDocs(query(collection(db, "posts"), where("owner", "==", uid))));
+  const all = await getDocs(collection(db, "posts"));
+  for (const pd of all.docs) {
+    const cs = await getDocs(query(collection(db, "posts", pd.id, "comments"), where("author", "==", uid)));
+    cs.docs.forEach((c) => out.comments.push({ pid: pd.id, id: c.id, data: c.data() }));
+  }
+  out.likes = rows(await getDocs(collection(db, "userLikes", uid, "posts")));
+  out.reviewsWritten = rows(await getDocs(query(collection(db, "reviews"), where("reviewerUid", "==", uid))));
+  out.reviewsReceived = rows(await getDocs(query(collection(db, "reviews"), where("targetUid", "==", uid))));
+  out.reports = rows(await getDocs(query(collection(db, "reports"), where("reporter", "==", uid))));
+  const cs = await getDocs(query(collection(db, "chats"), where("members", "array-contains", uid)));
+  for (const c of cs.docs) { const ms = await getDocs(collection(db, "chats", c.id, "messages")); out.chats.push({ id: c.id, data: c.data(), messages: rows(ms) }); }
+  out.notifications = rows(await getDocs(collection(db, "notifications", uid, "items")));
+  out.arco = rows(await getDocs(query(collection(db, "arco"), where("uid", "==", uid))));
+  return out;
+}
+function plain(v) {
+  if (v && typeof v.toDate === "function") return v.toDate().toISOString();
+  if (Array.isArray(v)) return v.map(plain);
+  if (v && typeof v === "object") { const o = {}; Object.keys(v).forEach((k) => { o[k] = plain(v[k]); }); return o; }
+  return v;
+}
+function saveJson(obj, name) {
+  const blob = new Blob([JSON.stringify(plain(obj), null, 2)], { type: "application/json" });
+  const a = document.createElement("a"); a.href = URL.createObjectURL(blob); a.download = name; document.body.appendChild(a); a.click();
+  setTimeout(() => { URL.revokeObjectURL(a.href); a.remove(); }, 1500);
+}
+async function exportMyData() {
+  const btn = $("arExp"), msg = $("arMsg"); btn.disabled = true; msg.className = "msg"; msg.textContent = "Reuniendo tus datos…";
+  try {
+    const m = await collectMine(me.uid), one = async (p) => { try { const sn = await getDoc(doc(db, p[0], p[1])); return sn.exists() ? sn.data() : null; } catch (e) { return null; } };
+    const posts = m.posts.map((p) => { const d = Object.assign({}, p.data); d.photos = (d.photos || []).length + " foto(s) (no incluidas en este archivo)"; return { id: p.id, data: d }; });
+    const out = { exportadoEl: new Date().toISOString(), cuenta: { uid: me.uid, email: me.email }, perfilPrivado: await one(["users", me.uid]), perfilPublico: await one(["publicProfiles", me.uid]), contacto: await one(["contacts", me.uid]),
+      publicaciones: posts, comentarios: m.comments, meGusta: m.likes.map((x) => x.id), valoracionesQueEscribi: m.reviewsWritten, valoracionesQueRecibi: m.reviewsReceived, reportesQueEnvie: m.reports, conversaciones: m.chats, notificaciones: m.notifications, solicitudesARCO: m.arco };
+    saveJson(out, "mis-datos-kelso.json"); msg.textContent = "Listo: se descargó el archivo mis-datos-kelso.json."; 
+  } catch (e) { msg.className = "msg err"; msg.textContent = "No se pudo reunir tus datos. " + errText(e); }
+  btn.disabled = false;
+}
+
+/* ---------- Solicitudes ARCO (usuario) ---------- */
+function openArco() {
+  fkind = "arco"; view = "form"; show("vForm");
+  $("fmBody").innerHTML = '<h2>Mis derechos sobre mis datos</h2><div class="card"><p>Puedes pedir <b>acceso</b> a tus datos, su <b>rectificación</b>, su <b>cancelación</b> u <b>oponerte</b> a su uso. El administrador de KELSO te responderá aquí mismo.</p><p class="fine">Para ver tus datos de inmediato, usa el botón de descarga. Para borrar toda tu cuenta usa “Cerrar cuenta” en tu perfil.</p></div>' +
+    '<button class="btn sec" id="arExp" type="button">Descargar mis datos (archivo)</button>' +
+    '<label for="arType">Qué quieres pedir</label><select id="arType"><option value="acceso">Acceso: saber qué datos tienen de mí</option><option value="rectificacion">Rectificación: corregir un dato</option><option value="cancelacion">Cancelación: borrar un dato</option><option value="oposicion">Oposición: dejar de usar un dato</option></select>' +
+    '<label for="arText">Cuéntanos tu pedido</label><textarea id="arText" maxlength="1000" rows="4" placeholder="Explica qué dato y qué necesitas (mínimo 10 letras)"></textarea>' +
+    '<button class="btn" id="arSend" type="button">Enviar solicitud</button><div class="msg" id="arMsg"></div><h3 style="margin-top:22px">Mis solicitudes</h3><div id="arList"><p class="fine">Cargando…</p></div>';
+  $("arExp").onclick = exportMyData;
+  $("arSend").onclick = async () => {
+    const detail = $("arText").value.trim(), msg = $("arMsg"), btn = $("arSend"); msg.className = "msg err";
+    if (detail.length < 10) { msg.textContent = "Cuéntanos con un poco más de detalle (mínimo 10 letras)."; return; }
+    btn.disabled = true; msg.textContent = "";
+    try {
+      await addDoc(collection(db, "arco"), { uid: me.uid, name: ((profile && profile.name) || me.name || "").slice(0, 80), email: (me.email || "").slice(0, 120), type: $("arType").value, detail: detail.slice(0, 1000), status: "recibida", createdAt: serverTimestamp() });
+      $("arText").value = ""; msg.className = "msg"; msg.textContent = "Solicitud enviada. Te responderemos en esta pantalla."; loadMyArco();
+    } catch (e) { msg.textContent = "No se pudo enviar. " + errText(e); }
+    btn.disabled = false;
+  };
+  loadMyArco();
+}
+async function loadMyArco() {
+  const box = $("arList"); if (!box) return;
+  try {
+    const sn = await getDocs(query(collection(db, "arco"), where("uid", "==", me.uid)));
+    const items = sn.docs.map((d) => Object.assign({ id: d.id }, d.data())).sort((a, b) => (tms(b.createdAt) || Date.now()) - (tms(a.createdAt) || Date.now()));
+    box.innerHTML = items.length ? items.map((r) => '<div class="item"><b>' + esc(ARCO_TYPES[r.type] || r.type) + '</b> · ' + (r.status === "atendida" ? "Atendida" : "Recibida") + '<div class="mu">' + esc(fmtDate(r.createdAt)) + (r.status !== "atendida" ? " · respuesta de referencia antes del " + esc(fmtDay(dueDateOf(r))) : "") + '</div><div class="mu">' + esc(r.detail) + "</div>" + (r.response ? '<div class="card" style="margin-top:8px"><b>Respuesta:</b><p>' + esc(r.response) + "</p></div>" : "") + "</div>").join("") : '<p class="fine">Todavía no enviaste solicitudes.</p>';
+  } catch (e) { box.innerHTML = '<div class="msg err">No se pudo leer. ' + esc(errText(e)) + "</div>"; }
+}
+
+/* ---------- Solicitudes ARCO (administrador) ---------- */
+async function loadArco() {
+  try {
+    const sn = await getDocs(query(collection(db, "arco"), where("status", "==", "recibida")));
+    const items = sn.docs.map((d) => Object.assign({ id: d.id }, d.data())).sort((a, b) => tms(a.createdAt) - tms(b.createdAt));
+    adArco = {}; items.forEach((i) => { adArco[i.id] = i; }); arcoPend = items.length;
+    if (!items.length) { $("adBody").innerHTML = '<div class="card"><p>No hay solicitudes ARCO pendientes.</p></div>'; return; }
+    $("adBody").innerHTML = '<p class="fine">Plazos de referencia en días hábiles (sin contar feriados): acceso 20; rectificación, cancelación y oposición 10. Confírmalos con tu abogado.</p>' + items.map((it) => {
+      const due = dueDateOf(it), late = due.getTime() < Date.now();
+      return '<div class="item"><b>' + esc(ARCO_TYPES[it.type] || it.type) + " · " + esc(it.name) + '</b><div class="mu">' + esc(it.email) + " · recibida " + esc(fmtDate(it.createdAt)) + '</div><div class="mu" style="color:' + (late ? "var(--red)" : "inherit") + '">Responder antes del: ' + esc(fmtDay(due)) + (late ? " (vencido)" : "") + '</div>' +
+        '<div class="card" style="margin-top:8px"><div class="mu">' + esc(it.detail) + '</div></div><textarea id="arR_' + esc(it.id) + '" maxlength="1500" rows="3" placeholder="Respuesta para el usuario…"></textarea><button class="btn sm green" data-arcook="' + esc(it.id) + '" type="button">Responder y marcar atendida</button></div>';
+    }).join("");
+  } catch (e) { $("adBody").innerHTML = '<div class="msg err">No se pudo leer. ' + esc(errText(e)) + "</div>"; }
+}
+$("adBody").addEventListener("click", async (e) => {
+  const b = e.target.closest("[data-arcook]"); if (!b) return;
+  const id = b.getAttribute("data-arcook"), it = adArco[id]; if (!it) return;
+  const ta = $("arR_" + id), resp = ta ? ta.value.trim() : "";
+  if (resp.length < 5) { toast("Escribe la respuesta para el usuario."); return; }
+  b.disabled = true;
+  try {
+    await updateDoc(doc(db, "arco", id), { status: "atendida", response: resp, respondedAt: serverTimestamp(), respondedBy: me.uid });
+    notify(it.uid, "arco", "El administrador respondió tu solicitud ARCO.");
+    try { await addDoc(collection(db, "adminLog"), { admin: me.uid, action: "arco_atendida", target: it.uid, at: serverTimestamp() }); } catch (x) {}
+    toast("Solicitud atendida.");
+  } catch (er) { toast(errText(er)); b.disabled = false; return; }
+  loadArco();
+});
+
+/* ---------- Cerrar cuenta y eliminar mis datos ---------- */
+function openClose() {
+  if (isAdmin) { toast("Una cuenta de administrador no se cierra desde la app."); return; }
+  fkind = "close"; view = "form"; show("vForm");
+  $("fmBody").innerHTML = '<h2>Cerrar cuenta y eliminar mis datos</h2><div class="card"><p><b>Esto no se puede deshacer.</b> Se eliminarán:</p><ul class="fine"><li>tu perfil, tu DNI, tu celular y tus fotos de verificación;</li><li>tus publicaciones y los comentarios de ellas;</li><li>tus comentarios en publicaciones de otros, tus Me gusta y tus valoraciones (las que diste y las que recibiste);</li><li>tus conversaciones, tus notificaciones y tus reportes enviados;</li><li>tu acceso con Google a KELSO.</li></ul>' +
+    '<p class="fine">Se conservan solo: tus solicitudes ARCO y una constancia mínima del cierre (identificador y fecha), y los registros de moderación del administrador. Tu cuenta de Google no se borra.</p></div>' +
+    '<label for="clTxt">Escribe ELIMINAR para confirmar</label><input id="clTxt" type="text" autocomplete="off" autocapitalize="characters"><button class="btn red" id="clGo" type="button">Eliminar mi cuenta definitivamente</button><div class="msg" id="clMsg"></div>';
+  $("clGo").onclick = closeAccount;
+}
+async function closeAccount() {
+  const msg = $("clMsg"), btn = $("clGo"); msg.className = "msg err";
+  if ($("clTxt").value.trim() !== "ELIMINAR") { msg.textContent = "Escribe ELIMINAR en mayúsculas para confirmar."; return; }
+  const cu = auth.currentUser; if (!cu || !me) return;
+  btn.disabled = true; $("clTxt").disabled = true; $("fmBack").disabled = true;
+  const fail = (t) => { msg.className = "msg err"; msg.textContent = t; btn.disabled = false; $("clTxt").disabled = false; $("fmBack").disabled = false; };
+  msg.className = "msg"; msg.textContent = "Confirma que eres tú con Google…";
+  try { await reauthenticateWithPopup(cu, new GoogleAuthProvider()); } catch (e) { return fail("No se pudo confirmar tu identidad. " + errText(e)); }
+  const uid = me.uid; let label = "";
+  const step = async (t, fn) => { label = t; msg.textContent = t + "…"; await fn(); };
+  const del = (ref) => deleteDoc(ref);
+  let m;
+  try {
+    await step("Reuniendo tus datos", async () => { m = await collectMine(uid); });
+    await step("Borrando tus publicaciones", async () => {
+      for (const p of m.posts) { const cs = await getDocs(collection(db, "posts", p.id, "comments")); for (const c of cs.docs) await del(doc(db, "posts", p.id, "comments", c.id)); await del(doc(db, "posts", p.id)); }
+    });
+    const mine = new Set(m.posts.map((p) => p.id));
+    await step("Borrando tus comentarios", async () => { for (const c of m.comments) if (!mine.has(c.pid)) await deleteCommentCounted(c.pid, c.id); });
+    await step("Quitando tus Me gusta", async () => {
+      for (const l of m.likes) {
+        try { const b = writeBatch(db); b.delete(doc(db, "userLikes", uid, "posts", l.id)); b.update(doc(db, "posts", l.id), { likeCount: increment(-1) }); await b.commit(); }
+        catch (e) { await del(doc(db, "userLikes", uid, "posts", l.id)); }
+      }
+    });
+    await step("Borrando valoraciones y reportes", async () => { for (const r of m.reviewsWritten.concat(m.reviewsReceived)) await del(doc(db, "reviews", r.id)); for (const r of m.reports) await del(doc(db, "reports", r.id)); });
+    await step("Borrando conversaciones y notificaciones", async () => {
+      for (const c of m.chats) { for (const x of c.messages) await del(doc(db, "chats", c.id, "messages", x.id)); await del(doc(db, "chats", c.id)); }
+      for (const n of m.notifications) await del(doc(db, "notifications", uid, "items", n.id));
+    });
+    await step("Borrando tus fotos de verificación", async () => { for (const n of ["selfie", "front", "back"]) await del(doc(db, "kyc", uid, "imgs", n)); });
+    await step("Borrando tu perfil público y tu contacto", async () => { await del(doc(db, "publicProfiles", uid)); await del(doc(db, "contacts", uid)); });
+    await step("Guardando la constancia del cierre", async () => { await setDoc(doc(db, "accountClosures", uid), { uid, at: serverTimestamp() }); });
+  } catch (e) { return fail("No se pudo completar (" + label + "). Tu cuenta sigue activa; inténtalo de nuevo. " + errText(e)); }
+  closing = true; if (unsub) { unsub(); unsub = null; } stopPosts(); stopSocial();
+  try {
+    await step("Borrando tu cuenta", async () => { await del(doc(db, "users", uid)); });
+  } catch (e) { closing = false; return fail("No se pudo borrar tu perfil. Recarga la página e inténtalo de nuevo. " + errText(e)); }
+  try { await deleteUser(cu); } catch (e) { try { await signOut(auth); } catch (x) {} }
+  closing = false; toast("Tu cuenta y tus datos fueron eliminados.");
+}
+
 let adTab = "p", adDetail = null;
 async function openAdmin() { view = "admin"; adDetail = null; show("vAdmin"); await loadAdmin(); }
 $("adBack").onclick = () => { if (adDetail) { adDetail = null; loadAdmin(); } else { enterHome(); } };
 $("sgP").onclick = () => { adTab = "p"; adDetail = null; loadAdmin(); };
 $("sgA").onclick = () => { adTab = "a"; adDetail = null; loadAdmin(); };
 $("sgR").onclick = () => { adTab = "r"; adDetail = null; loadAdmin(); };
+$("sgM").onclick = () => { adTab = "m"; adDetail = null; loadAdmin(); };
 let adReports = {};
 async function loadReports() {
   try {
@@ -1142,15 +1466,17 @@ $("adBody").addEventListener("click", async (e) => {
         await deleteDoc(doc(db, "posts", it.targetId));
       }
     }
+    if (del) notify(it.kind === "comment" ? (it.target && it.target.author) : it.targetUid, "admin", "El administrador retiró contenido tuyo por incumplir las normas de la comunidad.");
     await updateDoc(doc(db, "reports", id), { resolved: true, resolvedBy: me.uid, resolvedAt: serverTimestamp(), action: del ? "eliminado" : "descartado" });
     try { await addDoc(collection(db, "adminLog"), { admin: me.uid, action: del ? "reporte_eliminado" : "reporte_descartado", target: it.targetUid || it.targetId, at: serverTimestamp() }); } catch (x) {}
   } catch (er) { toast(errText(er)); }
   loadReports();
 });
 async function loadAdmin() {
-  $("sgP").setAttribute("aria-pressed", adTab === "p"); $("sgA").setAttribute("aria-pressed", adTab === "a"); $("sgR").setAttribute("aria-pressed", adTab === "r");
+  $("sgP").setAttribute("aria-pressed", adTab === "p"); $("sgA").setAttribute("aria-pressed", adTab === "a"); $("sgR").setAttribute("aria-pressed", adTab === "r"); $("sgM").setAttribute("aria-pressed", adTab === "m");
   $("adBody").innerHTML = '<p class="fine">Cargando…</p>';
   if (adTab === "r") { await loadReports(); return; }
+  if (adTab === "m") { await loadArco(); return; }
   try {
     const q = adTab === "p" ? query(collection(db, "users"), where("status", "==", "pendiente")) : collection(db, "users");
     const snap = await getDocs(q), list = [];
@@ -1193,6 +1519,7 @@ $("adBody").addEventListener("click", async (e) => {
   document.querySelectorAll("#adBody [data-dec]").forEach((b) => { b.disabled = true; });
   try {
     await updateDoc(doc(db, "users", adDetail), { status: st, note: st === "verificado" ? "" : note, reviewedAt: serverTimestamp(), reviewedBy: me.uid });
+    notify(adDetail, "admin", st === "verificado" ? "Tu identidad fue verificada. Ya puedes publicar, comentar y contactar." : st === "correccion" ? "El administrador pidió una corrección de tus datos." : st === "rechazado" ? "Tu solicitud de verificación fue rechazada." : st === "suspendido" ? "Tu cuenta fue suspendida." : "El estado de tu cuenta cambió.");
     if (st === "verificado") {
       try {
         const approvedSnap = await getDoc(doc(db, "users", adDetail));
