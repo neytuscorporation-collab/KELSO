@@ -146,6 +146,19 @@ nav#nav button[aria-current=true]{color:#8eabc8}
 .badge.b-ok{background:rgba(93,135,177,.16);color:#9bb9d8;border:1px solid #526f8d}
 .badge.b-wait{background:rgba(125,148,171,.12);color:#b3c4d5;border:1px solid #53687c}
 input:focus,textarea:focus{outline:2px solid #6f8eae}
+.verified-seal{display:inline-grid;place-items:center;vertical-align:middle;width:19px;height:19px;margin-left:5px;background:#2789e8;clip-path:polygon(50% 0%,61% 8%,74% 4%,80% 16%,93% 20%,91% 34%,100% 45%,93% 56%,97% 69%,84% 76%,82% 90%,68% 91%,58% 100%,47% 92%,34% 98%,27% 86%,13% 85%,14% 71%,3% 63%,9% 50%,1% 39%,13% 30%,10% 17%,25% 15%,34% 3%,45% 9%);flex:none}
+.verified-seal svg{width:12px;height:12px;display:block}
+.compose-prompt{cursor:pointer}
+.compose-actions{flex-wrap:wrap}
+.compose-actions button{min-width:0}
+.compose-chooser{display:grid;grid-template-columns:1fr 1fr;gap:10px;margin-top:14px}
+.compose-choice{display:flex;align-items:center;gap:10px;text-align:left;background:var(--s2);border:1px solid var(--line);border-radius:12px;padding:13px;color:var(--fg);font-weight:600;min-height:66px}
+.compose-choice svg{width:23px;height:23px;color:#8eabc8;flex:none}
+.compose-choice.free{grid-column:1/-1}
+.post-meta{display:flex;align-items:center;gap:6px;flex-wrap:wrap;color:var(--mu);font-size:12px;margin-top:5px}
+.post-label{display:inline-block;background:#273545;color:#a9c6e2;border:1px solid #3a4d61;border-radius:999px;padding:3px 8px;font-size:10px;font-weight:700;letter-spacing:.04em}
+.post-actions{display:flex;gap:8px;flex-wrap:wrap;margin-top:12px}
+.form-hint{color:var(--mu);font-size:12px;margin:6px 0 12px}
 .seg button[aria-pressed=true]{background:#58799b;color:white}
 .chip[aria-pressed=true]{border-color:#7898b8;color:#a8c2dc}
 @media(min-width:600px){body{padding-inline:20px}.topbar{margin-inline:-20px;padding-inline:20px}}
@@ -305,7 +318,7 @@ function badge(st) {
 }
 function renderHome() {
   const st = statusOf(), who = (profile && profile.name) || me.name || me.email;
-  let h = '<div class="card"><b>' + esc(who) + '</b><div class="mu">' + esc(me.email) + '</div>' + badge(st);
+  let h = '<div class="card"><b>' + esc(who) + (st === "verificado" ? verifiedMark() : "") + '</b><div class="mu">' + esc(me.email) + '</div>' + badge(st);
   if (st === "none") h += '<p>Para publicar y contactar a otros criadores, verifica tu identidad con tu selfie y tu DNI.</p>';
   if (st === "pendiente") h += '<p>Recibimos tu solicitud. El administrador la revisará y te avisaremos aquí el resultado.</p>';
   if (st === "correccion") h += '<p><b>El administrador pidió una corrección:</b></p><p>' + esc(profile.note || "Vuelve a enviar tus fotos.") + '</p>';
@@ -481,46 +494,80 @@ if ($("globalSearch")) {
 
 function paintNav() { document.querySelectorAll("#nav button").forEach((b) => b.setAttribute("aria-current", String(b.getAttribute("data-t") === tab))); }
 
+function verifiedMark() {
+  return '<span class="verified-seal" role="img" aria-label="Identidad verificada por KELSO" title="Identidad verificada por KELSO"><svg viewBox="0 0 24 24" fill="none" stroke="#fff" stroke-width="3.6" stroke-linecap="round" stroke-linejoin="round"><path d="m5 12.5 4.3 4.2L19 7"/></svg></span>';
+}
+function postModeOf(p) {
+  return p.postMode || (p.type === "ejemplar" ? "vender_ejemplar" : p.type === "producto" ? "vender_producto" : "libre");
+}
 function cardHtml(p) {
-  const mine = p.owner === me.uid, ph = (p.photos || []).filter(okImg);
+  const mine = p.owner === me.uid, ph = (p.photos || []).filter(okImg), mode = postModeOf(p);
+  const free = mode === "libre", buying = mode.indexOf("comprar_") === 0, ej = p.type === "ejemplar" || mode.indexOf("ejemplar") >= 0;
   const tags = [];
   if (p.type === "producto" && p.cat) tags.push(p.cat);
   if (p.age) tags.push(p.age + " meses");
   if (p.weight) tags.push(p.weight + " kg");
   if (p.city) tags.push(p.city);
   let acts = "";
-  if (!p.sold && !mine && /^9\d{8}$/.test(p.ownerPhone || "")) {
-    const msg = "Hola " + (p.ownerName || "") + ', vi tu ' + (p.type === "ejemplar" ? "ejemplar" : "producto") + ' "' + (p.title || "") + '" en KELSO.';
+  if (!mine && /^9\d{8}$/.test(p.ownerPhone || "")) {
+    const subject = free ? "publicación" : buying ? "solicitud de compra" : (ej ? "ejemplar" : "producto");
+    const msg = "Hola " + (p.ownerName || "") + ', vi tu ' + subject + ' en KELSO: "' + (p.title || p.desc || "") + '".';
     acts += '<a class="btn sm green" target="_blank" rel="noopener" href="https://wa.me/51' + esc(p.ownerPhone) + "?text=" + encodeURIComponent(msg) + '">WhatsApp</a>';
   }
   const ask = (act, label, cls) => (pend === act + p.id ? '<button class="btn sm red" data-a="' + act + '" data-id="' + esc(p.id) + '" type="button">Confirmar</button>' : '<button class="btn sm ' + cls + '" data-a="' + act + '" data-id="' + esc(p.id) + '" type="button">' + label + "</button>");
-  if (mine) acts += ask("sold", p.sold ? "Reactivar" : (p.type === "ejemplar" ? "Marcar vendido" : "Marcar agotado"), "sec") + ask("del", "Eliminar", "sec");
-  else if (isAdmin) acts += ask("del", "Retirar (admin)", "sec");
-  return '<article class="post">' + (ph.length ? '<div class="ph">' + ph.map((x) => '<img src="' + x + '" alt="Foto">').join("") + "</div>" : "") +
-    '<div class="in"><div class="row"><div class="ti">' + esc(p.title) + "</div>" + (p.sold ? '<span class="sold">' + (p.type === "ejemplar" ? "Vendido" : "Agotado") + "</span>" : '<div class="pr">S/ ' + esc(p.price) + "</div>") + "</div>" +
-    (p.line ? '<div class="mu" style="color:var(--mu);font-size:12.5px;margin-top:2px">' + esc(p.line) + "</div>" : "") +
-    '<div class="tags">' + tags.map((t) => '<span class="tag">' + esc(t) + "</span>").join("") + "</div>" +
-    (p.desc ? "<p>" + esc(p.desc) + "</p>" : "") +
-    '<div class="seller"><b>' + esc(p.ownerName || "Criador") + "</b>" + badge("verificado") + '<span class="post-kind">' + (p.type === "ejemplar" ? "Ejemplar" : "Producto") + '</span></div>' +
-    (acts ? "<div>" + acts + "</div>" : "") + "</div></article>";
+  if (mine) {
+    if (!free && !buying) acts += ask("sold", p.sold ? "Reactivar" : (ej ? "Marcar vendido" : "Marcar agotado"), "sec");
+    acts += ask("del", "Eliminar", "sec");
+  } else if (isAdmin) acts += ask("del", "Retirar (admin)", "sec");
+  const title = free ? "" : (p.title || (buying ? "Solicitud de compra" : "Publicación"));
+  const label = free ? "Publicación libre" : buying ? (ej ? "Busca ejemplar" : "Busca producto") : (ej ? "Vende ejemplar" : "Vende producto");
+  const price = !free && !buying && !p.sold ? '<div class="pr">S/ ' + esc(p.price) + '</div>' : (p.sold ? '<span class="sold">' + (ej ? "Vendido" : "Agotado") + '</span>' : "");
+  return '<article class="post">' + (ph.length ? '<div class="ph">' + ph.map((x) => '<img src="' + x + '" alt="Foto de publicación">').join("") + "</div>" : "") +
+    '<div class="in"><div class="seller"><b>' + esc(p.ownerName || "Criador") + (p.ownerVerified === false ? "" : verifiedMark()) + '</b><span class="post-meta">· ' + esc(p.createdAt && p.createdAt.toDate ? fmtDate(p.createdAt) : "Comunidad KELSO") + '</span></div>' +
+    '<div class="post-label">' + label + '</div>' +
+    (title ? '<div class="row" style="margin-top:8px"><div class="ti">' + esc(title) + '</div>' + price + '</div>' : "") +
+    (p.line ? '<div class="mu" style="color:var(--mu);font-size:12.5px;margin-top:4px">' + esc(p.line) + '</div>' : "") +
+    (tags.length ? '<div class="tags">' + tags.map((t) => '<span class="tag">' + esc(t) + '</span>').join("") + '</div>' : "") +
+    (p.desc ? '<p>' + esc(p.desc) + '</p>' : "") + (acts ? '<div class="post-actions">' + acts + '</div>' : "") + '</div></article>';
+}
+function openComposer() {
+  fkind = "chooser"; view = "form";
+  const choices = [
+    ["comprar_ejemplar", "Comprar ejemplar", "Mira", "Busca ejemplares"],
+    ["vender_ejemplar", "Vender ejemplar", "Tag", "Ofrece un ejemplar"],
+    ["comprar_producto", "Comprar producto", "Bag", "Busca productos"],
+    ["vender_producto", "Vender producto", "Store", "Ofrece productos"],
+    ["libre", "Publicación libre", "MessageCircle", "Comparte lo que piensas, fotos y consejos"]
+  ];
+  const icons = {
+    comprar_ejemplar:'<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><path d="M3 15c2-1 3-4 4-7l3 2 3-5 2 7 5 1-2 5H7z"/><path d="M8 18v3m8-3v3"/></svg>',
+    vender_ejemplar:'<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><path d="m20 13-7 7L3 10V4h6z"/><circle cx="7.5" cy="7.5" r="1"/></svg>',
+    comprar_producto:'<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><path d="M5 8h14l1 12H4zM9 8V6a3 3 0 0 1 6 0v2"/></svg>',
+    vender_producto:'<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><path d="M3 10h18l-2-6H5zM5 10v10h14V10M9 20v-6h6v6"/><path d="M3 10a3 3 0 0 0 6 0 3 3 0 0 0 6 0 3 3 0 0 0 6 0"/></svg>',
+    libre:'<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><path d="M21 11.5a8.5 8.5 0 0 1-8.5 8.5 9 9 0 0 1-4-.9L3 21l1.9-5.5a9 9 0 0 1-.9-4A8.5 8.5 0 1 1 21 11.5z"/></svg>'
+  };
+  let h = '<h2>Crear publicación</h2><p class="mu">Elige cómo quieres participar en la comunidad KELSO.</p><div class="compose-chooser">';
+  choices.forEach(([k, name, , desc]) => { h += '<button class="compose-choice ' + (k === "libre" ? "free" : "") + '" data-kind="' + k + '" type="button">' + icons[k] + '<span>' + name + '<small style="display:block;color:var(--mu);font-weight:400;margin-top:3px">' + desc + '</small></span></button>'; });
+  h += '</div>';
+  $("fmBody").innerHTML = h; show("vForm");
 }
 function inicioHtml() {
   const first = ((profile && profile.name) || me.name || "").trim().split(" ")[0] || "criador";
   const initials = ((profile && profile.name) || me.name || "K").trim().split(/\s+/).slice(0,2).map(x => x[0] || "").join("").toUpperCase();
   let h = '<h2>Inicio</h2>' +
-    '<div class="composer"><div class="compose-top"><div class="avatar">' + esc(initials) + '</div><button class="compose-prompt" data-new="ejemplar" type="button">¿Qué deseas publicar, ' + esc(first) + '?</button></div>' +
-    '<div class="compose-actions"><button data-new="ejemplar" type="button"><span>▣</span> Ejemplar</button><button data-new="producto" type="button"><span>◇</span> Producto</button></div></div>' +
+    '<div class="composer"><div class="compose-top"><div class="avatar">' + esc(initials) + '</div><button class="compose-prompt" data-compose="1" type="button">¿Qué estás pensando, ' + esc(first) + '?</button></div>' +
+    '<div class="compose-actions"><button data-compose="1" type="button"><span>▧</span> Foto</button><button data-compose="1" type="button"><span>＋</span> Publicar</button></div></div>' +
     '<div class="feed-heading"><h3>Publicaciones recientes</h3><span>Comunidad verificada</span></div>';
   if (!postsLoaded) h += '<p class="fine">Cargando publicaciones…</p>';
   else if (postsErr) h += '<p class="msg err">' + esc(postsErr) + '</p>';
-  else if (!posts.length) h += '<div class="card"><b>Aún no hay publicaciones</b><p class="mu">Sé el primero en compartir un ejemplar o producto con la comunidad.</p></div>';
+  else if (!posts.length) h += '<div class="card"><b>Aún no hay publicaciones</b><p class="mu">Sé el primero en compartir una idea, un ejemplar o un producto con la comunidad.</p></div>';
   else h += posts.map(cardHtml).join("");
   h += '<p class="fine" style="margin-top:18px;text-align:center">Los tratos se hacen entre las partes: verifica siempre el ejemplar y a la persona antes de pagar.</p>';
   return h;
 }
 function listFiltered(type) {
   const t = q.trim().toLowerCase();
-  return posts.filter((p) => p.type === type && (type !== "producto" || mcat === "Todos" || p.cat === mcat) &&
+  return posts.filter((p) => p.type === type && postModeOf(p).indexOf("comprar_") !== 0 && postModeOf(p) !== "libre" && (type !== "producto" || mcat === "Todos" || p.cat === mcat) &&
     (!t || [p.title, p.line, p.city, p.desc, p.cat, p.ownerName].join(" ").toLowerCase().indexOf(t) >= 0));
 }
 function renderList() {
@@ -552,6 +599,8 @@ function renderTab() {
 $("tBody").addEventListener("click", async (ev) => {
   const b = ev.target.closest("button"); if (!b) return;
   if (b.hasAttribute("data-go")) { tab = b.getAttribute("data-go"); enterHome(); openForm(tab === "ej" ? "ejemplar" : "producto"); return; }
+  if (b.hasAttribute("data-compose")) { openComposer(); return; }
+  if (b.hasAttribute("data-kind")) { openForm(b.getAttribute("data-kind")); return; }
   if (b.hasAttribute("data-new")) { openForm(b.getAttribute("data-new")); return; }
   if (b.hasAttribute("data-cat")) { mcat = b.getAttribute("data-cat"); renderTab(); return; }
   const a = b.getAttribute("data-a"), id = b.getAttribute("data-id");
@@ -568,22 +617,32 @@ $("tBody").addEventListener("click", async (ev) => {
 
 /* formulario de publicación */
 function openForm(kind) {
-  const mineN = posts.filter((p) => p.owner === me.uid && p.type === kind && !p.sold).length;
   fkind = kind; fPh = []; fBusy = false; view = "form";
-  const ej = kind === "ejemplar";
-  let h = "<h2>" + (ej ? "Publicar ejemplar" : "Publicar producto") + "</h2>";
-  if (mineN >= MAXPOST) {
-    h += '<div class="card"><b>Llegaste al máximo</b><p class="mu">Puedes tener hasta ' + MAXPOST + " publicaciones activas de este tipo. Marca alguna como vendida o elimínala para publicar otra.</p></div>";
+  const free = kind === "libre", buying = kind.indexOf("comprar_") === 0;
+  const ej = kind.indexOf("ejemplar") >= 0;
+  const type = free ? "libre" : (ej ? "ejemplar" : "producto");
+  const selling = !free && !buying;
+  const mineN = posts.filter((p) => p.owner === me.uid && p.type === type && !p.sold).length;
+  let h = '<h2>' + (free ? "Publicación libre" : buying ? (ej ? "Comprar ejemplar" : "Comprar producto") : (ej ? "Vender ejemplar" : "Vender producto")) + '</h2>';
+  if (selling && mineN >= MAXPOST) {
+    h += '<div class="card"><b>Llegaste al máximo</b><p class="mu">Puedes tener hasta ' + MAXPOST + ' publicaciones activas de este tipo. Marca alguna como vendida o elimínala para publicar otra.</p></div>';
     $("fmBody").innerHTML = h; show("vForm"); return;
   }
-  h += '<label for="fT">' + (ej ? "Título (casta o nombre)" : "Nombre del producto") + '</label><input id="fT" type="text" maxlength="60" placeholder="' + (ej ? "Ej. Gallo giro fino, 2 años" : "Ej. Maíz amarillo 25 kg") + '">';
-  if (ej) h += '<label for="fL">Línea o criadero (opcional)</label><input id="fL" type="text" maxlength="60"><div class="two"><div><label for="fA">Edad (meses)</label><input id="fA" type="tel" inputmode="numeric" maxlength="3"></div><div><label for="fW">Peso (kg)</label><input id="fW" type="text" inputmode="decimal" maxlength="5"></div></div>';
-  else h += '<label for="fC">Categoría</label><select id="fC">' + CATS.map((c) => "<option>" + esc(c) + "</option>").join("") + "</select>";
-  h += '<div class="two"><div><label for="fP">Precio (S/)</label><input id="fP" type="tel" inputmode="numeric" maxlength="7"></div><div><label for="fCi">Ciudad</label><input id="fCi" type="text" maxlength="40" value="' + esc((profile && profile.city) || "") + '"></div></div>' +
-    '<label for="fD">Descripción (opcional)</label><textarea id="fD" maxlength="400" placeholder="' + (ej ? "Pedigrí, vacunas, cómo lo entregas…" : "Marca, estado, cómo lo entregas…") + '"></textarea>' +
-    '<label for="fF">Fotos (1 a 3)</label><input id="fF" type="file" accept="image/*" multiple><div class="thumbs" id="fPrev"></div>' +
-    '<p class="fine" style="text-align:left">Tu celular (' + esc((profile && profile.phone) || "sin celular") + ') será visible para los criadores verificados, para que te escriban por WhatsApp. El video de hasta 10 segundos estará disponible pronto.</p>' +
-    '<div class="msg err" id="fMsg"></div><button class="btn" id="fSend" type="button">Publicar</button>';
+  if (free) {
+    h += '<label for="fD">¿Qué estás pensando?</label><textarea id="fD" maxlength="1200" rows="5" placeholder="Comparte tus ideas, experiencias, consejos o novedades con la comunidad…"></textarea><p class="form-hint">Puedes escribir libremente. No necesitas colocar precio ni datos de venta.</p>';
+  } else if (buying) {
+    h += '<label for="fT">' + (ej ? "¿Qué ejemplar estás buscando?" : "¿Qué producto estás buscando?") + '</label><input id="fT" type="text" maxlength="80" placeholder="' + (ej ? "Ej. Busco gallo Kelso de buena línea" : "Ej. Busco alimento para aves") + '"><label for="fD">Detalles de tu búsqueda</label><textarea id="fD" maxlength="700" rows="4" placeholder="Describe lo que necesitas, características, presupuesto referencial, etc."></textarea>';
+    h += '<label for="fCi">Ciudad (opcional)</label><input id="fCi" type="text" maxlength="40" value="' + esc((profile && profile.city) || "") + '">';
+  } else {
+    h += '<label for="fT">' + (ej ? "Título (casta o nombre)" : "Nombre del producto") + '</label><input id="fT" type="text" maxlength="60" placeholder="' + (ej ? "Ej. Gallo giro fino, 2 años" : "Ej. Maíz amarillo 25 kg") + '">';
+    if (ej) h += '<label for="fL">Línea o criadero (opcional)</label><input id="fL" type="text" maxlength="60"><div class="two"><div><label for="fA">Edad (meses)</label><input id="fA" type="tel" inputmode="numeric" maxlength="3"></div><div><label for="fW">Peso (kg)</label><input id="fW" type="text" inputmode="decimal" maxlength="5"></div></div>';
+    else h += '<label for="fC">Categoría</label><select id="fC">' + CATS.map((c) => "<option>" + esc(c) + "</option>").join("") + '</select>';
+    h += '<div class="two"><div><label for="fP">Precio (S/)</label><input id="fP" type="tel" inputmode="numeric" maxlength="7"></div><div><label for="fCi">Ciudad</label><input id="fCi" type="text" maxlength="40" value="' + esc((profile && profile.city) || "") + '"></div></div>' +
+      '<label for="fD">Descripción (opcional)</label><textarea id="fD" maxlength="400" placeholder="' + (ej ? "Pedigrí, vacunas, cómo lo entregas…" : "Marca, estado, cómo lo entregas…") + '"></textarea>';
+  }
+  h += '<label for="fF">' + (selling ? 'Fotos (1 a 3)' : 'Fotos (opcional, hasta 3)') + '</label><input id="fF" type="file" accept="image/*" multiple><div class="thumbs" id="fPrev"></div>';
+  if (selling) h += '<p class="fine" style="text-align:left">Tu celular (' + esc((profile && profile.phone) || "sin celular") + ') será visible para los criadores verificados, para que te escriban por WhatsApp.</p>';
+  h += '<div class="msg err" id="fMsg"></div><button class="btn" id="fSend" type="button">Publicar</button>';
   $("fmBody").innerHTML = h; show("vForm");
   $("fF").onchange = async (e) => {
     const fs = Array.from(e.target.files).slice(0, 3); $("fMsg").textContent = "Preparando fotos…";
@@ -594,21 +653,22 @@ function openForm(kind) {
   };
   $("fSend").onclick = sendPost;
 }
-$("fmBack").onclick = () => { if (fBusy) return; tab = fkind === "ejemplar" ? "ej" : "mk"; enterHome(); };
+$("fmBack").onclick = () => { if (fBusy) return; if (fkind === "chooser") { tab = "in"; enterHome(); return; } tab = "in"; enterHome(); };
 async function sendPost() {
   if (fBusy) return;
-  const g = (id) => ($(id) ? $(id).value.trim() : ""), ej = fkind === "ejemplar", msg = $("fMsg");
-  const d = { type: fkind, owner: me.uid, ownerName: (profile && profile.name) || "", ownerPhone: (profile && profile.phone) || "", title: g("fT"), line: ej ? g("fL") : "", age: ej ? g("fA").replace(/\D/g, "") : "", weight: ej ? g("fW").replace(",", ".") : "", price: g("fP").replace(/\D/g, ""), city: g("fCi"), cat: ej ? "" : g("fC"), desc: g("fD"), photos: fPh, sold: false, createdAt: serverTimestamp() };
-  if (!d.title) msg.textContent = "Escribe un título.";
-  else if (!/^\d{1,7}$/.test(d.price)) msg.textContent = "Escribe el precio en soles, solo números.";
-  else if (!d.city) msg.textContent = "Escribe la ciudad.";
-  else if (d.weight && !/^\d{1,2}(\.\d{1,2})?$/.test(d.weight)) msg.textContent = "El peso se escribe como 3.5";
-  else if (!fPh.length) msg.textContent = "Agrega al menos una foto.";
-  else {
-    fBusy = true; $("fSend").disabled = true; msg.textContent = "Publicando…";
-    try { await addDoc(collection(db, "posts"), d); tab = ej ? "ej" : "mk"; fBusy = false; enterHome(); return; }
-    catch (e) { fBusy = false; $("fSend").disabled = false; msg.textContent = "No se pudo publicar. " + errText(e); return; }
-  }
+  const g = (id) => ($(id) ? $(id).value.trim() : ""), kind = fkind;
+  const free = kind === "libre", buying = kind.indexOf("comprar_") === 0, ej = kind.indexOf("ejemplar") >= 0;
+  const type = free ? "libre" : (ej ? "ejemplar" : "producto");
+  const d = { type, postMode: kind, owner: me.uid, ownerName: (profile && profile.name) || me.name || "", ownerPhone: (profile && profile.phone) || "", ownerVerified: statusOf() === "verificado", title: free ? "" : g("fT"), line: !free && !buying && ej ? g("fL") : "", age: !free && !buying && ej ? g("fA").replace(/\D/g, "") : "", weight: !free && !buying && ej ? g("fW").replace(",", ".") : "", price: !free && !buying ? g("fP").replace(/\D/g, "") : "", city: g("fCi"), cat: !free && !buying && !ej ? g("fC") : "", desc: g("fD"), photos: fPh, sold: false, createdAt: serverTimestamp() };
+  if (free && !d.desc) { $("fMsg").textContent = "Escribe algo antes de publicar."; return; }
+  if (!free && !d.title) { $("fMsg").textContent = buying ? "Describe qué estás buscando." : "Escribe un título."; return; }
+  if (!free && !buying && !/^\d{1,7}$/.test(d.price)) { $("fMsg").textContent = "Escribe el precio en soles, solo números."; return; }
+  if (!free && !buying && !d.city) { $("fMsg").textContent = "Escribe la ciudad."; return; }
+  if (d.weight && !/^\d{1,2}(\.\d{1,2})?$/.test(d.weight)) { $("fMsg").textContent = "El peso se escribe como 3.5"; return; }
+  if (!free && !buying && !fPh.length) { $("fMsg").textContent = "Agrega al menos una foto."; return; }
+  fBusy = true; $("fSend").disabled = true; $("fMsg").textContent = "Publicando…";
+  try { await addDoc(collection(db, "posts"), d); tab = "in"; fBusy = false; enterHome(); return; }
+  catch (e) { fBusy = false; $("fSend").disabled = false; $("fMsg").textContent = "No se pudo publicar. " + errText(e); return; }
 }
 
 /* ---------- panel del administrador ---------- */
@@ -626,7 +686,7 @@ async function loadAdmin() {
     snap.forEach((d) => list.push(Object.assign({ id: d.id }, d.data())));
     list.sort((a, b) => String(a.name || "").localeCompare(String(b.name || "")));
     if (!list.length) { $("adBody").innerHTML = '<div class="card"><p>' + (adTab === "p" ? "No hay solicitudes pendientes." : "Todavía no hay usuarios.") + '</p></div>'; return; }
-    $("adBody").innerHTML = list.map((u) => '<div class="item"><b>' + esc(u.name || "Sin nombre") + '</b><div class="mu">' + esc(u.city || "") + (u.phone ? " · " + esc(u.phone) : "") + (u.submittedAt ? " · " + esc(fmtDate(u.submittedAt)) : "") + '</div>' + badge(u.status) + '<div><button class="btn sm" data-open="' + esc(u.id) + '" type="button">Abrir</button></div></div>').join("");
+    $("adBody").innerHTML = list.map((u) => '<div class="item"><b>' + esc(u.name || "Sin nombre") + (u.status === "verificado" ? verifiedMark() : "") + '</b><div class="mu">' + esc(u.city || "") + (u.phone ? " · " + esc(u.phone) : "") + (u.submittedAt ? " · " + esc(fmtDate(u.submittedAt)) : "") + '</div>' + badge(u.status) + '<div><button class="btn sm" data-open="' + esc(u.id) + '" type="button">Abrir</button></div></div>').join("");
   } catch (e) { $("adBody").innerHTML = '<div class="msg err">No se pudo leer. ' + esc(errText(e)) + '</div>'; }
 }
 async function openUser(uid) {
