@@ -163,6 +163,39 @@ input:focus,textarea:focus{outline:2px solid #6f8eae}
 .chip[aria-pressed=true]{border-color:#7898b8;color:#a8c2dc}
 @media(min-width:600px){body{padding-inline:20px}.topbar{margin-inline:-20px;padding-inline:20px}}
 
+
+/* ---------- Perfiles sociales KELSO ---------- */
+.profile-cover{height:158px;border-radius:16px 16px 0 0;background:linear-gradient(135deg,#263646,#151b22 58%,#34495c);background-size:cover;background-position:center;border:1px solid var(--line);position:relative}
+.profile-head{background:var(--s);border:1px solid var(--line);border-top:0;border-radius:0 0 16px 16px;padding:0 16px 16px;margin-bottom:16px}
+.profile-avatar{width:96px;height:96px;border-radius:50%;border:4px solid var(--s);background:#34475c;color:#fff;display:grid;place-items:center;font:700 28px var(--h);object-fit:cover;margin-top:-48px;position:relative}
+.profile-title{font:700 21px var(--h);margin:10px 0 4px;display:flex;align-items:center;gap:6px;flex-wrap:wrap}
+.profile-sub{color:var(--mu);font-size:13px}
+.profile-bio{margin:12px 0;color:#d3d9df;white-space:pre-wrap;overflow-wrap:anywhere}
+.profile-actions{display:flex;gap:8px;margin-top:14px}
+.profile-actions .btn{margin:0;flex:1;letter-spacing:.04em;text-transform:none;padding:12px 8px;font-size:12px}
+.profile-stats{display:grid;grid-template-columns:repeat(3,1fr);gap:8px;margin:14px 0}
+.profile-stat{background:var(--s);border:1px solid var(--line);border-radius:12px;padding:10px 6px;text-align:center}
+.profile-stat b{display:block;font:700 19px var(--h);color:#d9e2ec}
+.profile-stat span{display:block;color:var(--mu);font-size:10px;margin-top:3px}
+.profile-section{margin-top:18px}
+.profile-section h3{margin:0 0 8px}
+.profile-rating{background:var(--s);border:1px solid var(--line);border-radius:14px;padding:14px;margin-top:12px}
+.profile-stars{color:#e6b94f;letter-spacing:2px;font-size:19px}
+.profile-review{background:var(--s2);border:1px solid var(--line);border-radius:12px;padding:12px;margin-top:9px;text-align:left}
+.profile-review .review-meta{display:flex;align-items:center;justify-content:space-between;gap:8px;color:var(--mu);font-size:11px}
+.profile-review p{margin:7px 0 0;white-space:pre-wrap;overflow-wrap:anywhere}
+.profile-link{display:inline-flex;align-items:center;gap:4px;padding:0;border:0;background:none;color:var(--fg);font-weight:700;text-align:left}
+.profile-link:active{opacity:.75}
+.profile-edit-grid{display:grid;gap:8px}
+.profile-empty{background:var(--s);border:1px dashed var(--line);border-radius:12px;padding:16px;color:var(--mu);text-align:center;margin-top:10px}
+
+.toast{position:fixed;left:50%;transform:translateX(-50%);bottom:calc(86px + env(safe-area-inset-bottom,0px));background:#252d37;color:#fff;border:1px solid #3a4653;border-radius:12px;padding:11px 16px;font-size:13px;z-index:70;max-width:90%;text-align:center;box-shadow:0 6px 24px rgba(0,0,0,.5)}
+.cmbox{margin-top:12px;border-top:1px solid var(--line);padding-top:10px}
+.cm{background:var(--s2);border:1px solid var(--line);border-radius:12px;padding:10px 12px;margin-top:8px;text-align:left}
+.cm .cmh{display:flex;align-items:center;gap:6px;flex-wrap:wrap;font-size:12px;color:var(--mu)}.cm p{margin:5px 0 0;white-space:pre-wrap;overflow-wrap:anywhere;color:var(--fg);font-size:14px}
+.cm .cma{display:flex;gap:8px;margin-top:6px}.cm .cma button{background:none;border:0;color:var(--mu);font-size:12px;padding:2px 0;text-decoration:underline}.cm .cma button.red{color:#ff9a8a}
+.cmbox textarea{min-height:60px;margin-top:10px}
+.guestbox{border-color:#526f8d;background:#18222d}
 </style></head><body><div class="w">
 
 <section id="vWelcome" class="hero" hidden>
@@ -197,7 +230,7 @@ input:focus,textarea:focus{outline:2px solid #6f8eae}
 <section id="vAdmin" class="page" hidden>
  <button class="back" id="adBack" type="button">&lsaquo; Volver</button>
  <h2>Panel de administraci&oacute;n</h2>
- <div class="seg"><button id="sgP" type="button" aria-pressed="true">Pendientes</button><button id="sgA" type="button" aria-pressed="false">Todos</button></div>
+ <div class="seg"><button id="sgP" type="button" aria-pressed="true">Pendientes</button><button id="sgA" type="button" aria-pressed="false">Todos</button><button id="sgR" type="button" aria-pressed="false">Reportes</button></div>
  <div id="adBody"></div>
 </section>
 
@@ -238,7 +271,7 @@ input:focus,textarea:focus{outline:2px solid #6f8eae}
 <script type="module">
 import { initializeApp } from "https://www.gstatic.com/firebasejs/10.12.2/firebase-app.js";
 import { getAuth, GoogleAuthProvider, signInWithPopup, signInWithRedirect, getRedirectResult, onAuthStateChanged, signOut } from "https://www.gstatic.com/firebasejs/10.12.2/firebase-auth.js";
-import { getFirestore, doc, getDoc, setDoc, updateDoc, deleteDoc, collection, getDocs, query, where, orderBy, limit, onSnapshot, addDoc, serverTimestamp } from "https://www.gstatic.com/firebasejs/10.12.2/firebase-firestore.js";
+import { getFirestore, doc, getDoc, setDoc, updateDoc, deleteDoc, collection, getDocs, query, where, orderBy, limit, onSnapshot, addDoc, serverTimestamp, deleteField } from "https://www.gstatic.com/firebasejs/10.12.2/firebase-firestore.js";
 
 /* Configuración de Firebase (proyecto kelso-62f12). Estos datos no son secretos. */
 const firebaseConfig = {
@@ -254,7 +287,7 @@ const CONSENT_VERSION = "2026-11-12";
 const $ = (id) => document.getElementById(id);
 const esc = (s) => String(s == null ? "" : s).replace(/[&<>"']/g, (c) => ({ "&": "&amp;", "<": "&lt;", ">": "&gt;", '"': "&quot;", "'": "&#39;" }[c]));
 const views = ["vWelcome", "vLoad", "vHome", "vWizard", "vAdmin", "vTabs", "vForm"];
-const show = (id) => { views.forEach((v) => { $(v).hidden = v !== id; }); const n = (id === "vHome" || id === "vTabs") && statusOf() === "verificado"; $("nav").hidden = !n; document.body.classList.toggle("hasnav", n); window.scrollTo(0, 0); };
+const show = (id) => { views.forEach((v) => { $(v).hidden = v !== id; }); const n = (id === "vHome" || id === "vTabs") && canBrowse(); $("nav").hidden = !n; document.body.classList.toggle("hasnav", n); window.scrollTo(0, 0); };
 const fmtDate = (t) => { try { const d = t && t.toDate ? t.toDate() : new Date(t); return d.toLocaleDateString("es-PE") + " " + d.toLocaleTimeString("es-PE", { hour: "2-digit", minute: "2-digit" }); } catch (e) { return ""; } };
 
 const ERR = {
@@ -293,9 +326,10 @@ $("hOut").onclick = () => signOut(auth);
 let me = null, profile = null, isAdmin = false, unsub = null, dbErr = "", view = "load";
 onAuthStateChanged(auth, async (u) => {
   if (unsub) { unsub(); unsub = null; }
-  profile = null; isAdmin = false; dbErr = "";
+  profile = null; isAdmin = false; dbErr = ""; ownPublicProfileReady = false;
+  cmOpen.clear(); [cmData, cmDraft, phoneCache].forEach((o) => Object.keys(o).forEach((k) => delete o[k])); phoneMig.clear(); pend = null;
   if (!u) { me = null; stopPosts(); tab = "in"; view = "welcome"; show("vWelcome"); return; }
-  me = { uid: u.uid, name: u.displayName || "", email: u.email || "", provider: (u.providerData[0] && u.providerData[0].providerId) || "google.com" };
+  me = { uid: u.uid, name: u.displayName || "", email: u.email || "", photoURL: u.photoURL || "", provider: (u.providerData[0] && u.providerData[0].providerId) || "google.com" };
   view = "load"; show("vLoad");
   try { isAdmin = (await getDoc(doc(db, "admins", u.uid))).exists(); } catch (e) { isAdmin = false; }
   unsub = onSnapshot(doc(db, "users", u.uid), async (snap) => {
@@ -307,6 +341,8 @@ onAuthStateChanged(auth, async (u) => {
   }, (e) => { dbErr = errText(e); if (view === "load" || view === "home") enterHome(); });
 });
 
+function canBrowse() { return ["none", "pendiente", "correccion", "verificado"].indexOf(statusOf()) >= 0; }
+function toast(msg) { const t = document.createElement("div"); t.className = "toast"; t.textContent = msg; document.body.appendChild(t); setTimeout(() => t.remove(), 3200); }
 function statusOf() { return profile && profile.status ? profile.status : "none"; }
 function badge(st) {
   if (st === "verificado") return '<span class="badge b-ok">' + SHIELD + 'Verificado</span>';
@@ -316,6 +352,163 @@ function badge(st) {
   if (st === "suspendido") return '<span class="badge b-bad">Suspendido</span>';
   return '<span class="badge b-none">Sin verificar</span>';
 }
+
+function safeHttpUrl(value) {
+  try { const u = new URL(String(value || "")); return u.protocol === "https:" ? u.href : ""; } catch (_) { return ""; }
+}
+function initialsOf(name) {
+  return String(name || "K").trim().split(/\s+/).slice(0,2).map(x => x[0] || "").join("").toUpperCase();
+}
+function starsHtml(n) {
+  const v = Math.max(0, Math.min(5, Math.round(Number(n) || 0)));
+  return '<span class="profile-stars" aria-label="' + v + ' de 5 estrellas">' + "★".repeat(v) + "☆".repeat(5-v) + '</span>';
+}
+function reviewSummary(reviews) {
+  const valid = reviews.filter(r => Number(r.stars) >= 1 && Number(r.stars) <= 5);
+  const avg = valid.length ? valid.reduce((a,r) => a + Number(r.stars), 0) / valid.length : 0;
+  return { avg, count: valid.length };
+}
+async function openPublicProfile(uid) {
+  if (!uid) return;
+  if (uid === me.uid) {
+    tab = "pf"; profileViewUid = null;
+    renderProfilePage(me.uid, profile, posts.filter(p => p.owner === me.uid), true); show("vHome"); return;
+  }
+  profileViewUid = uid; viewedProfile = null; viewedProfilePosts = []; viewedReviews = []; profileBusy = true; profileError = "";
+  $("hBody").innerHTML = '<button class="back" id="profileBack" type="button">‹ Volver</button><p class="fine">Cargando perfil…</p>';
+  show("vHome");
+  $("profileBack").onclick = () => { profileViewUid = null; tab = "in"; enterHome(); };
+  try {
+    const snap = await getDoc(doc(db, "publicProfiles", uid));
+    viewedProfile = snap.exists() ? snap.data() : null;
+    const [ps, rs] = await Promise.all([
+      getDocs(query(collection(db, "posts"), where("owner", "==", uid), limit(60))),
+      getDocs(query(collection(db, "reviews"), where("targetUid", "==", uid), limit(100)))
+    ]);
+    viewedProfilePosts = ps.docs.map(d => Object.assign({id:d.id}, d.data())).sort((a,b) => {
+      const ta = a.createdAt && a.createdAt.toMillis ? a.createdAt.toMillis() : 0;
+      const tb = b.createdAt && b.createdAt.toMillis ? b.createdAt.toMillis() : 0;
+      return tb-ta;
+    });
+    viewedReviews = rs.docs.map(d => Object.assign({id:d.id}, d.data()));
+    if (!viewedProfile && viewedProfilePosts.length) { const f = viewedProfilePosts[0]; viewedProfile = { name: f.ownerName, city: f.city, status: f.ownerVerified !== false ? "verificado" : "" }; }
+    profileBusy = false;
+    renderProfilePage(uid, viewedProfile, viewedProfilePosts, false, viewedReviews);
+  } catch (e) {
+    profileBusy = false; profileError = errText(e);
+    const visible = posts.filter(p => p.owner === uid);
+    const fallback = visible.length ? {name:visible[0].ownerName, status:visible[0].ownerVerified !== false ? "verificado" : "", city:visible[0].city} : null;
+    renderProfilePage(uid, fallback, visible, false, []);
+    const err = $("profileDataError"); if (err) err.textContent = "No se pudieron cargar todas las secciones del perfil. " + profileError + (fallback ? "" : " Si este usuario ya estaba verificado antes del rediseño, el administrador debe sincronizar su perfil público.");
+  }
+}
+async function ensureOwnPublicProfile() {
+  if (ownPublicProfileReady || !me || !profile || statusOf() !== "verificado") return;
+  ownPublicProfileReady = true;
+  try {
+    const ref = doc(db, "publicProfiles", me.uid);
+    const snap = await getDoc(ref);
+    if (!snap.exists()) {
+      await setDoc(ref, {
+        uid: me.uid, name: profile.name || me.name || "Criador KELSO",
+        city: profile.city || "",
+        photoURL: profile.photoURL || me.photoURL || "", bio: profile.bio || "",
+        status: "verificado", createdAt: profile.createdAt || serverTimestamp(),
+        updatedAt: serverTimestamp()
+      });
+    } else if ("phone" in snap.data()) {
+      await updateDoc(ref, { phone: deleteField() });
+    }
+    await setDoc(doc(db, "contacts", me.uid), { uid: me.uid, phone: profile.phone || "" });
+  } catch (_) { /* se reintenta al recargar */ }
+}
+function renderProfilePage(uid, data, userPosts, own, reviews) {
+  if (own) ensureOwnPublicProfile();
+  const d = data || {};
+  const list = userPosts || [];
+  const revs = reviews || [];
+  const name = d.name || (own ? me.name : "Criador de KELSO");
+  const verified = d.status === "verificado" || (own && statusOf() === "verificado");
+  const photo = safeHttpUrl((own && me.photoURL) || d.photoURL || d.avatarUrl || "");
+  const cover = safeHttpUrl(d.coverUrl || "");
+  const bio = d.bio || "";
+  const city = d.city || "";
+  const summary = reviewSummary(revs);
+  const activeListings = list.filter(p => !p.sold && p.postMode && p.postMode.indexOf("vender_") === 0);
+  const ejCount = activeListings.filter(p => p.type === "ejemplar").length;
+  const productCount = activeListings.filter(p => p.type === "producto").length;
+  const avatar = photo ? '<img class="profile-avatar" src="' + esc(photo) + '" alt="Foto de perfil">' : '<div class="profile-avatar">' + esc(initialsOf(name)) + '</div>';
+  let h = '';
+  if (!own) h += '<button class="back" id="profileBack" type="button">‹ Volver</button>';
+  h += '<div class="profile-cover"' + (cover ? ' style="background-image:url(&quot;' + esc(cover) + '&quot;)"' : '') + '></div>' +
+    '<div class="profile-head">' + avatar +
+    '<div class="profile-title">' + esc(name) + (verified ? verifiedMark() : '') + '</div>' +
+    '<div class="profile-sub">' + (verified ? 'Criador verificado por KELSO' : 'Miembro de KELSO') + (city ? ' · ' + esc(city) : '') + '</div>' +
+    (bio ? '<div class="profile-bio">' + esc(bio) + '</div>' : (own ? '<div class="profile-bio">Añade una presentación para que la comunidad conozca más sobre ti.</div>' : '')) +
+    '<div class="profile-actions">' +
+    (own ? '<button class="btn sec" id="editProfileBtn" type="button">Editar perfil</button>' :
+      (isVer() ? '<button class="btn" data-wa="' + esc(uid) + '" data-wn="' + esc(name) + '" type="button">Enviar mensaje</button>' :
+      '<button class="btn sec" data-verify="1" type="button">Verifica tu identidad para contactar</button>')) +
+    '</div></div>' +
+    '<div class="profile-stats"><div class="profile-stat"><b>' + list.length + '</b><span>PUBLICACIONES</span></div><div class="profile-stat"><b>' + ejCount + '</b><span>EJEMPLARES</span></div><div class="profile-stat"><b>' + productCount + '</b><span>PRODUCTOS</span></div></div>' +
+    '<section class="profile-rating"><div class="row" style="align-items:center"><div><b>Valoración de la comunidad</b><div style="margin-top:4px">' + starsHtml(summary.count ? summary.avg : 0) + '</div></div><div style="margin-left:auto;text-align:right"><b style="font:700 23px var(--h)">' + (summary.count ? summary.avg.toFixed(1) : '—') + '</b><div class="profile-sub">' + summary.count + ' valoraciones</div></div></div></section>';
+  if (!own && !isVer()) h += '<section class="profile-section"><h3>Valoraciones</h3><div class="profile-empty">Verifica tu identidad para valorar a otros criadores.</div></section>';
+  if (!own && isVer()) {
+    const existing = revs.find(r => r.reviewerUid === me.uid);
+    h += '<section class="profile-section"><h3>Dejar una valoración y referencia</h3>' +
+      '<div class="card"><label for="reviewStars">Tu valoración</label><select id="reviewStars">' +
+      [5,4,3,2,1].map(n => '<option value="' + n + '"' + (existing && Number(existing.stars) === n ? ' selected' : '') + '>' + n + ' estrellas</option>').join('') +
+      '</select><label for="reviewText">Tu referencia (opcional)</label><textarea id="reviewText" maxlength="500" rows="3" placeholder="Cuenta cómo fue tu experiencia con este criador…">' + esc(existing && existing.comment || '') + '</textarea>' +
+      '<button class="btn" id="saveReviewBtn" type="button">' + (existing ? 'Actualizar mi valoración' : 'Enviar valoración') + '</button><div class="msg err" id="reviewMsg"></div></div></section>';
+  }
+  h += '<section class="profile-section"><h3>Referencias de la comunidad</h3>';
+  if (!revs.length) h += '<div class="profile-empty">Todavía no hay referencias. Las experiencias de la comunidad aparecerán aquí.</div>';
+  else h += revs.slice(0,20).map(r => '<div class="profile-review"><div class="review-meta"><b>' + esc(r.reviewerName || 'Usuario KELSO') + '</b><span>' + (r.createdAt ? esc(fmtDate(r.createdAt)) : '') + '</span></div>' + starsHtml(r.stars) + (r.comment ? '<p>' + esc(r.comment) + '</p>' : '') + '</div>').join('');
+  h += '</section><section class="profile-section"><h3>Publicaciones</h3>';
+  if (!list.length) h += '<div class="profile-empty">Este usuario todavía no tiene publicaciones.</div>';
+  else h += list.map(cardHtml).join('');
+  h += '</section><p id="profileDataError" class="msg err"></p>';
+  if (own && isAdmin) h += '<button class="btn" id="hAdmin" type="button">Panel de administración</button>';
+  $("hBody").innerHTML = h;
+  if (own && isAdmin && $("hAdmin")) $("hAdmin").onclick = openAdmin;
+  if (!own && $("profileBack")) $("profileBack").onclick = () => { profileViewUid = null; tab = "in"; enterHome(); };
+  if (own && $("editProfileBtn")) $("editProfileBtn").onclick = openProfileEditor;
+  if (!own && $("saveReviewBtn")) $("saveReviewBtn").onclick = async () => {
+    const btn = $("saveReviewBtn"), msg = $("reviewMsg");
+    const stars = Number($("reviewStars").value), comment = $("reviewText").value.trim();
+    if (!stars || stars < 1 || stars > 5) { msg.textContent = "Selecciona una valoración entre 1 y 5 estrellas."; return; }
+    btn.disabled = true; msg.textContent = "Guardando…";
+    try {
+      await setDoc(doc(db, "reviews", uid + "_" + me.uid), {
+        targetUid: uid, reviewerUid: me.uid,
+        reviewerName: (profile && profile.name) || me.name || "Usuario KELSO",
+        stars, comment, updatedAt: serverTimestamp(),
+        createdAt: (revs.find(r => r.reviewerUid === me.uid) || {}).createdAt || serverTimestamp()
+      });
+      await openPublicProfile(uid);
+    } catch (e) { btn.disabled = false; msg.textContent = errText(e) + " Revisa las reglas de Firestore para la colección reviews."; }
+  };
+}
+function openProfileEditor() {
+  const d = profile || {};
+  $("hBody").innerHTML = '<button class="back" id="editProfileBack" type="button">‹ Volver al perfil</button><h2>Editar perfil</h2>' +
+    '<div class="card profile-edit-grid"><label for="profileBioInput">Presentación</label><textarea id="profileBioInput" maxlength="300" rows="4" placeholder="Cuéntale a la comunidad sobre ti…">' + esc(d.bio || '') + '</textarea>' +
+    '<label for="profileCityInput">Ciudad</label><input id="profileCityInput" type="text" maxlength="40" value="' + esc(d.city || '') + '">' +
+    '<button class="btn" id="saveProfileBtn" type="button">Guardar cambios</button><div class="msg err" id="editProfileMsg"></div></div>';
+  $("editProfileBack").onclick = () => renderProfilePage(me.uid, profile, posts.filter(p => p.owner === me.uid), true);
+  $("saveProfileBtn").onclick = async () => {
+    const btn = $("saveProfileBtn"), msg = $("editProfileMsg");
+    btn.disabled = true; msg.textContent = "Guardando…";
+    try {
+      const bio = $("profileBioInput").value.trim(), city = $("profileCityInput").value.trim();
+      await updateDoc(doc(db, "users", me.uid), { bio, city, updatedAt: serverTimestamp() });
+      if (statusOf() === "verificado") await setDoc(doc(db, "publicProfiles", me.uid), { bio, city, updatedAt: serverTimestamp() }, { merge: true });
+      profile = Object.assign({}, profile, {bio, city});
+      renderProfilePage(me.uid, profile, posts.filter(p => p.owner === me.uid), true);
+    } catch (e) { btn.disabled = false; msg.textContent = errText(e); }
+  };
+}
+
 function renderHome() {
   const st = statusOf(), who = (profile && profile.name) || me.name || me.email;
   let h = '<div class="card"><b>' + esc(who) + (st === "verificado" ? verifiedMark() : "") + '</b><div class="mu">' + esc(me.email) + '</div>' + badge(st);
@@ -434,7 +627,7 @@ function renderWizard() {
   if ($("c1")) { $("c1").onchange = (e) => { W.c1 = e.target.checked; sync(); }; $("c2").onchange = (e) => { W.c2 = e.target.checked; sync(); }; $("c3").onchange = (e) => { W.adult = e.target.checked; sync(); }; }
 }
 function sync() { const b = document.querySelector('#wzBody [data-act="next"]'); if (b) b.disabled = !(W.c1 && W.c2 && W.adult); }
-$("wzBack").onclick = () => { if (W.busy) return; W.msg = ""; if (W.step === 0) { enterHome(); } else { W.step--; renderWizard(); } };
+$("wzBack").onclick = () => { if (W.busy) return; W.msg = ""; if (W.step === 0) { tab = "pf"; enterHome(); } else { W.step--; renderWizard(); } };
 $("wzBody").addEventListener("click", async (e) => {
   const b = e.target.closest("[data-act]"); if (!b || W.busy) return;
   const a = b.getAttribute("data-act"); W.msg = "";
@@ -457,10 +650,10 @@ $("wzBody").addEventListener("click", async (e) => {
     try {
       for (const k of [["selfie", W.selfie], ["front", W.front], ["back", W.back]]) { step = "foto " + k[0]; await setDoc(doc(db, "kyc", me.uid, "imgs", k[0]), { data: k[1], at: Date.now() }); }
       step = "perfil";
-      const base = { name: W.name, dni: W.dni, phone: W.phone, city: W.city, email: me.email, provider: me.provider, status: "pendiente", submittedAt: serverTimestamp(), consentAt: serverTimestamp(), consentVersion: CONSENT_VERSION };
+      const base = { name: W.name, dni: W.dni, phone: W.phone, city: W.city, photoURL: me.photoURL || "", email: me.email, provider: me.provider, status: "pendiente", submittedAt: serverTimestamp(), consentAt: serverTimestamp(), consentVersion: CONSENT_VERSION };
       if (!profile) await setDoc(doc(db, "users", me.uid), Object.assign({ createdAt: serverTimestamp() }, base));
       else await updateDoc(doc(db, "users", me.uid), base);
-      W.busy = false; W.selfie = W.front = W.back = ""; enterHome();
+      W.busy = false; W.selfie = W.front = W.back = ""; tab = "pf"; enterHome();
     } catch (er) { W.busy = false; W.msg = "No se pudo enviar (paso: " + step + "). " + errText(er); renderWizard(); }
   }
 });
@@ -469,23 +662,33 @@ $("wzBody").addEventListener("click", async (e) => {
 const CATS = ["Alimento", "Salud y vitaminas", "Jaulas y corrales", "Accesorios", "Equipos", "Otros"];
 const MAXPOST = 6;
 let posts = [], postsLoaded = false, unsubPosts = null, postsErr = "", tab = "in", q = "", mcat = "Todos", pend = null, fkind = "ejemplar", fPh = [], fBusy = false;
+const phoneMig = new Set(), phoneCache = {}, cmOpen = new Set(), cmData = {}, cmDraft = {};
+let profileViewUid = null, viewedProfile = null, viewedProfilePosts = [], viewedReviews = [], profileBusy = false, profileError = "", ownPublicProfileReady = false;
 const isVer = () => statusOf() === "verificado";
 const okImg = (s) => typeof s === "string" && /^data:image\/jpeg;base64,[A-Za-z0-9+\/=]+$/.test(s);
 function startPosts() {
-  if (unsubPosts || !isVer()) return;
-  const redraw = () => { if (view === "home" && tab !== "pf") renderTab(); };
+  if (unsubPosts || !canBrowse()) return;
+  const redraw = () => {
+    const a = document.activeElement;
+    if (a && a.hasAttribute && a.hasAttribute("data-cmin")) return;
+    if (view === "home" && tab === "pf" && !profileViewUid) { if (isVer()) renderProfilePage(me.uid, profile, posts.filter(p => p.owner === me.uid), true); else renderHome(); }
+    else if (view === "home" && tab !== "pf") renderTab();
+  };
   unsubPosts = onSnapshot(query(collection(db, "posts"), orderBy("createdAt", "desc"), limit(120)),
-    (s) => { posts = s.docs.map((d) => Object.assign({ id: d.id }, d.data())); postsLoaded = true; postsErr = ""; redraw(); },
+    (s) => {
+      posts = s.docs.map((d) => Object.assign({ id: d.id }, d.data())); postsLoaded = true; postsErr = ""; redraw();
+      posts.filter((p) => me && p.owner === me.uid && "ownerPhone" in p && !phoneMig.has(p.id)).forEach((p) => { phoneMig.add(p.id); updateDoc(doc(db, "posts", p.id), { ownerPhone: deleteField() }).catch(() => {}); });
+    },
     (e) => { postsErr = errText(e); postsLoaded = true; redraw(); });
 }
 function stopPosts() { if (unsubPosts) { unsubPosts(); unsubPosts = null; } posts = []; postsLoaded = false; }
 function enterHome() {
-  view = "home";
-  if (isVer()) startPosts(); else { stopPosts(); tab = "pf"; }
-  if (tab === "pf") { renderHome(); show("vHome"); } else { renderTab(); show("vTabs"); }
+  view = "home"; if (isVer()) ensureOwnPublicProfile();
+  if (canBrowse()) startPosts(); else { stopPosts(); tab = "pf"; }
+  if (tab === "pf") { profileViewUid = null; if (isVer()) renderProfilePage(me.uid, profile, posts.filter(p => p.owner === me.uid), true); else renderHome(); show("vHome"); } else { profileViewUid = null; renderTab(); show("vTabs"); }
 }
-document.querySelectorAll("#nav button").forEach((b) => { b.onclick = () => { tab = b.getAttribute("data-t"); q = ""; pend = null; $("tMsg").textContent = ""; enterHome(); }; });
-if ($("topProfileBtn")) $("topProfileBtn").onclick = () => { tab = "pf"; enterHome(); };
+document.querySelectorAll("#nav button").forEach((b) => { b.onclick = () => { profileViewUid = null; tab = b.getAttribute("data-t"); q = ""; pend = null; $("tMsg").textContent = ""; enterHome(); }; });
+if ($("topProfileBtn")) $("topProfileBtn").onclick = () => { profileViewUid = null; tab = "pf"; enterHome(); };
 if ($("topSearchBtn")) $("topSearchBtn").onclick = () => { $("topSearch").classList.toggle("open"); if ($("topSearch").classList.contains("open")) $("globalSearch").focus(); };
 if ($("globalSearch")) {
   $("globalSearch").oninput = (e) => { q = e.target.value; if (tab !== "ej") { tab = "ej"; renderTab(); } else renderList(); };
@@ -509,35 +712,35 @@ function cardHtml(p) {
   if (p.weight) tags.push(p.weight + " kg");
   if (p.city) tags.push(p.city);
   let acts = "";
-  if (!mine && /^9\d{8}$/.test(p.ownerPhone || "")) {
-    const subject = free ? "publicación" : buying ? "solicitud de compra" : (ej ? "ejemplar" : "producto");
-    const msg = "Hola " + (p.ownerName || "") + ', vi tu ' + subject + ' en KELSO: "' + (p.title || p.desc || "") + '".';
-    acts += '<a class="btn sm green" target="_blank" rel="noopener" href="https://wa.me/51' + esc(p.ownerPhone) + "?text=" + encodeURIComponent(msg) + '">WhatsApp</a>';
-  }
+  if (!mine) acts += isVer() ? '<button class="btn sm green" data-wa="' + esc(p.owner) + '" data-id="' + esc(p.id) + '" type="button">WhatsApp</button>' : '<button class="btn sm sec" data-verify="1" type="button">Verifica tu identidad para contactar</button>';
+  acts += '<button class="btn sm sec" data-cm="' + esc(p.id) + '" type="button">' + (cmOpen.has(p.id) ? "Ocultar comentarios" : "Comentarios") + '</button>';
   const ask = (act, label, cls) => (pend === act + p.id ? '<button class="btn sm red" data-a="' + act + '" data-id="' + esc(p.id) + '" type="button">Confirmar</button>' : '<button class="btn sm ' + cls + '" data-a="' + act + '" data-id="' + esc(p.id) + '" type="button">' + label + "</button>");
   if (mine) {
     if (!free && !buying) acts += ask("sold", p.sold ? "Reactivar" : (ej ? "Marcar vendido" : "Marcar agotado"), "sec");
     acts += ask("del", "Eliminar", "sec");
-  } else if (isAdmin) acts += ask("del", "Retirar (admin)", "sec");
+  } else {
+    if (isVer()) acts += '<button class="btn sm ' + (pend === "rpp" + p.id ? "red" : "sec") + '" data-rep="post:' + esc(p.id) + ":" + esc(p.owner) + '" type="button">' + (pend === "rpp" + p.id ? "Confirmar reporte" : "Reportar") + "</button>";
+    if (isAdmin) acts += ask("del", "Retirar (admin)", "sec");
+  }
   const title = free ? "" : (p.title || (buying ? "Solicitud de compra" : "Publicación"));
   const label = free ? "Publicación libre" : buying ? (ej ? "Busca ejemplar" : "Busca producto") : (ej ? "Vende ejemplar" : "Vende producto");
   const price = !free && !buying && !p.sold ? '<div class="pr">S/ ' + esc(p.price) + '</div>' : (p.sold ? '<span class="sold">' + (ej ? "Vendido" : "Agotado") + '</span>' : "");
   return '<article class="post">' + (ph.length ? '<div class="ph">' + ph.map((x) => '<img src="' + x + '" alt="Foto de publicación">').join("") + "</div>" : "") +
-    '<div class="in"><div class="seller"><b>' + esc(p.ownerName || "Criador") + (p.ownerVerified === false ? "" : verifiedMark()) + '</b><span class="post-meta">· ' + esc(p.createdAt && p.createdAt.toDate ? fmtDate(p.createdAt) : "Comunidad KELSO") + '</span></div>' +
+    '<div class="in"><div class="seller"><button class="profile-link" type="button" data-user="' + esc(p.owner) + '">' + esc(p.ownerName || "Criador") + (p.ownerVerified !== false ? verifiedMark() : "") + '</button><span class="post-meta">· ' + esc(p.createdAt && p.createdAt.toDate ? fmtDate(p.createdAt) : "Comunidad KELSO") + '</span></div>' +
     '<div class="post-label">' + label + '</div>' +
     (title ? '<div class="row" style="margin-top:8px"><div class="ti">' + esc(title) + '</div>' + price + '</div>' : "") +
     (p.line ? '<div class="mu" style="color:var(--mu);font-size:12.5px;margin-top:4px">' + esc(p.line) + '</div>' : "") +
     (tags.length ? '<div class="tags">' + tags.map((t) => '<span class="tag">' + esc(t) + '</span>').join("") + '</div>' : "") +
-    (p.desc ? '<p>' + esc(p.desc) + '</p>' : "") + (acts ? '<div class="post-actions">' + acts + '</div>' : "") + '</div></article>';
+    (p.desc ? '<p>' + esc(p.desc) + '</p>' : "") + '<div class="post-actions">' + acts + '</div>' + cmBoxHtml(p) + '</div></article>';
 }
 function openComposer() {
   fkind = "chooser"; view = "form";
   const choices = [
+    ["libre", "Publicación libre", "MessageCircle", "Comparte lo que piensas, fotos y consejos"],
     ["comprar_ejemplar", "Comprar ejemplar", "Mira", "Busca ejemplares"],
     ["vender_ejemplar", "Vender ejemplar", "Tag", "Ofrece un ejemplar"],
     ["comprar_producto", "Comprar producto", "Bag", "Busca productos"],
-    ["vender_producto", "Vender producto", "Store", "Ofrece productos"],
-    ["libre", "Publicación libre", "MessageCircle", "Comparte lo que piensas, fotos y consejos"]
+    ["vender_producto", "Vender producto", "Store", "Ofrece productos"]
   ];
   const icons = {
     comprar_ejemplar:'<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><path d="M3 15c2-1 3-4 4-7l3 2 3-5 2 7 5 1-2 5H7z"/><path d="M8 18v3m8-3v3"/></svg>',
@@ -551,12 +754,44 @@ function openComposer() {
   h += '</div>';
   $("fmBody").innerHTML = h; show("vForm");
 }
+function guestBanner() {
+  const st = statusOf();
+  return '<div class="card guestbox" style="margin-top:0"><b>Estás viendo KELSO como invitado</b><p class="mu">' +
+    (st === "pendiente" ? "Tu verificación está en revisión. Mientras tanto puedes mirar, pero no publicar, comentar ni contactar."
+      : "Puedes mirar la red. Para publicar, comentar y contactar a otros criadores, verifica tu identidad.") + "</p>" +
+    (st === "pendiente" ? "" : '<button class="btn sm" data-verify="1" type="button">' + (st === "correccion" ? "Enviar de nuevo mis datos" : "Verificar mi identidad") + "</button>") + "</div>";
+}
+function cmMs(t) { return t && t.toMillis ? t.toMillis() : (typeof t === "number" ? t : 0); }
+async function loadComments(pid) {
+  try {
+    const sn = await getDocs(query(collection(db, "posts", pid, "comments"), limit(100)));
+    const list = sn.docs.map((d) => Object.assign({ id: d.id }, d.data())).sort((a, b) => cmMs(a.createdAt) - cmMs(b.createdAt));
+    cmData[pid] = { list, msg: "" };
+  } catch (e) { cmData[pid] = { list: [], err: errText(e) }; }
+  redrawFeed();
+}
+function commentHtml(c, p) {
+  const mineC = c.author === me.uid, k = "cd" + c.id, kr = "rpc" + c.id;
+  const del = (mineC || p.owner === me.uid || isAdmin) ? '<button data-cdel="' + esc(p.id) + ":" + esc(c.id) + '" class="red" type="button">' + (pend === k ? "Confirmar borrado" : "Borrar") + "</button>" : "";
+  const rep = (!mineC && isVer()) ? '<button data-rep="comment:' + esc(c.id) + ":" + esc(p.id) + ":" + esc(c.author) + '" type="button">' + (pend === kr ? "Confirmar reporte" : "Reportar") + "</button>" : "";
+  return '<div class="cm"><div class="cmh"><button class="profile-link" data-user="' + esc(c.author) + '" type="button">' + esc(c.authorName || "Criador") + verifiedMark() + "</button><span>" + (c.createdAt && c.createdAt.toDate ? esc(fmtDate(c.createdAt)) : "") + "</span></div><p>" + esc(c.text) + '</p><div class="cma">' + del + rep + "</div></div>";
+}
+function cmBoxHtml(p) {
+  if (!cmOpen.has(p.id)) return "";
+  const d = cmData[p.id]; let h = '<div class="cmbox">';
+  if (!d) h += '<p class="fine">Cargando comentarios…</p>';
+  else if (d.err) h += '<p class="msg err">' + esc(d.err) + "</p>";
+  else h += d.list.length ? d.list.map((c) => commentHtml(c, p)).join("") : '<p class="fine" style="text-align:left">Aún no hay comentarios.</p>';
+  if (isVer()) h += '<textarea data-cmin="' + esc(p.id) + '" maxlength="300" rows="2" placeholder="Escribe un comentario…">' + esc(cmDraft[p.id] || "") + '</textarea><button class="btn sm" data-csend="' + esc(p.id) + '" type="button">Comentar</button><div class="msg err">' + esc((d && d.msg) || "") + "</div>";
+  else h += '<div class="profile-empty">Verifica tu identidad para comentar.</div><button class="btn sm" data-verify="1" type="button">Verificar mi identidad</button>';
+  return h + "</div>";
+}
 function inicioHtml() {
   const first = ((profile && profile.name) || me.name || "").trim().split(" ")[0] || "criador";
   const initials = ((profile && profile.name) || me.name || "K").trim().split(/\s+/).slice(0,2).map(x => x[0] || "").join("").toUpperCase();
-  let h = '<h2>Inicio</h2>' +
+  let h = '<h2>Inicio</h2>' + (!isVer() ? guestBanner() :
     '<div class="composer"><div class="compose-top"><div class="avatar">' + esc(initials) + '</div><button class="compose-prompt" data-compose="1" type="button">¿Qué estás pensando, ' + esc(first) + '?</button></div>' +
-    '<div class="compose-actions"><button data-compose="1" type="button"><span>▧</span> Foto</button><button data-compose="1" type="button"><span>＋</span> Publicar</button></div></div>' +
+    '<div class="compose-actions"><button data-compose="1" type="button"><span>▧</span> Foto</button><button data-compose="1" type="button"><span>＋</span> Publicar</button></div></div>') +
     '<div class="feed-heading"><h3>Publicaciones recientes</h3><span>Comunidad verificada</span></div>';
   if (!postsLoaded) h += '<p class="fine">Cargando publicaciones…</p>';
   else if (postsErr) h += '<p class="msg err">' + esc(postsErr) + '</p>';
@@ -588,7 +823,7 @@ function renderTab() {
   if (tab === "in") { $("tBody").innerHTML = inicioHtml(); return; }
   const ej = tab === "ej";
   let h = "<h2>" + (ej ? "Ejemplares" : "Mercado") + "</h2>" +
-    '<button class="btn" data-new="' + (ej ? "ejemplar" : "producto") + '" type="button" style="margin-top:0">' + (ej ? "Publicar ejemplar" : "Publicar producto") + "</button>" +
+    (isVer() ? '<button class="btn" data-new="' + (ej ? "ejemplar" : "producto") + '" type="button" style="margin-top:0">' + (ej ? "Publicar ejemplar" : "Publicar producto") + "</button>" : guestBanner()) +
     '<input id="qIn" type="search" placeholder="' + (ej ? "Buscar por casta, línea o ciudad" : "Buscar producto o ciudad") + '" value="' + esc(q) + '" autocomplete="off" style="margin-top:12px">';
   if (!ej) h += '<div class="chips">' + ["Todos"].concat(CATS).map((c) => '<button class="chip" data-cat="' + esc(c) + '" aria-pressed="' + (mcat === c) + '" type="button">' + esc(c) + "</button>").join("") + "</div>";
   h += '<div id="lst"></div>';
@@ -596,24 +831,92 @@ function renderTab() {
   $("qIn").oninput = (e) => { q = e.target.value; renderList(); };
   renderList();
 }
-$("tBody").addEventListener("click", async (ev) => {
+function redrawFeed() {
+  if (!$("vHome").hidden) {
+    if (profileViewUid) renderProfilePage(profileViewUid, viewedProfile, viewedProfilePosts, false, viewedReviews);
+    else if (tab === "pf") { if (isVer()) renderProfilePage(me.uid, profile, posts.filter((p) => p.owner === me.uid), true); else renderHome(); }
+  } else if (!$("vTabs").hidden) renderTab();
+}
+async function onFeedClick(ev, inProfile) {
+  const profileBtn = ev.target.closest("[data-user]");
+  if (profileBtn) { const uid = profileBtn.getAttribute("data-user"); if (uid) openPublicProfile(uid); return; }
   const b = ev.target.closest("button"); if (!b) return;
-  if (b.hasAttribute("data-go")) { tab = b.getAttribute("data-go"); enterHome(); openForm(tab === "ej" ? "ejemplar" : "producto"); return; }
-  if (b.hasAttribute("data-compose")) { openComposer(); return; }
-  if (b.hasAttribute("data-kind")) { openForm(b.getAttribute("data-kind")); return; }
-  if (b.hasAttribute("data-new")) { openForm(b.getAttribute("data-new")); return; }
-  if (b.hasAttribute("data-cat")) { mcat = b.getAttribute("data-cat"); renderTab(); return; }
+  if (b.hasAttribute("data-verify")) { if (statusOf() === "none" || statusOf() === "correccion") startWizard(); else { tab = "pf"; profileViewUid = null; enterHome(); } return; }
+  if (b.hasAttribute("data-cm")) {
+    const id = b.getAttribute("data-cm");
+    if (cmOpen.has(id)) { cmOpen.delete(id); redrawFeed(); } else { cmOpen.add(id); delete cmData[id]; redrawFeed(); loadComments(id); }
+    return;
+  }
+  if (b.hasAttribute("data-csend")) {
+    const id = b.getAttribute("data-csend"), text = (cmDraft[id] || "").trim();
+    if (!text) { if (cmData[id]) cmData[id].msg = "Escribe un comentario."; redrawFeed(); return; }
+    b.disabled = true;
+    try {
+      await addDoc(collection(db, "posts", id, "comments"), { author: me.uid, authorName: (profile && profile.name) || me.name || "", text: text.slice(0, 300), createdAt: serverTimestamp() });
+      cmDraft[id] = ""; await loadComments(id);
+    } catch (e) { cmData[id] = Object.assign(cmData[id] || { list: [] }, { msg: "No se pudo comentar. " + errText(e) }); redrawFeed(); }
+    return;
+  }
+  if (b.hasAttribute("data-cdel")) {
+    const [pid, cid] = b.getAttribute("data-cdel").split(":"), k = "cd" + cid;
+    if (pend !== k) { pend = k; redrawFeed(); return; }
+    pend = null;
+    try { await deleteDoc(doc(db, "posts", pid, "comments", cid)); } catch (e) { toast(errText(e)); }
+    await loadComments(pid); return;
+  }
+  if (b.hasAttribute("data-rep")) {
+    const parts = b.getAttribute("data-rep").split(":"), kind = parts[0];
+    const key = (kind === "comment" ? "rpc" : "rpp") + parts[1];
+    if (pend !== key) { pend = key; redrawFeed(); return; }
+    pend = null;
+    const targetId = parts[1], postId = kind === "comment" ? parts[2] : parts[1], targetUid = kind === "comment" ? parts[3] : (parts[2] || "");
+    try {
+      await setDoc(doc(db, "reports", kind + "_" + targetId + "_" + me.uid), { kind, targetId, postId, targetUid, reporter: me.uid, reporterName: (profile && profile.name) || me.name || "", reason: "", resolved: false, createdAt: serverTimestamp() });
+      toast("Reporte enviado. El administrador lo revisará.");
+    } catch (e) { toast(e && e.code === "permission-denied" ? "Ya reportaste esto." : errText(e)); }
+    redrawFeed(); return;
+  }
+  if (b.hasAttribute("data-wa")) {
+    const uid = b.getAttribute("data-wa"), pid = b.getAttribute("data-id");
+    const pst = pid ? (posts.find((x) => x.id === pid) || viewedProfilePosts.find((x) => x.id === pid)) : null;
+    try {
+      if (!phoneCache[uid]) { const sn = await getDoc(doc(db, "contacts", uid)); phoneCache[uid] = sn.exists() ? (sn.data().phone || "") : ""; }
+    } catch (e) { toast(errText(e)); return; }
+    const phone = phoneCache[uid];
+    if (!/^9\d{8}$/.test(phone)) { toast("Este criador aún no tiene un celular disponible."); return; }
+    const name = pst ? pst.ownerName : b.getAttribute("data-wn");
+    const msg = pst ? "Hola " + (name || "") + ', vi tu publicación en KELSO: "' + (pst.title || pst.desc || "").slice(0, 80) + '".' : "Hola " + (name || "") + ", te contacto desde KELSO.";
+    const url = "https://wa.me/51" + phone + "?text=" + encodeURIComponent(msg);
+    const w = window.open(url, "_blank"); if (w) { try { w.opener = null; } catch (x) {} } else location.href = url;
+    return;
+  }
+  if (!inProfile) {
+    if (b.hasAttribute("data-go")) { tab = b.getAttribute("data-go"); enterHome(); openForm(tab === "ej" ? "ejemplar" : "producto"); return; }
+    if (b.hasAttribute("data-compose")) { openComposer(); return; }
+    if (b.hasAttribute("data-kind")) { openForm(b.getAttribute("data-kind")); return; }
+    if (b.hasAttribute("data-new")) { openForm(b.getAttribute("data-new")); return; }
+    if (b.hasAttribute("data-cat")) { mcat = b.getAttribute("data-cat"); renderTab(); return; }
+  }
   const a = b.getAttribute("data-a"), id = b.getAttribute("data-id");
   if (!a) return;
-  if (pend !== a + id) { pend = a + id; renderTab(); return; }
-  pend = null; $("tMsg").textContent = "";
-  const p = posts.find((x) => x.id === id);
+  if (pend !== a + id) { pend = a + id; redrawFeed(); return; }
+  pend = null;
+  const errEl = () => $("profileDataError") || $("tMsg");
+  if (errEl()) errEl().textContent = "";
+  const p = posts.find((x) => x.id === id) || viewedProfilePosts.find((x) => x.id === id);
   try {
-    if (a === "del") await deleteDoc(doc(db, "posts", id));
-    else if (a === "sold" && p) await updateDoc(doc(db, "posts", id), { sold: !p.sold });
-  } catch (e) { $("tMsg").textContent = errText(e); }
-  renderTab();
-});
+    if (a === "del") {
+      try { const cs = await getDocs(collection(db, "posts", id, "comments")); for (const c of cs.docs) { await deleteDoc(doc(db, "posts", id, "comments", c.id)); } } catch (x) {}
+      cmOpen.delete(id); delete cmData[id];
+      await deleteDoc(doc(db, "posts", id)); posts = posts.filter((x) => x.id !== id); viewedProfilePosts = viewedProfilePosts.filter((x) => x.id !== id); }
+    else if (a === "sold" && p) { await updateDoc(doc(db, "posts", id), { sold: !p.sold }); p.sold = !p.sold; }
+  } catch (e) { redrawFeed(); if (errEl()) errEl().textContent = errText(e); return; }
+  redrawFeed();
+}
+$("tBody").addEventListener("click", (ev) => onFeedClick(ev, false));
+$("hBody").addEventListener("click", (ev) => { if (!$("vHome").hidden) onFeedClick(ev, true); });
+const onDraft = (ev) => { const t = ev.target; if (t && t.getAttribute && t.getAttribute("data-cmin")) cmDraft[t.getAttribute("data-cmin")] = t.value; };
+$("tBody").addEventListener("input", onDraft); $("hBody").addEventListener("input", onDraft);
 
 /* formulario de publicación */
 function openForm(kind) {
@@ -622,7 +925,7 @@ function openForm(kind) {
   const ej = kind.indexOf("ejemplar") >= 0;
   const type = free ? "libre" : (ej ? "ejemplar" : "producto");
   const selling = !free && !buying;
-  const mineN = posts.filter((p) => p.owner === me.uid && p.type === type && !p.sold).length;
+  const mineN = posts.filter((p) => p.owner === me.uid && postModeOf(p) === kind && !p.sold).length;
   let h = '<h2>' + (free ? "Publicación libre" : buying ? (ej ? "Comprar ejemplar" : "Comprar producto") : (ej ? "Vender ejemplar" : "Vender producto")) + '</h2>';
   if (selling && mineN >= MAXPOST) {
     h += '<div class="card"><b>Llegaste al máximo</b><p class="mu">Puedes tener hasta ' + MAXPOST + ' publicaciones activas de este tipo. Marca alguna como vendida o elimínala para publicar otra.</p></div>';
@@ -641,7 +944,7 @@ function openForm(kind) {
       '<label for="fD">Descripción (opcional)</label><textarea id="fD" maxlength="400" placeholder="' + (ej ? "Pedigrí, vacunas, cómo lo entregas…" : "Marca, estado, cómo lo entregas…") + '"></textarea>';
   }
   h += '<label for="fF">' + (selling ? 'Fotos (1 a 3)' : 'Fotos (opcional, hasta 3)') + '</label><input id="fF" type="file" accept="image/*" multiple><div class="thumbs" id="fPrev"></div>';
-  if (selling) h += '<p class="fine" style="text-align:left">Tu celular (' + esc((profile && profile.phone) || "sin celular") + ') será visible para los criadores verificados, para que te escriban por WhatsApp.</p>';
+  if (selling) h += '<p class="fine" style="text-align:left">Tu celular solo lo ven criadores verificados cuando tocan WhatsApp en tu publicación.</p>';
   h += '<div class="msg err" id="fMsg"></div><button class="btn" id="fSend" type="button">Publicar</button>';
   $("fmBody").innerHTML = h; show("vForm");
   $("fF").onchange = async (e) => {
@@ -654,12 +957,20 @@ function openForm(kind) {
   $("fSend").onclick = sendPost;
 }
 $("fmBack").onclick = () => { if (fBusy) return; if (fkind === "chooser") { tab = "in"; enterHome(); return; } tab = "in"; enterHome(); };
+// Las opciones del selector viven dentro de fmBody, no dentro de tBody.
+// Delegamos aquí sus clics para que cada opción abra el formulario correspondiente.
+$("fmBody").addEventListener("click", (ev) => {
+  const b = ev.target.closest("button[data-kind]");
+  if (!b || !$("fmBody").contains(b)) return;
+  const kind = b.getAttribute("data-kind");
+  if (["libre", "comprar_ejemplar", "vender_ejemplar", "comprar_producto", "vender_producto"].includes(kind)) openForm(kind);
+});
 async function sendPost() {
   if (fBusy) return;
   const g = (id) => ($(id) ? $(id).value.trim() : ""), kind = fkind;
   const free = kind === "libre", buying = kind.indexOf("comprar_") === 0, ej = kind.indexOf("ejemplar") >= 0;
   const type = free ? "libre" : (ej ? "ejemplar" : "producto");
-  const d = { type, postMode: kind, owner: me.uid, ownerName: (profile && profile.name) || me.name || "", ownerPhone: (profile && profile.phone) || "", ownerVerified: statusOf() === "verificado", title: free ? "" : g("fT"), line: !free && !buying && ej ? g("fL") : "", age: !free && !buying && ej ? g("fA").replace(/\D/g, "") : "", weight: !free && !buying && ej ? g("fW").replace(",", ".") : "", price: !free && !buying ? g("fP").replace(/\D/g, "") : "", city: g("fCi"), cat: !free && !buying && !ej ? g("fC") : "", desc: g("fD"), photos: fPh, sold: false, createdAt: serverTimestamp() };
+  const d = { type, postMode: kind, owner: me.uid, ownerName: (profile && profile.name) || me.name || "", ownerVerified: statusOf() === "verificado", title: free ? "" : g("fT"), line: !free && !buying && ej ? g("fL") : "", age: !free && !buying && ej ? g("fA").replace(/\D/g, "") : "", weight: !free && !buying && ej ? g("fW").replace(",", ".") : "", price: !free && !buying ? g("fP").replace(/\D/g, "") : "", city: g("fCi"), cat: !free && !buying && !ej ? g("fC") : "", desc: g("fD"), photos: fPh, sold: false, createdAt: serverTimestamp() };
   if (free && !d.desc) { $("fMsg").textContent = "Escribe algo antes de publicar."; return; }
   if (!free && !d.title) { $("fMsg").textContent = buying ? "Describe qué estás buscando." : "Escribe un título."; return; }
   if (!free && !buying && !/^\d{1,7}$/.test(d.price)) { $("fMsg").textContent = "Escribe el precio en soles, solo números."; return; }
@@ -677,9 +988,48 @@ async function openAdmin() { view = "admin"; adDetail = null; show("vAdmin"); aw
 $("adBack").onclick = () => { if (adDetail) { adDetail = null; loadAdmin(); } else { enterHome(); } };
 $("sgP").onclick = () => { adTab = "p"; adDetail = null; loadAdmin(); };
 $("sgA").onclick = () => { adTab = "a"; adDetail = null; loadAdmin(); };
+$("sgR").onclick = () => { adTab = "r"; adDetail = null; loadAdmin(); };
+let adReports = {};
+async function loadReports() {
+  try {
+    const sn = await getDocs(query(collection(db, "reports"), where("resolved", "==", false), limit(50)));
+    const items = []; sn.forEach((d) => items.push(Object.assign({ id: d.id }, d.data())));
+    adReports = {};
+    if (!items.length) { $("adBody").innerHTML = '<div class="card"><p>No hay reportes pendientes.</p></div>'; return; }
+    for (const it of items) {
+      adReports[it.id] = it;
+      try { const r = it.kind === "comment" ? await getDoc(doc(db, "posts", it.postId, "comments", it.targetId)) : await getDoc(doc(db, "posts", it.targetId)); it.target = r.exists() ? r.data() : null; } catch (e) { it.target = null; }
+    }
+    $("adBody").innerHTML = items.map((it) => {
+      const t = it.target, who = t ? (t.authorName || t.ownerName || "Criador") : "", body = t ? (t.text || t.desc || t.title || "") : "";
+      return '<div class="item"><b>Reporte de ' + (it.kind === "comment" ? "comentario" : "publicación") + '</b><div class="mu">Por ' + esc(it.reporterName || "usuario") + (it.createdAt ? " · " + esc(fmtDate(it.createdAt)) : "") + '</div>' +
+        '<div class="card" style="margin-top:8px"><div class="mu">' + (t ? "<b>" + esc(who) + ":</b> " + esc(body.slice(0, 240)) : "El contenido ya no existe.") + '</div></div>' +
+        '<div>' + (t ? '<button class="btn sm red" data-rdel="' + esc(it.id) + '" type="button">Eliminar contenido</button>' : "") + '<button class="btn sm sec" data-rok="' + esc(it.id) + '" type="button">Descartar reporte</button></div></div>';
+    }).join("");
+  } catch (e) { $("adBody").innerHTML = '<div class="msg err">No se pudo leer. ' + esc(errText(e)) + '</div>'; }
+}
+$("adBody").addEventListener("click", async (e) => {
+  const del = e.target.closest("[data-rdel]"), ok = e.target.closest("[data-rok]");
+  if (!del && !ok) return;
+  const id = (del || ok).getAttribute(del ? "data-rdel" : "data-rok"), it = adReports[id]; if (!it) return;
+  (del || ok).disabled = true;
+  try {
+    if (del) {
+      if (it.kind === "comment") await deleteDoc(doc(db, "posts", it.postId, "comments", it.targetId));
+      else {
+        try { const cs = await getDocs(collection(db, "posts", it.targetId, "comments")); for (const c of cs.docs) await deleteDoc(doc(db, "posts", it.targetId, "comments", c.id)); } catch (x) {}
+        await deleteDoc(doc(db, "posts", it.targetId));
+      }
+    }
+    await updateDoc(doc(db, "reports", id), { resolved: true, resolvedBy: me.uid, resolvedAt: serverTimestamp(), action: del ? "eliminado" : "descartado" });
+    try { await addDoc(collection(db, "adminLog"), { admin: me.uid, action: del ? "reporte_eliminado" : "reporte_descartado", target: it.targetUid || it.targetId, at: serverTimestamp() }); } catch (x) {}
+  } catch (er) { toast(errText(er)); }
+  loadReports();
+});
 async function loadAdmin() {
-  $("sgP").setAttribute("aria-pressed", adTab === "p"); $("sgA").setAttribute("aria-pressed", adTab === "a");
+  $("sgP").setAttribute("aria-pressed", adTab === "p"); $("sgA").setAttribute("aria-pressed", adTab === "a"); $("sgR").setAttribute("aria-pressed", adTab === "r");
   $("adBody").innerHTML = '<p class="fine">Cargando…</p>';
+  if (adTab === "r") { await loadReports(); return; }
   try {
     const q = adTab === "p" ? query(collection(db, "users"), where("status", "==", "pendiente")) : collection(db, "users");
     const snap = await getDocs(q), list = [];
@@ -722,6 +1072,20 @@ $("adBody").addEventListener("click", async (e) => {
   document.querySelectorAll("#adBody [data-dec]").forEach((b) => { b.disabled = true; });
   try {
     await updateDoc(doc(db, "users", adDetail), { status: st, note: st === "verificado" ? "" : note, reviewedAt: serverTimestamp(), reviewedBy: me.uid });
+    if (st === "verificado") {
+      try {
+        const approvedSnap = await getDoc(doc(db, "users", adDetail));
+        const approved = approvedSnap.exists() ? approvedSnap.data() : {};
+        await setDoc(doc(db, "publicProfiles", adDetail), {
+          uid: adDetail, name: approved.name || "Criador KELSO", city: approved.city || "",
+          phone: deleteField(), photoURL: approved.photoURL || "", bio: approved.bio || "",
+          status: "verificado", createdAt: approved.createdAt || serverTimestamp(), updatedAt: serverTimestamp()
+        }, { merge: true });
+        await setDoc(doc(db, "contacts", adDetail), { uid: adDetail, phone: approved.phone || "" });
+      } catch (x) {}
+    } else {
+      try { await deleteDoc(doc(db, "publicProfiles", adDetail)); } catch (x) {}
+    }
     try { await addDoc(collection(db, "adminLog"), { admin: me.uid, action: st, target: adDetail, at: serverTimestamp() }); } catch (x) {}
     if (st === "verificado" || st === "rechazado" || st === "correccion") {
       for (const k of ["selfie", "front", "back"]) { try { await deleteDoc(doc(db, "kyc", adDetail, "imgs", k)); } catch (x) {} }
