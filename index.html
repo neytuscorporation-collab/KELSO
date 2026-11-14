@@ -196,6 +196,27 @@ input:focus,textarea:focus{outline:2px solid #6f8eae}
 .cm .cma{display:flex;gap:8px;margin-top:6px}.cm .cma button{background:none;border:0;color:var(--mu);font-size:12px;padding:2px 0;text-decoration:underline}.cm .cma button.red{color:#ff9a8a}
 .cmbox textarea{min-height:60px;margin-top:10px}
 .guestbox{border-color:#526f8d;background:#18222d}
+
+.post{position:relative;overflow:visible}
+.post .in{padding:14px 14px 12px}
+.phd{display:flex;align-items:center;gap:11px}
+.av2{flex:none;width:46px;height:46px;border-radius:50%;object-fit:cover;background:#2b3a4b;color:#cfe0f1;display:grid;place-items:center;font:700 15px var(--h);border:1px solid var(--line)}
+.phd .who{min-width:0;flex:1}.phd .who .nm{background:none;border:0;padding:0;color:var(--fg);font:700 17px var(--h);text-align:left;display:inline-flex;align-items:center;gap:6px;max-width:100%}
+.phd .when{display:flex;align-items:center;gap:6px;color:var(--mu);font-size:12.5px;margin-top:3px}.phd .when svg{width:14px;height:14px}
+.pmore{margin-left:auto;background:none;border:0;color:var(--fg);font:700 24px/1 var(--b);padding:6px 10px;border-radius:10px;letter-spacing:1px}
+.pmenu{position:absolute;right:12px;top:58px;background:var(--s2);border:1px solid var(--line);border-radius:12px;padding:8px;z-index:8;display:grid;gap:6px;min-width:176px;box-shadow:0 10px 30px rgba(0,0,0,.5)}
+.ptext{margin:12px 0 0;font-size:17px;line-height:1.4;white-space:pre-wrap;overflow-wrap:anywhere;color:var(--fg)}
+.pinfo{margin-top:12px}
+.post .ph{margin:12px 0 0;border-radius:12px;overflow-x:auto}.post .ph img{max-height:420px}
+.pstats{display:flex;align-items:center;justify-content:space-between;gap:10px;margin-top:12px;padding-bottom:10px;border-bottom:1px solid var(--line);color:var(--fg);font-size:15px}
+.pstats .lk{display:flex;align-items:center;gap:9px}.pstats .lk i{width:30px;height:30px;border-radius:50%;background:#1877f2;display:grid;place-items:center}.pstats .lk i svg{width:16px;height:16px;fill:#fff}
+.pstats button{background:none;border:0;color:var(--fg);font:500 15px var(--b);display:flex;align-items:center;gap:8px;padding:2px 0}.pstats button svg{width:22px;height:22px;stroke:var(--mu);fill:none}
+.pacts{display:grid;grid-auto-flow:column;grid-auto-columns:1fr;gap:9px;margin-top:10px}
+.pact,.prep{background:var(--s2);border:1px solid var(--line);color:var(--fg);border-radius:13px;font:600 14px var(--b);padding:12px 4px;display:flex;align-items:center;justify-content:center;gap:6px;white-space:nowrap;min-width:0}
+.pact svg,.prep svg{width:21px;height:21px;flex:none}
+.pact.on{color:#6aa8ff;border-color:#2c5da8}.pact.on svg{fill:#6aa8ff}
+.pact.green{background:#17382a;border-color:#2a6a4a}
+.prep{width:100%;margin-top:9px}.prep svg{stroke:var(--mu);fill:none}
 </style></head><body><div class="w">
 
 <section id="vWelcome" class="hero" hidden>
@@ -271,7 +292,7 @@ input:focus,textarea:focus{outline:2px solid #6f8eae}
 <script type="module">
 import { initializeApp } from "https://www.gstatic.com/firebasejs/10.12.2/firebase-app.js";
 import { getAuth, GoogleAuthProvider, signInWithPopup, signInWithRedirect, getRedirectResult, onAuthStateChanged, signOut } from "https://www.gstatic.com/firebasejs/10.12.2/firebase-auth.js";
-import { getFirestore, doc, getDoc, setDoc, updateDoc, deleteDoc, collection, getDocs, query, where, orderBy, limit, onSnapshot, addDoc, serverTimestamp, deleteField } from "https://www.gstatic.com/firebasejs/10.12.2/firebase-firestore.js";
+import { getFirestore, doc, getDoc, setDoc, updateDoc, deleteDoc, collection, getDocs, query, where, orderBy, limit, onSnapshot, addDoc, serverTimestamp, deleteField, writeBatch, increment } from "https://www.gstatic.com/firebasejs/10.12.2/firebase-firestore.js";
 
 /* Configuración de Firebase (proyecto kelso-62f12). Estos datos no son secretos. */
 const firebaseConfig = {
@@ -327,7 +348,7 @@ let me = null, profile = null, isAdmin = false, unsub = null, dbErr = "", view =
 onAuthStateChanged(auth, async (u) => {
   if (unsub) { unsub(); unsub = null; }
   profile = null; isAdmin = false; dbErr = ""; ownPublicProfileReady = false;
-  cmOpen.clear(); [cmData, cmDraft, phoneCache].forEach((o) => Object.keys(o).forEach((k) => delete o[k])); phoneMig.clear(); pend = null; ownPub = null;
+  cmOpen.clear(); [cmData, cmDraft, phoneCache].forEach((o) => Object.keys(o).forEach((k) => delete o[k])); phoneMig.clear(); pend = null; ownPub = null; myLikes.clear(); likesLoaded = false; Object.keys(pubCache).forEach((k) => delete pubCache[k]); pubPending.clear(); menuFor = null;
   if (!u) { me = null; stopPosts(); tab = "in"; view = "welcome"; show("vWelcome"); return; }
   me = { uid: u.uid, name: u.displayName || "", email: u.email || "", photoURL: u.photoURL || "", provider: (u.providerData[0] && u.providerData[0].providerId) || "google.com" };
   view = "load"; show("vLoad");
@@ -391,6 +412,7 @@ async function openPublicProfile(uid) {
       return tb-ta;
     });
     viewedReviews = rs.docs.map(d => Object.assign({id:d.id}, d.data()));
+    loadMyLikes();
     if (!viewedProfile && viewedProfilePosts.length) { const f = viewedProfilePosts[0]; viewedProfile = { name: f.ownerName, city: f.city, status: f.ownerVerified !== false ? "verificado" : "" }; }
     profileBusy = false;
     renderProfilePage(uid, viewedProfile, viewedProfilePosts, false, viewedReviews);
@@ -715,7 +737,9 @@ $("wzBody").addEventListener("click", async (e) => {
 const CATS = ["Alimento", "Salud y vitaminas", "Jaulas y corrales", "Accesorios", "Equipos", "Otros"];
 const MAXPOST = 6;
 let posts = [], postsLoaded = false, unsubPosts = null, postsErr = "", tab = "in", q = "", mcat = "Todos", pend = null, fkind = "ejemplar", fPh = [], fBusy = false;
-let ownPub = null;
+let ownPub = null, likesLoaded = false;
+const myLikes = new Set(), pubCache = {}, pubPending = new Set();
+let menuFor = null;
 const phoneMig = new Set(), phoneCache = {}, cmOpen = new Set(), cmData = {}, cmDraft = {};
 let profileViewUid = null, viewedProfile = null, viewedProfilePosts = [], viewedReviews = [], profileBusy = false, profileError = "", ownPublicProfileReady = false;
 const isVer = () => statusOf() === "verificado";
@@ -730,7 +754,7 @@ function startPosts() {
   };
   unsubPosts = onSnapshot(query(collection(db, "posts"), orderBy("createdAt", "desc"), limit(120)),
     (s) => {
-      posts = s.docs.map((d) => Object.assign({ id: d.id }, d.data())); postsLoaded = true; postsErr = ""; redraw();
+      posts = s.docs.map((d) => Object.assign({ id: d.id }, d.data())); postsLoaded = true; postsErr = ""; redraw(); fetchPubs(posts); loadMyLikes();
       posts.filter((p) => me && p.owner === me.uid && "ownerPhone" in p && !phoneMig.has(p.id)).forEach((p) => { phoneMig.add(p.id); updateDoc(doc(db, "posts", p.id), { ownerPhone: deleteField() }).catch(() => {}); });
     },
     (e) => { postsErr = errText(e); postsLoaded = true; redraw(); });
@@ -757,6 +781,31 @@ function verifiedMark() {
 function postModeOf(p) {
   return p.postMode || (p.type === "ejemplar" ? "vender_ejemplar" : p.type === "producto" ? "vender_producto" : "libre");
 }
+const IC = {
+  globe: '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="9"/><path d="M3 12h18M12 3c3 3 3 15 0 18M12 3c-3 3-3 15 0 18"/></svg>',
+  thumb: '<svg viewBox="0 0 24 24" fill="currentColor" stroke="currentColor" stroke-width="1.2" stroke-linejoin="round"><path d="M2 10h4v11H2zM8 21h9.4a2 2 0 0 0 2-1.6l1.5-7A2 2 0 0 0 19 10h-5l.8-3.6a2.4 2.4 0 0 0-.6-2.2L12.8 3 8 9.6z"/></svg>',
+  thumbO: '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linejoin="round"><path d="M2 10h4v11H2zM8 21h9.4a2 2 0 0 0 2-1.6l1.5-7A2 2 0 0 0 19 10h-5l.8-3.6a2.4 2.4 0 0 0-.6-2.2L12.8 3 8 9.6z"/></svg>',
+  wa: '<svg viewBox="0 0 24 24" fill="none" stroke="#fff" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M3 21l1.6-4.6A8.5 8.5 0 1 1 8 19.6z"/><path d="M9 8.5c0 3.5 3 6.5 6.5 6.5l1-1.6-2-1-1 .8c-1-.4-2-1.4-2.4-2.4l.8-1-1-2z"/></svg>',
+  bub: '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linejoin="round"><path d="M4 5h16v11H9l-5 4z"/></svg>',
+  flag: '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linejoin="round"><path d="M5 21V4M5 5h13l-2.5 4L18 13H5"/></svg>'
+};
+function ownerAv(uid) { return uid === me.uid ? Object.assign({}, ownPub || {}, { photoURL: (ownPub && ownPub.photoURL) || me.photoURL || "" }) : (pubCache[uid] || {}); }
+function avatarHtml(uid, name) {
+  const d = ownerAv(uid), src = okImg(d.avatar) ? d.avatar : safeHttpUrl(d.photoURL || "");
+  return src ? '<img class="av2" src="' + esc(src) + '" alt="">' : '<span class="av2">' + esc(initialsOf(name || "K")) + "</span>";
+}
+async function fetchPubs(list) {
+  const ids = Array.from(new Set((list || []).map((p) => p.owner))).filter((u) => u && me && u !== me.uid && !pubCache[u] && !pubPending.has(u)).slice(0, 40);
+  if (!ids.length) return;
+  ids.forEach((u) => pubPending.add(u));
+  await Promise.all(ids.map(async (u) => { try { const sn = await getDoc(doc(db, "publicProfiles", u)); pubCache[u] = sn.exists() ? sn.data() : {}; } catch (e) { pubCache[u] = {}; } }));
+  redrawFeed();
+}
+async function loadMyLikes() {
+  if (likesLoaded || !me || !isVer()) return;
+  likesLoaded = true;
+  try { const sn = await getDocs(collection(db, "userLikes", me.uid, "posts")); sn.forEach((d) => myLikes.add(d.id)); redrawFeed(); } catch (e) { likesLoaded = false; }
+}
 function cardHtml(p) {
   const mine = p.owner === me.uid, ph = (p.photos || []).filter(okImg), mode = postModeOf(p);
   const free = mode === "libre", buying = mode.indexOf("comprar_") === 0, ej = p.type === "ejemplar" || mode.indexOf("ejemplar") >= 0;
@@ -765,48 +814,37 @@ function cardHtml(p) {
   if (p.age) tags.push(p.age + " meses");
   if (p.weight) tags.push(p.weight + " kg");
   if (p.city) tags.push(p.city);
-  let acts = "";
-  if (!mine) acts += isVer() ? '<button class="btn sm green" data-wa="' + esc(p.owner) + '" data-id="' + esc(p.id) + '" type="button">WhatsApp</button>' : '<button class="btn sm sec" data-verify="1" type="button">Verifica tu identidad para contactar</button>';
-  acts += '<button class="btn sm sec" data-cm="' + esc(p.id) + '" type="button">' + (cmOpen.has(p.id) ? "Ocultar comentarios" : "Comentarios") + '</button>';
-  const ask = (act, label, cls) => (pend === act + p.id ? '<button class="btn sm red" data-a="' + act + '" data-id="' + esc(p.id) + '" type="button">Confirmar</button>' : '<button class="btn sm ' + cls + '" data-a="' + act + '" data-id="' + esc(p.id) + '" type="button">' + label + "</button>");
-  if (mine) {
-    if (!free && !buying) acts += ask("sold", p.sold ? "Reactivar" : (ej ? "Marcar vendido" : "Marcar agotado"), "sec");
-    acts += ask("del", "Eliminar", "sec");
-  } else {
-    if (isVer()) acts += '<button class="btn sm ' + (pend === "rpp" + p.id ? "red" : "sec") + '" data-rep="post:' + esc(p.id) + ":" + esc(p.owner) + '" type="button">' + (pend === "rpp" + p.id ? "Confirmar reporte" : "Reportar") + "</button>";
-    if (isAdmin) acts += ask("del", "Retirar (admin)", "sec");
+  const id = esc(p.id), liked = myLikes.has(p.id), nL = Math.max(0, Number(p.likeCount) || 0);
+  const loaded = cmData[p.id] && cmData[p.id].list ? cmData[p.id].list.length : 0;
+  const nC = Math.max(Number(p.commentCount) || 0, loaded);
+  const ask = (act, label, cls) => (pend === act + p.id ? '<button class="btn sm red" data-a="' + act + '" data-id="' + id + '" type="button">Confirmar</button>' : '<button class="btn sm ' + cls + '" data-a="' + act + '" data-id="' + id + '" type="button">' + label + "</button>");
+  let menu = "";
+  if (mine || isAdmin) {
+    let items = "";
+    if (mine && !free && !buying) items += ask("sold", p.sold ? "Reactivar" : (ej ? "Marcar vendido" : "Marcar agotado"), "sec");
+    items += ask("del", mine ? "Eliminar" : "Retirar (admin)", "sec");
+    menu = '<button class="pmore" data-menu="' + id + '" aria-label="Más opciones" type="button">···</button>' + (menuFor === p.id ? '<div class="pmenu">' + items + "</div>" : "");
   }
+  const name = p.ownerName || "Criador";
+  const when = p.createdAt && p.createdAt.toDate ? fmtDate(p.createdAt) : "Comunidad KELSO";
   const title = free ? "" : (p.title || (buying ? "Solicitud de compra" : "Publicación"));
-  const label = free ? "Publicación libre" : buying ? (ej ? "Busca ejemplar" : "Busca producto") : (ej ? "Vende ejemplar" : "Vende producto");
-  const price = !free && !buying && !p.sold ? '<div class="pr">S/ ' + esc(p.price) + '</div>' : (p.sold ? '<span class="sold">' + (ej ? "Vendido" : "Agotado") + '</span>' : "");
-  return '<article class="post">' + (ph.length ? '<div class="ph">' + ph.map((x) => '<img src="' + x + '" alt="Foto de publicación">').join("") + "</div>" : "") +
-    '<div class="in"><div class="seller"><button class="profile-link" type="button" data-user="' + esc(p.owner) + '">' + esc(p.ownerName || "Criador") + (p.ownerVerified !== false ? verifiedMark() : "") + '</button><span class="post-meta">· ' + esc(p.createdAt && p.createdAt.toDate ? fmtDate(p.createdAt) : "Comunidad KELSO") + '</span></div>' +
-    '<div class="post-label">' + label + '</div>' +
-    (title ? '<div class="row" style="margin-top:8px"><div class="ti">' + esc(title) + '</div>' + price + '</div>' : "") +
-    (p.line ? '<div class="mu" style="color:var(--mu);font-size:12.5px;margin-top:4px">' + esc(p.line) + '</div>' : "") +
-    (tags.length ? '<div class="tags">' + tags.map((t) => '<span class="tag">' + esc(t) + '</span>').join("") + '</div>' : "") +
-    (p.desc ? '<p>' + esc(p.desc) + '</p>' : "") + '<div class="post-actions">' + acts + '</div>' + cmBoxHtml(p) + '</div></article>';
-}
-function openComposer() {
-  fkind = "chooser"; view = "form";
-  const choices = [
-    ["libre", "Publicación libre", "MessageCircle", "Comparte lo que piensas, fotos y consejos"],
-    ["comprar_ejemplar", "Comprar ejemplar", "Mira", "Busca ejemplares"],
-    ["vender_ejemplar", "Vender ejemplar", "Tag", "Ofrece un ejemplar"],
-    ["comprar_producto", "Comprar producto", "Bag", "Busca productos"],
-    ["vender_producto", "Vender producto", "Store", "Ofrece productos"]
-  ];
-  const icons = {
-    comprar_ejemplar:'<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><path d="M3 15c2-1 3-4 4-7l3 2 3-5 2 7 5 1-2 5H7z"/><path d="M8 18v3m8-3v3"/></svg>',
-    vender_ejemplar:'<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><path d="m20 13-7 7L3 10V4h6z"/><circle cx="7.5" cy="7.5" r="1"/></svg>',
-    comprar_producto:'<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><path d="M5 8h14l1 12H4zM9 8V6a3 3 0 0 1 6 0v2"/></svg>',
-    vender_producto:'<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><path d="M3 10h18l-2-6H5zM5 10v10h14V10M9 20v-6h6v6"/><path d="M3 10a3 3 0 0 0 6 0 3 3 0 0 0 6 0 3 3 0 0 0 6 0"/></svg>',
-    libre:'<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><path d="M21 11.5a8.5 8.5 0 0 1-8.5 8.5 9 9 0 0 1-4-.9L3 21l1.9-5.5a9 9 0 0 1-.9-4A8.5 8.5 0 1 1 21 11.5z"/></svg>'
-  };
-  let h = '<h2>Crear publicación</h2><p class="mu">Elige cómo quieres participar en la comunidad KELSO.</p><div class="compose-chooser">';
-  choices.forEach(([k, name, , desc]) => { h += '<button class="compose-choice ' + (k === "libre" ? "free" : "") + '" data-kind="' + k + '" type="button">' + icons[k] + '<span>' + name + '<small style="display:block;color:var(--mu);font-weight:400;margin-top:3px">' + desc + '</small></span></button>'; });
-  h += '</div>';
-  $("fmBody").innerHTML = h; show("vForm");
+  const label = free ? "" : buying ? (ej ? "Busca ejemplar" : "Busca producto") : (ej ? "Vende ejemplar" : "Vende producto");
+  const price = !free && !buying && !p.sold ? '<div class="pr">S/ ' + esc(p.price) + "</div>" : (p.sold ? '<span class="sold">' + (ej ? "Vendido" : "Agotado") + "</span>" : "");
+  const likeBtn = isVer() ? '<button class="pact' + (liked ? " on" : "") + '" data-like="' + id + '" type="button">' + (liked ? IC.thumb : IC.thumbO) + "Me gusta</button>"
+    : '<button class="pact" data-verify="1" data-why="Verifica tu identidad para dar Me gusta." type="button">' + IC.thumbO + "Me gusta</button>";
+  const waBtn = mine ? "" : isVer() ? '<button class="pact green" data-wa="' + esc(p.owner) + '" data-id="' + id + '" type="button">' + IC.wa + "WhatsApp</button>"
+    : '<button class="pact green" data-verify="1" data-why="Verifica tu identidad para contactar a otros criadores." type="button">' + IC.wa + "WhatsApp</button>";
+  const cmBtn = '<button class="pact" data-cm="' + id + '" type="button">' + IC.bub + "Comentar</button>";
+  const rep = (!mine && isVer()) ? '<button class="prep" data-rep="post:' + id + ":" + esc(p.owner) + '" type="button">' + IC.flag + (pend === "rpp" + p.id ? "Confirmar reporte" : "Reportar") + "</button>" : "";
+  return '<article class="post"><div class="in">' +
+    '<div class="phd">' + avatarHtml(p.owner, name) + '<div class="who"><button class="nm" type="button" data-user="' + esc(p.owner) + '">' + esc(name) + (p.ownerVerified !== false ? verifiedMark() : "") + '</button><div class="when"><span>' + esc(when) + "</span>" + IC.globe + "</div></div>" + menu + "</div>" +
+    ((label || title) ? '<div class="pinfo">' + (label ? '<div class="post-label">' + label + "</div>" : "") + (title ? '<div class="row" style="margin-top:8px"><div class="ti">' + esc(title) + "</div>" + price + "</div>" : "") +
+      (p.line ? '<div class="mu" style="color:var(--mu);font-size:12.5px;margin-top:4px">' + esc(p.line) + "</div>" : "") +
+      (tags.length ? '<div class="tags">' + tags.map((t) => '<span class="tag">' + esc(t) + "</span>").join("") + "</div>" : "") + "</div>" : "") +
+    (p.desc ? '<div class="ptext">' + esc(p.desc) + "</div>" : "") +
+    (ph.length ? '<div class="ph">' + ph.map((x) => '<img src="' + x + '" alt="Foto de publicación">').join("") + "</div>" : "") +
+    '<div class="pstats"><span class="lk">' + (nL ? "<i>" + IC.thumb + "</i>" + nL + " Me gusta" : '<span style="color:var(--mu)">Sé el primero en dar Me gusta</span>') + '</span><button data-cm="' + id + '" type="button">' + IC.bub + nC + (nC === 1 ? " comentario" : " comentarios") + "</button></div>" +
+    '<div class="pacts">' + likeBtn + cmBtn + waBtn + "</div>" + rep + cmBoxHtml(p) + "</div></article>";
 }
 function guestBanner() {
   const st = statusOf();
@@ -814,6 +852,15 @@ function guestBanner() {
     (st === "pendiente" ? "Tu verificación está en revisión. Mientras tanto puedes mirar, pero no publicar, comentar ni contactar."
       : "Puedes mirar la red. Para publicar, comentar y contactar a otros criadores, verifica tu identidad.") + "</p>" +
     (st === "pendiente" ? "" : '<button class="btn sm" data-verify="1" type="button">' + (st === "correccion" ? "Enviar de nuevo mis datos" : "Verificar mi identidad") + "</button>") + "</div>";
+}
+async function deleteCommentCounted(pid, cid) {
+  try {
+    const batch = writeBatch(db);
+    batch.delete(doc(db, "posts", pid, "comments", cid));
+    batch.update(doc(db, "posts", pid), { commentCount: increment(-1), delCommentId: cid });
+    await batch.commit();
+    const pp = viewedProfilePosts.find((x) => x.id === pid); if (pp && pp.commentCount > 0) pp.commentCount--;
+  } catch (e) { await deleteDoc(doc(db, "posts", pid, "comments", cid)); }
 }
 function cmMs(t) { return t && t.toMillis ? t.toMillis() : (typeof t === "number" ? t : 0); }
 async function loadComments(pid) {
@@ -895,7 +942,21 @@ async function onFeedClick(ev, inProfile) {
   const profileBtn = ev.target.closest("[data-user]");
   if (profileBtn) { const uid = profileBtn.getAttribute("data-user"); if (uid) openPublicProfile(uid); return; }
   const b = ev.target.closest("button"); if (!b) return;
-  if (b.hasAttribute("data-verify")) { if (statusOf() === "none" || statusOf() === "correccion") startWizard(); else { tab = "pf"; profileViewUid = null; enterHome(); } return; }
+  if (b.hasAttribute("data-menu")) { const id = b.getAttribute("data-menu"); menuFor = menuFor === id ? null : id; redrawFeed(); return; }
+  if (menuFor && !b.closest(".pmenu")) menuFor = null;
+  if (b.hasAttribute("data-like")) {
+    const id = b.getAttribute("data-like"), p = posts.find((x) => x.id === id) || viewedProfilePosts.find((x) => x.id === id); if (!p) return;
+    const was = myLikes.has(id), prev = Number(p.likeCount) || 0;
+    if (was) { myLikes.delete(id); p.likeCount = Math.max(0, prev - 1); } else { myLikes.add(id); p.likeCount = prev + 1; }
+    redrawFeed();
+    try {
+      const batch = writeBatch(db), lref = doc(db, "userLikes", me.uid, "posts", id), pref = doc(db, "posts", id);
+      if (was) { batch.delete(lref); batch.update(pref, { likeCount: increment(-1) }); } else { batch.set(lref, { at: serverTimestamp() }); batch.update(pref, { likeCount: increment(1) }); }
+      await batch.commit();
+    } catch (e) { if (was) myLikes.add(id); else myLikes.delete(id); p.likeCount = prev; redrawFeed(); toast(errText(e)); }
+    return;
+  }
+  if (b.hasAttribute("data-verify")) { if (b.getAttribute("data-why")) { toast(b.getAttribute("data-why")); return; } if (statusOf() === "none" || statusOf() === "correccion") startWizard(); else { tab = "pf"; profileViewUid = null; enterHome(); } return; }
   if (b.hasAttribute("data-cm")) {
     const id = b.getAttribute("data-cm");
     if (cmOpen.has(id)) { cmOpen.delete(id); redrawFeed(); } else { cmOpen.add(id); delete cmData[id]; redrawFeed(); loadComments(id); }
@@ -906,7 +967,11 @@ async function onFeedClick(ev, inProfile) {
     if (!text) { if (cmData[id]) cmData[id].msg = "Escribe un comentario."; redrawFeed(); return; }
     b.disabled = true;
     try {
-      await addDoc(collection(db, "posts", id, "comments"), { author: me.uid, authorName: (profile && profile.name) || me.name || "", text: text.slice(0, 300), createdAt: serverTimestamp() });
+      const cref = doc(collection(db, "posts", id, "comments")), batch = writeBatch(db);
+      batch.set(cref, { author: me.uid, authorName: (profile && profile.name) || me.name || "", text: text.slice(0, 300), createdAt: serverTimestamp() });
+      batch.update(doc(db, "posts", id), { commentCount: increment(1), lastCommentId: cref.id });
+      await batch.commit();
+      const pp = viewedProfilePosts.find((x) => x.id === id); if (pp) pp.commentCount = (Number(pp.commentCount) || 0) + 1;
       cmDraft[id] = ""; await loadComments(id);
     } catch (e) { cmData[id] = Object.assign(cmData[id] || { list: [] }, { msg: "No se pudo comentar. " + errText(e) }); redrawFeed(); }
     return;
@@ -915,7 +980,7 @@ async function onFeedClick(ev, inProfile) {
     const [pid, cid] = b.getAttribute("data-cdel").split(":"), k = "cd" + cid;
     if (pend !== k) { pend = k; redrawFeed(); return; }
     pend = null;
-    try { await deleteDoc(doc(db, "posts", pid, "comments", cid)); } catch (e) { toast(errText(e)); }
+    try { await deleteCommentCounted(pid, cid); } catch (e) { toast(errText(e)); }
     await loadComments(pid); return;
   }
   if (b.hasAttribute("data-rep")) {
@@ -954,7 +1019,7 @@ async function onFeedClick(ev, inProfile) {
   const a = b.getAttribute("data-a"), id = b.getAttribute("data-id");
   if (!a) return;
   if (pend !== a + id) { pend = a + id; redrawFeed(); return; }
-  pend = null;
+  pend = null; menuFor = null;
   const errEl = () => $("profileDataError") || $("tMsg");
   if (errEl()) errEl().textContent = "";
   const p = posts.find((x) => x.id === id) || viewedProfilePosts.find((x) => x.id === id);
@@ -1024,7 +1089,7 @@ async function sendPost() {
   const g = (id) => ($(id) ? $(id).value.trim() : ""), kind = fkind;
   const free = kind === "libre", buying = kind.indexOf("comprar_") === 0, ej = kind.indexOf("ejemplar") >= 0;
   const type = free ? "libre" : (ej ? "ejemplar" : "producto");
-  const d = { type, postMode: kind, owner: me.uid, ownerName: (profile && profile.name) || me.name || "", ownerVerified: statusOf() === "verificado", title: free ? "" : g("fT"), line: !free && !buying && ej ? g("fL") : "", age: !free && !buying && ej ? g("fA").replace(/\D/g, "") : "", weight: !free && !buying && ej ? g("fW").replace(",", ".") : "", price: !free && !buying ? g("fP").replace(/\D/g, "") : "", city: g("fCi"), cat: !free && !buying && !ej ? g("fC") : "", desc: g("fD"), photos: fPh, sold: false, createdAt: serverTimestamp() };
+  const d = { type, postMode: kind, owner: me.uid, ownerName: (profile && profile.name) || me.name || "", ownerVerified: statusOf() === "verificado", title: free ? "" : g("fT"), line: !free && !buying && ej ? g("fL") : "", age: !free && !buying && ej ? g("fA").replace(/\D/g, "") : "", weight: !free && !buying && ej ? g("fW").replace(",", ".") : "", price: !free && !buying ? g("fP").replace(/\D/g, "") : "", city: g("fCi"), cat: !free && !buying && !ej ? g("fC") : "", desc: g("fD"), photos: fPh, sold: false, likeCount: 0, commentCount: 0, createdAt: serverTimestamp() };
   if (free && !d.desc) { $("fMsg").textContent = "Escribe algo antes de publicar."; return; }
   if (!free && !d.title) { $("fMsg").textContent = buying ? "Describe qué estás buscando." : "Escribe un título."; return; }
   if (!free && !buying && !/^\d{1,7}$/.test(d.price)) { $("fMsg").textContent = "Escribe el precio en soles, solo números."; return; }
@@ -1069,7 +1134,7 @@ $("adBody").addEventListener("click", async (e) => {
   (del || ok).disabled = true;
   try {
     if (del) {
-      if (it.kind === "comment") await deleteDoc(doc(db, "posts", it.postId, "comments", it.targetId));
+      if (it.kind === "comment") await deleteCommentCounted(it.postId, it.targetId);
       else {
         try { const cs = await getDocs(collection(db, "posts", it.targetId, "comments")); for (const c of cs.docs) await deleteDoc(doc(db, "posts", it.targetId, "comments", c.id)); } catch (x) {}
         await deleteDoc(doc(db, "posts", it.targetId));
