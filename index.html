@@ -229,6 +229,7 @@ input:focus,textarea:focus{outline:2px solid #6f8eae}
  </div>
  <div class="msg err" id="wMsg" role="alert"></div>
  <p class="fine">Cada persona tiene una sola cuenta. Para publicar y contactar, debes verificar tu identidad.</p>
+ <p class="fine">Al continuar aceptas la <a href="privacidad.html#privacidad" target="_blank" rel="noopener">política de privacidad</a> y los <a href="privacidad.html#terminos" target="_blank" rel="noopener">términos de uso</a>.</p>
  <div class="copy"><i></i>&copy; 2026 NEYTUS CORPORATION<i></i></div>
 </section>
 
@@ -239,6 +240,7 @@ input:focus,textarea:focus{outline:2px solid #6f8eae}
  <h2>KELSO</h2>
  <div id="hBody"></div>
  <button class="btn sec" id="hOut" type="button">Cerrar sesi&oacute;n</button>
+ <p class="fine"><a href="privacidad.html#privacidad" target="_blank" rel="noopener">Política de privacidad</a> &middot; <a href="privacidad.html#terminos" target="_blank" rel="noopener">Términos de uso</a></p>
  <div class="copy"><i></i>&copy; 2026 NEYTUS CORPORATION<i></i></div>
 </section>
 
@@ -303,7 +305,7 @@ const firebaseConfig = {
   messagingSenderId: "717349579473",
   appId: "1:717349579473:web:104325370d3a9f5dd573f0"
 };
-const CONSENT_VERSION = "2026-11-12";
+const CONSENT_VERSION = "2.0-2026-11-14";
 
 const $ = (id) => document.getElementById(id);
 const esc = (s) => String(s == null ? "" : s).replace(/[&<>"']/g, (c) => ({ "&": "&amp;", "<": "&lt;", ">": "&gt;", '"': "&quot;", "'": "&#39;" }[c]));
@@ -678,7 +680,7 @@ function renderWizard() {
   if (s === "consent") {
     h = '<h2>Consentimiento</h2><div class="legal"><p><b>NEYTUS Corporation</b>, titular de KELSO, tratará tus datos personales (nombre, DNI, celular, ciudad) y tus fotografías (rostro y DNI) <b>solo para verificar tu identidad</b> y permitir que publiques en la red.</p>' +
       '<p>Tu rostro y tu DNI son datos sensibles. Tus fotografías las ve únicamente el administrador y se <b>borran al decidir tu solicitud</b>; se conservan tu número de DNI y el resultado. Nada de esto se vende ni se publica.</p>' +
-      '<p>Puedes pedir acceso, rectificación, cancelación u oposición sobre tus datos escribiendo al administrador. La política de privacidad completa se publicará antes del lanzamiento al público.</p></div>' +
+      '<p>Puedes pedir acceso, rectificación, cancelación u oposición sobre tus datos escribiendo al administrador. Lee la <a href="privacidad.html#privacidad" target="_blank" rel="noopener">política de privacidad</a> y los <a href="privacidad.html#terminos" target="_blank" rel="noopener">términos de uso</a> completos.</p></div>' +
       '<label class="chk"><input type="checkbox" id="c1"' + (W.c1 ? " checked" : "") + '><span>Autorizo el tratamiento de mis datos personales para verificar mi identidad.</span></label>' +
       '<label class="chk"><input type="checkbox" id="c2"' + (W.c2 ? " checked" : "") + '><span>Autorizo el tratamiento de mi rostro y de mi DNI (datos sensibles) para esa misma finalidad.</span></label>' +
       '<label class="chk"><input type="checkbox" id="c3"' + (W.adult ? " checked" : "") + '><span>Declaro que soy mayor de 18 años.</span></label>' +
