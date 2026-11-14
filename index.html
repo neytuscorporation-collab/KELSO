@@ -327,7 +327,7 @@ let me = null, profile = null, isAdmin = false, unsub = null, dbErr = "", view =
 onAuthStateChanged(auth, async (u) => {
   if (unsub) { unsub(); unsub = null; }
   profile = null; isAdmin = false; dbErr = ""; ownPublicProfileReady = false;
-  cmOpen.clear(); [cmData, cmDraft, phoneCache].forEach((o) => Object.keys(o).forEach((k) => delete o[k])); phoneMig.clear(); pend = null;
+  cmOpen.clear(); [cmData, cmDraft, phoneCache].forEach((o) => Object.keys(o).forEach((k) => delete o[k])); phoneMig.clear(); pend = null; ownPub = null;
   if (!u) { me = null; stopPosts(); tab = "in"; view = "welcome"; show("vWelcome"); return; }
   me = { uid: u.uid, name: u.displayName || "", email: u.email || "", photoURL: u.photoURL || "", provider: (u.providerData[0] && u.providerData[0].providerId) || "google.com" };
   view = "load"; show("vLoad");
@@ -408,6 +408,8 @@ async function ensureOwnPublicProfile() {
   try {
     const ref = doc(db, "publicProfiles", me.uid);
     const snap = await getDoc(ref);
+    const hadPub = !!ownPub; ownPub = snap.exists() ? snap.data() : {};
+    if (!hadPub && snap.exists() && !$("vHome").hidden && tab === "pf" && !profileViewUid) redrawFeed();
     if (!snap.exists()) {
       await setDoc(ref, {
         uid: me.uid, name: profile.name || me.name || "Criador KELSO",
@@ -424,13 +426,13 @@ async function ensureOwnPublicProfile() {
 }
 function renderProfilePage(uid, data, userPosts, own, reviews) {
   if (own) ensureOwnPublicProfile();
-  const d = data || {};
+  const d = own ? Object.assign({}, data || {}, ownPub || {}) : (data || {});
   const list = userPosts || [];
   const revs = reviews || [];
   const name = d.name || (own ? me.name : "Criador de KELSO");
   const verified = d.status === "verificado" || (own && statusOf() === "verificado");
-  const photo = safeHttpUrl((own && me.photoURL) || d.photoURL || d.avatarUrl || "");
-  const cover = safeHttpUrl(d.coverUrl || "");
+  const photo = okImg(d.avatar) ? d.avatar : safeHttpUrl((own && me.photoURL) || d.photoURL || d.avatarUrl || "");
+  const cover = okImg(d.cover) ? d.cover : safeHttpUrl(d.coverUrl || "");
   const bio = d.bio || "";
   const city = d.city || "";
   const summary = reviewSummary(revs);
@@ -489,12 +491,59 @@ function renderProfilePage(uid, data, userPosts, own, reviews) {
     } catch (e) { btn.disabled = false; msg.textContent = errText(e) + " Revisa las reglas de Firestore para la colección reviews."; }
   };
 }
+function imgToJpeg(file, w, h, maxChars) {
+  return new Promise((res, rej) => {
+    const fr = new FileReader();
+    fr.onerror = rej;
+    fr.onload = () => {
+      const im = new Image();
+      im.onerror = rej;
+      im.onload = () => {
+        const ar = w / h; let sw = im.width, sh = im.height;
+        if (sw / sh > ar) sw = Math.round(sh * ar); else sh = Math.round(sw / ar);
+        const sx = Math.round((im.width - sw) / 2), sy = Math.round((im.height - sh) / 2);
+        let scale = 1, q = 0.8;
+        for (let i = 0; i < 9; i++) {
+          const c = document.createElement("canvas"); c.width = Math.round(w * scale); c.height = Math.round(h * scale);
+          c.getContext("2d").drawImage(im, sx, sy, sw, sh, 0, 0, c.width, c.height);
+          const out = c.toDataURL("image/jpeg", q);
+          if (out.length <= maxChars) return res(out);
+          scale *= 0.88; q = Math.max(0.45, q - 0.05);
+        }
+        rej(new Error("size"));
+      };
+      im.src = fr.result;
+    };
+    fr.readAsDataURL(file);
+  });
+}
 function openProfileEditor() {
-  const d = profile || {};
+  const d = Object.assign({}, profile || {}, ownPub || {});
+  let nAv, nCv; // undefined = sin cambios, "" = quitar, texto = foto nueva
   $("hBody").innerHTML = '<button class="back" id="editProfileBack" type="button">‹ Volver al perfil</button><h2>Editar perfil</h2>' +
-    '<div class="card profile-edit-grid"><label for="profileBioInput">Presentación</label><textarea id="profileBioInput" maxlength="300" rows="4" placeholder="Cuéntale a la comunidad sobre ti…">' + esc(d.bio || '') + '</textarea>' +
+    '<div class="card profile-edit-grid"><label>Foto de perfil</label><div id="avPrev" class="thumbs"></div>' +
+    '<input id="avIn" type="file" accept="image/*"><button class="btn sm sec" id="avRm" type="button">Quitar foto</button>' +
+    '<label>Foto de portada</label><div id="cvPrev"></div>' +
+    '<input id="cvIn" type="file" accept="image/*"><button class="btn sm sec" id="cvRm" type="button">Quitar portada</button>' +
+    '<label for="profileBioInput">Presentación</label><textarea id="profileBioInput" maxlength="300" rows="4" placeholder="Cuéntale a la comunidad sobre ti…">' + esc(d.bio || '') + '</textarea>' +
     '<label for="profileCityInput">Ciudad</label><input id="profileCityInput" type="text" maxlength="40" value="' + esc(d.city || '') + '">' +
     '<button class="btn" id="saveProfileBtn" type="button">Guardar cambios</button><div class="msg err" id="editProfileMsg"></div></div>';
+  const paint = () => {
+    const av = nAv !== undefined ? nAv : d.avatar, cv = nCv !== undefined ? nCv : d.cover;
+    $("avPrev").innerHTML = okImg(av) ? '<img src="' + av + '" alt="" style="border-radius:50%">' : '<div class="mu">Sin foto propia: se usa la de tu cuenta de Google.</div>';
+    $("cvPrev").innerHTML = okImg(cv) ? '<img src="' + cv + '" alt="" style="width:100%;height:90px;object-fit:cover;border-radius:10px;border:1px solid var(--line)">' : '<div class="mu">Sin portada.</div>';
+  };
+  paint();
+  const pick = (id, w, h, max, set) => { $(id).onchange = async (e) => {
+    const f = e.target.files && e.target.files[0]; if (!f) return;
+    $("editProfileMsg").textContent = "Preparando foto…";
+    try { set(await imgToJpeg(f, w, h, max)); $("editProfileMsg").textContent = ""; paint(); }
+    catch (x) { $("editProfileMsg").textContent = "No se pudo leer la foto. Prueba con otra."; }
+  }; };
+  pick("avIn", 256, 256, 40000, (v) => { nAv = v; });
+  pick("cvIn", 900, 300, 90000, (v) => { nCv = v; });
+  $("avRm").onclick = () => { nAv = ""; paint(); };
+  $("cvRm").onclick = () => { nCv = ""; paint(); };
   $("editProfileBack").onclick = () => renderProfilePage(me.uid, profile, posts.filter(p => p.owner === me.uid), true);
   $("saveProfileBtn").onclick = async () => {
     const btn = $("saveProfileBtn"), msg = $("editProfileMsg");
@@ -502,8 +551,12 @@ function openProfileEditor() {
     try {
       const bio = $("profileBioInput").value.trim(), city = $("profileCityInput").value.trim();
       await updateDoc(doc(db, "users", me.uid), { bio, city, updatedAt: serverTimestamp() });
-      if (statusOf() === "verificado") await setDoc(doc(db, "publicProfiles", me.uid), { bio, city, updatedAt: serverTimestamp() }, { merge: true });
-      profile = Object.assign({}, profile, {bio, city});
+      const pub = { bio, city, updatedAt: serverTimestamp() };
+      if (nAv !== undefined) pub.avatar = nAv;
+      if (nCv !== undefined) pub.cover = nCv;
+      if (statusOf() === "verificado") await setDoc(doc(db, "publicProfiles", me.uid), pub, { merge: true });
+      profile = Object.assign({}, profile, { bio, city });
+      ownPub = Object.assign({}, ownPub || {}, { bio, city }, nAv !== undefined ? { avatar: nAv } : {}, nCv !== undefined ? { cover: nCv } : {});
       renderProfilePage(me.uid, profile, posts.filter(p => p.owner === me.uid), true);
     } catch (e) { btn.disabled = false; msg.textContent = errText(e); }
   };
@@ -662,6 +715,7 @@ $("wzBody").addEventListener("click", async (e) => {
 const CATS = ["Alimento", "Salud y vitaminas", "Jaulas y corrales", "Accesorios", "Equipos", "Otros"];
 const MAXPOST = 6;
 let posts = [], postsLoaded = false, unsubPosts = null, postsErr = "", tab = "in", q = "", mcat = "Todos", pend = null, fkind = "ejemplar", fPh = [], fBusy = false;
+let ownPub = null;
 const phoneMig = new Set(), phoneCache = {}, cmOpen = new Set(), cmData = {}, cmDraft = {};
 let profileViewUid = null, viewedProfile = null, viewedProfilePosts = [], viewedReviews = [], profileBusy = false, profileError = "", ownPublicProfileReady = false;
 const isVer = () => statusOf() === "verificado";
